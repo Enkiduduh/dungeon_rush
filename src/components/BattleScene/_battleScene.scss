@@ -1,0 +1,27 @@
+#battleScene-container {
+  width: 1300px;
+  height: 600px;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.battleScene-position-line-chars {
+  width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battleScene-position-line-cards {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battleScene-message {
+  height: 20px;
+  margin: 20px 0;
+}

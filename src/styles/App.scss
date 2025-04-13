@@ -1,0 +1,17 @@
+@import // BATTLE SCENE
+  "../components/BattleScene/battleScene",
+  // CHARACTER
+  "../components/Character/character",
+  // CARDS
+  "../components/Cards/cards"
+;
+
+#root-app {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 98vh;
+  width: 98vw;
+  border: 1px solid red;
+}

@@ -1,0 +1,30 @@
+.character-container {
+  width: 110px;
+}
+
+.character-attributs-container {
+  display: flex;
+
+}
+
+.character-attributs {
+  display: flex;
+  width: 30px;
+
+  flex-direction: column;
+  margin: 5px;
+  border: 1px solid white;
+  text-align: center;
+  border-radius: 3px;
+}
+
+
+.character-stats {
+  border:1px solid white;
+  height: 110px;
+}
+
+.character-action-points {
+  height: 40px;
+  border:1px solid white;
+}

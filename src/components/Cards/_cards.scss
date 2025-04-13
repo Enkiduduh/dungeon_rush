@@ -1,0 +1,21 @@
+.cards-container {
+  width: 100px;
+  height: 130px;
+  border:1px solid white;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: all 0.3s linear;
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+#cards-flex {
+  display: none;
+}
+
+.cards-text {
+  font-size: 32px;
+}

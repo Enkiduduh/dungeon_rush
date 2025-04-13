@@ -1,0 +1,88 @@
+#battleScene-container {
+  width: 1300px;
+  height: 600px;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.battleScene-position-line-chars {
+  width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battleScene-position-line-cards {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battleScene-message {
+  height: 20px;
+  margin: 20px 0;
+}
+
+.character-container {
+  width: 110px;
+}
+
+.character-attributs-container {
+  display: flex;
+}
+
+.character-attributs {
+  display: flex;
+  width: 30px;
+  flex-direction: column;
+  margin: 5px;
+  border: 1px solid white;
+  text-align: center;
+  border-radius: 3px;
+}
+
+.character-stats {
+  border: 1px solid white;
+  height: 110px;
+}
+
+.character-action-points {
+  height: 40px;
+  border: 1px solid white;
+}
+
+.cards-container {
+  width: 100px;
+  height: 130px;
+  border: 1px solid white;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: all 0.3s linear;
+}
+.cards-container:hover {
+  transform: scale(1.2);
+}
+
+#cards-flex {
+  display: none;
+}
+
+.cards-text {
+  font-size: 32px;
+}
+
+#root-app {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 98vh;
+  width: 98vw;
+  border: 1px solid red;
+}/*# sourceMappingURL=App.css.map */
