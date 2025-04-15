@@ -1,6 +1,16 @@
 import React from "react";
 
-function Character({ name, life, atk, def, atk_temp, def_temp, ap }) {
+function Character({
+  name,
+  life,
+  atk,
+  mag,
+  def,
+  atk_temp,
+  mag_temp,
+  def_temp,
+  ap,
+}) {
   return (
     <div className="character-container">
       <div className="character-attributs-container">
@@ -9,6 +19,11 @@ function Character({ name, life, atk, def, atk_temp, def_temp, ap }) {
           <div className="character-attribut">{atk_temp}</div>
         </div>
 
+        <div className="character-attributs">
+          <div className="character-attribut">Mag</div>
+          <div className="character-attribut">{mag_temp}</div>
+        </div>
+        
         <div className="character-attributs">
           <div className="character-attribut">Def</div>
           <div className="character-attribut">{def_temp}</div>
@@ -19,6 +34,7 @@ function Character({ name, life, atk, def, atk_temp, def_temp, ap }) {
         <div>Name: {name}</div>
         <div>Life: {life}</div>
         <div>Atk: {atk}</div>
+        <div>Mag: {mag}</div>
         <div>Def: {def}</div>
       </div>
       <div className="character-action-points">

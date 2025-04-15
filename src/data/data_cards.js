@@ -8,5 +8,10 @@ export const cards = [
   { type: "def", value: 2 },
   { type: "def", value: 3 },
   { type: "def", value: 4 },
-  { type: "def", value: 5 }
+  { type: "def", value: 5 },
+  { type: "mag", value: 1 },
+  { type: "mag", value: 2 },
+  { type: "mag", value: 3 },
+  { type: "mag", value: 4 },
+  { type: "mag", value: 5 },
 ];
