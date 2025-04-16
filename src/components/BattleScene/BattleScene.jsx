@@ -32,10 +32,11 @@ function BattleScene() {
   const [activeCardIndex, setActiveCardIndex] = useState(null); // Nouvel état
   const [validateTurnEnd, setValidateTurnEnd] = useState(false);
   const [endPhase, setEndPhase] = useState(false);
-  const shuffledCards = useMemo(() => shuffle(cards), [cards]);
+  // const shuffledCards = useMemo(() => shuffle(cards), [cards]);
   const [showEndPhaseButton, setShowEndPhaseButton] = useState(false); // Nouvel état
   const [battleMessage, setBattleMessage] = useState(""); // Affichage des messages de combats
   const [criticalMessage, setCriticalMessage] = useState(""); // Affichage des coups critiques
+  const [isCritical, setIsCritical] = useState(false); // Affichage des coups critiques
 
   const [cardsPlay, setCardsPlay] = useState([]);
   const [remainingCards, setRemainingCards] = useState([]); // Initialisez également cet état
@@ -44,9 +45,11 @@ function BattleScene() {
 
   useEffect(() => {
     if (!resetTurn) {
-      console.log("DEBUT DU TOUR.")
+      console.log("DEBUT DU TOUR.");
       const cardsReady = () => {
-        const initialCards = shuffledCards.slice(0, 5); // Prenez les 5 premières cartes
+        const basicDeck = shuffle(cards);
+        // const initialCards = shuffledCards.slice(0, 5); // Prenez les 5 premières cartes
+        const initialCards = basicDeck.slice(0, 5); // Prenez les 5 premières cartes
         setCardsPlay(initialCards);
         setRemainingCards(initialCards); // Synchronisez les cartes restantes
       };
@@ -71,7 +74,6 @@ function BattleScene() {
     setDefComputer(char_2.def);
     setActionPointComputer(char_2.ap);
     setCriticalRateComputer(char_2.critical);
-
   }, []);
 
   const displayCardsInfos = (e, index) => {
@@ -126,28 +128,48 @@ function BattleScene() {
     defChar,
     defTempChar,
     attacker,
-    critical,
+    criticalRate,
     target
   ) {
-    const testCrit = Math.floor(Math.random())
+    const testCrit = Math.floor(Math.random() * 100 + 1);
+    let cRate = 1;
+    console.log(testCrit);
+    console.log(testCrit <= criticalRate * 100);
+    console.log(testCrit, criticalRate);
+    if (testCrit <= criticalRate * 100) {
+      cRate = 1.5;
+      setIsCritical(true);
+      console.log("critical hit");
+    }
     // const criticalRate = critical;
-    const totalDamage = ((atkChar + atkTempChar) + (magChar + magTempChar)) - (defChar + defTempChar);
+    const totalDamage =
+      (atkChar + atkTempChar) * cRate +
+      (magChar + magTempChar) * cRate -
+      (defChar + defTempChar);
     setLifeComputer(lifeComputer - totalDamage);
 
     // Mettez à jour le message via l'état
     setBattleMessage(
       `${attacker} a infligé ${totalDamage} dégats à ${target}.`
     );
-
-    // Effacez le message après 3 secondes
-    setTimeout(() => {
-      setBattleMessage("");
-    }, 3000);
   }
+
+  // Effacez le message après 3 secondes
+  setTimeout(() => {
+    setBattleMessage("");
+    setCriticalMessage("");
+    setIsCritical(false);
+  }, 3000);
 
   const endPhaseBtn = () => {
     setEndPhase(true);
   };
+
+  useEffect(() => {
+    if (isCritical) {
+      setCriticalMessage(`Coup critique infligé.`);
+    }
+  });
 
   useEffect(() => {
     if (actionPointPlayer === 0) {
@@ -170,8 +192,8 @@ function BattleScene() {
         magTempPlayer,
         defComputer,
         defTempComputer,
-        critical,
         namePlayer,
+        criticalRatePlayer,
         nameComputer
       );
       gameResetTurn(); // Reinitialisation du tour
@@ -179,7 +201,7 @@ function BattleScene() {
         setResetTurn(false);
         setValidateTurnEnd(false);
         setEndPhase(false);
-        console.log("DELAI: RESET / ENDTURN > VRAI")
+        console.log("DELAI: RESET / ENDTURN > VRAI");
       }, 3000);
     }
   }, [validateTurnEnd, endPhase]); // Dépendances pour surveiller les changements
@@ -196,7 +218,7 @@ function BattleScene() {
 
   function gameResetTurn() {
     setResetTurn(true);
-    console.log("FIN DU TOUR.")
+    console.log("FIN DU TOUR.");
   }
 
   return (
@@ -231,6 +253,10 @@ function BattleScene() {
             key={index}
             type={card.type}
             value={card.value}
+            color={card.color}
+            img_bg={card.img_bg}
+            cost={card.cost}
+            img_element={card.img_element}
             displayData={(e) => displayCardsInfos(e, index)} // Passe l'index
             isActive={activeCardIndex === index} // Vérifie si cette carte est active
           />
@@ -238,7 +264,7 @@ function BattleScene() {
       </div>
       <div className="battleScene-message">
         {battleMessage && <p>{battleMessage}</p>}
-        {/* {criticalMessage && <p>{criticalMessage}</p>} */}
+        {criticalMessage && <p>{criticalMessage}</p>}
         {showEndPhaseButton && (
           <button onClick={endPhaseBtn}>Terminer le tour</button>
         )}

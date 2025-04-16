@@ -14,17 +14,17 @@ function Character({
   return (
     <div className="character-container">
       <div className="character-attributs-container">
-        <div className="character-attributs">
+        <div className="character-attributs ca-atk">
           <div className="character-attribut">Atk</div>
           <div className="character-attribut">{atk_temp}</div>
         </div>
 
-        <div className="character-attributs">
+        <div className="character-attributs ca-mag">
           <div className="character-attribut">Mag</div>
           <div className="character-attribut">{mag_temp}</div>
         </div>
-        
-        <div className="character-attributs">
+
+        <div className="character-attributs ca-def">
           <div className="character-attribut">Def</div>
           <div className="character-attribut">{def_temp}</div>
         </div>

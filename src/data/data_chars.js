@@ -1,17 +1,17 @@
 export const char_1 = {
   name: "char1",
-  life: 30,
-  atk: 5,
-  mag: 4,
+  life: 80,
+  atk: 3,
+  mag: 3,
   def: 3,
-  critical: 0.8,
+  critical: 0.4,
   ap: 3
 }
 
 
 export const char_2 = {
   name: "char2",
-  life: 25,
+  life: 100,
   atk: 4,
   mag: 2,
   def: 4,

@@ -32,16 +32,33 @@
 
 .character-attributs-container {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .character-attributs {
   display: flex;
   width: 30px;
+  height: 45px;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
-  margin: 5px;
+  margin: 4px 0;
   border: 1px solid white;
   text-align: center;
   border-radius: 3px;
+}
+
+.ca-atk {
+  background-color: rgba(255, 0, 0, 0.6);
+}
+
+.ca-mag {
+  background-color: rgba(0, 128, 0, 0.6);
+}
+
+.ca-def {
+  background-color: rgba(0, 0, 255, 0.6);
 }
 
 .character-stats {
@@ -55,15 +72,21 @@
 }
 
 .cards-container {
-  width: 100px;
-  height: 130px;
-  border: 1px solid white;
+  width: 120px;
+  height: 170px;
+  border: 3px solid darkgoldenrod;
   margin: 0 5px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   transition: all 0.3s linear;
+  border-radius: 6px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  z-index: 10;
 }
 .cards-container:hover {
   transform: scale(1.2);
@@ -75,6 +98,48 @@
 
 .cards-text {
   font-size: 32px;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cards-infos {
+  display: flex;
+  align-items: center;
+  width: 118px;
+  position: absolute;
+  z-index: 12;
+}
+
+.infos-top {
+  justify-content: space-between;
+  top: 0px;
+}
+
+.infos-bottom {
+  bottom: 0px;
+}
+
+.cards-info {
+  width: 30px;
+  height: 30px;
+  border: 2px solid white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.cards-cost {
+  width: 30px;
+  height: 30px;
+  border: 2px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
 }
 
 #root-app {
