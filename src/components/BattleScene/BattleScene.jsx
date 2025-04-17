@@ -32,6 +32,7 @@ function BattleScene() {
   const [activeCardIndex, setActiveCardIndex] = useState(null); // Nouvel état
   const [validateTurnEnd, setValidateTurnEnd] = useState(false);
   const [endPhase, setEndPhase] = useState(false);
+  const [hasAnEffect, setHasAnEffect] = useState(false);
   // const shuffledCards = useMemo(() => shuffle(cards), [cards]);
   const [showEndPhaseButton, setShowEndPhaseButton] = useState(false); // Nouvel état
   const [battleMessage, setBattleMessage] = useState(""); // Affichage des messages de combats
@@ -76,7 +77,7 @@ function BattleScene() {
     setCriticalRateComputer(char_2.critical);
   }, []);
 
-  const displayCardsInfos = (e, index) => {
+  const displayCardsInfos = (e, index, card) => {
     const target = e.target.textContent;
     // console.log(target);
     const regexAtk = new RegExp("atk");
@@ -87,23 +88,22 @@ function BattleScene() {
     const regex = /\d+/;
     const match = target.match(regex);
 
-    if (match && actionPointPlayer > 0) {
+    if (match && actionPointPlayer >= card.cost) {
       const value = parseInt(match[0], 10); // Convertir la chaîne en nombre
-      // console.log("Valeur extraite :", value);
-
+      console.log("Valeur extraite :", value);
       if (regexAtk.test(target)) {
         setAtkTempPlayer((prev) => prev + value);
-        setActionPointPlayer((prev) => prev - 1);
+        setActionPointPlayer((prev) => prev - card.cost);
       }
 
       if (regexMag.test(target)) {
         setMagTempPlayer((prev) => prev + value);
-        setActionPointPlayer((prev) => prev - 1);
+        setActionPointPlayer((prev) => prev - card.cost);
       }
 
       if (regexDef.test(target)) {
         setDefTempPlayer((prev) => prev + value);
-        setActionPointPlayer((prev) => prev - 1);
+        setActionPointPlayer((prev) => prev - card.cost);
       }
 
       // Supprime la carte cliquée de la liste
@@ -115,10 +115,6 @@ function BattleScene() {
         messageHTML.textContent = "";
       }, 3000);
     }
-    // if (actionPointPlayer === 1) {
-    //   setValidateTurnEnd(true);
-    //   console.log("AP:",actionPointPlayer);
-    // }
   };
   function calculateDmg(
     atkChar,
@@ -172,7 +168,7 @@ function BattleScene() {
   });
 
   useEffect(() => {
-    if (actionPointPlayer === 0) {
+    if (actionPointPlayer >= 0) {
       setValidateTurnEnd(true);
     }
   }, [actionPointPlayer]);
@@ -221,6 +217,7 @@ function BattleScene() {
     console.log("FIN DU TOUR.");
   }
 
+
   return (
     <div id="battleScene-container">
       <div className="battleScene-position-line-chars">
@@ -255,9 +252,12 @@ function BattleScene() {
             value={card.value}
             color={card.color}
             img_bg={card.img_bg}
+            img_effect={card.effect_bg}
             cost={card.cost}
+            title={card.title}
+            hasEffect={card.effect != ""}
             img_element={card.img_element}
-            displayData={(e) => displayCardsInfos(e, index)} // Passe l'index
+            displayData={(e) => displayCardsInfos(e, index, card)} // Passe l'index
             isActive={activeCardIndex === index} // Vérifie si cette carte est active
           />
         ))}
