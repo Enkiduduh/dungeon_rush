@@ -1,5 +1,5 @@
 .character-container {
-  width: 110px;
+  // width: 110px;
 }
 
 .character-attributs-container {
@@ -10,8 +10,8 @@
 
 .character-attributs {
   display: flex;
-  width: 30px;
-  height: 45px;
+  width: 50px;
+  height: 65px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -25,18 +25,55 @@
   background-color: rgba(255, 0, 0, 0.6);
 }
 .ca-mag {
-  background-color: rgba(0, 128, 0, 0.6);
+  background-color: rgba(0, 0, 255, 0.6);
 }
 .ca-def {
-  background-color: rgba(0, 0, 255, 0.6);
+  background-color: rgba(0, 128, 0, 0.6);
 }
 
 .character-stats {
   border: 1px solid white;
-  height: 125px;
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  div {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .character-action-points {
-  height: 40px;
+  height: 25px;
   border: 1px solid white;
+}
+
+.character-stats-flex-line {
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.character-stats-img {
+  width: 120px;
+}
+
+.character-life-container {
+  width: 90%;
+  height: 20px;
+  background: darkgoldenrod;
+  margin: 5px 0;
+  border: 3px solid white;
+  overflow: hidden; /* Empêche le débordement */
+}
+
+.character-life {
+  height: 100%;
+  background: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

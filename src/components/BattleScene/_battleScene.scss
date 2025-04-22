@@ -1,6 +1,7 @@
 #battleScene-container {
-  width: 1300px;
-  height: 600px;
+  // width: 1300px;
+  width: 100vw;
+  height: 650px;
   border: 1px solid white;
   display: flex;
   flex-direction: column;
@@ -9,10 +10,11 @@
 }
 
 .battleScene-position-line-chars {
-  width: 1000px;
+  width: 800px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 40px 0;
 }
 
 .battleScene-position-line-cards {

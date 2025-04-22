@@ -7,7 +7,9 @@ import { char_1, char_2, char_3 } from "../../data/data_chars";
 function BattleScene() {
   //PLAYER
   const [namePlayer, setNamePlayer] = useState("");
-  const [lifePlayer, setLifePlayer] = useState(0);
+  const [imgPlayer, setImgPlayer] = useState();
+  const [lifeInitialPlayer, setLifeInitialPlayer] = useState(0);
+  const [lifeActualPlayer, setLifeActualPlayer] = useState(0);
   const [atkPlayer, setAtkPlayer] = useState(0);
   const [magPlayer, setMagPlayer] = useState(0);
   const [defPlayer, setDefPlayer] = useState(0);
@@ -18,7 +20,8 @@ function BattleScene() {
   const [actionPointPlayer, setActionPointPlayer] = useState(3);
   //COMPUTER
   const [nameComputer, setNameComputer] = useState("");
-  const [lifeComputer, setLifeComputer] = useState(0);
+  const [lifeInitialComputer, setLifeInitialComputer] = useState(0);
+  const [lifeActualComputer, setLifeActualComputer] = useState(0);
   const [atkComputer, setAtkComputer] = useState(0);
   const [magComputer, setMagComputer] = useState(0);
   const [defComputer, setDefComputer] = useState(0);
@@ -61,21 +64,41 @@ function BattleScene() {
   useEffect(() => {
     //PLAYER
     setNamePlayer(char_1.name);
-    setLifePlayer(char_1.life);
+    // setImgPlayer(char_1.img);
+    setImgPlayer(char_1.sticker);
     setAtkPlayer(char_1.atk);
     setMagPlayer(char_1.mag);
     setDefPlayer(char_1.def);
     setActionPointPlayer(char_1.ap);
     setCriticalRatePlayer(char_1.critical);
+
     //COM
     setNameComputer(char_2.name);
-    setLifeComputer(char_2.life);
     setAtkComputer(char_2.atk);
     setMagComputer(char_2.mag);
     setDefComputer(char_2.def);
     setActionPointComputer(char_2.ap);
     setCriticalRateComputer(char_2.critical);
   }, []);
+
+  useEffect(() => {
+    // Initialisez la vie du joueur
+    setLifeInitialPlayer(char_1.life);
+    setLifeActualPlayer(char_1.life); // La vie actuelle commence à 100%
+  }, []);
+
+  useEffect(() => {
+    // Initialisez la vie de l'ordinateur
+    setLifeInitialComputer(char_2.life);
+    setLifeActualComputer(char_2.life); // La vie actuelle commence à 100%
+  }, []);
+
+  // Calculez le pourcentage de vie restante
+  const maxLifeBarWidth = 100; // La barre sera toujours affichée comme si elle était à 100%
+  const lifePlayerPercentage =
+    (lifeActualPlayer / lifeInitialPlayer) * maxLifeBarWidth;
+  const lifeComputerPercentage =
+    (lifeActualComputer / lifeInitialComputer) * maxLifeBarWidth;
 
   const displayCardsInfos = (e, index, card) => {
     const target = e.target.textContent;
@@ -142,7 +165,7 @@ function BattleScene() {
       (atkChar + atkTempChar) * cRate +
       (magChar + magTempChar) * cRate -
       (defChar + defTempChar);
-    setLifeComputer(lifeComputer - totalDamage);
+    setLifeActualComputer(lifeActualComputer - totalDamage);
 
     // Mettez à jour le message via l'état
     setBattleMessage(
@@ -217,13 +240,14 @@ function BattleScene() {
     console.log("FIN DU TOUR.");
   }
 
-
   return (
     <div id="battleScene-container">
       <div className="battleScene-position-line-chars">
         <Character
           name={namePlayer}
-          life={lifePlayer}
+          life={lifeActualPlayer}
+          char_life={lifePlayerPercentage}
+          lifeMax={lifeInitialPlayer}
           atk={atkPlayer}
           mag={magPlayer}
           def={defPlayer}
@@ -231,10 +255,12 @@ function BattleScene() {
           mag_temp={magTempPlayer}
           def_temp={defTempPlayer}
           ap={actionPointPlayer}
+          char_img={imgPlayer}
         />
         <Character
           name={nameComputer}
-          life={lifeComputer}
+          life={lifeActualComputer}
+          char_life={lifeComputerPercentage}
           atk={atkComputer}
           mag={magComputer}
           def={defComputer}
