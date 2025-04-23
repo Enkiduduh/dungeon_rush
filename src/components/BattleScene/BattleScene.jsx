@@ -1,11 +1,17 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Character from "../Character/Character";
 import Cards from "../Cards/Cards";
 import { cards } from "../../data/data_cards";
 import { shuffle } from "../../data/data_util";
-import { char_1, char_2, char_3 } from "../../data/data_chars";
+import { char_1, char_2, char_3, char_4, char_5 } from "../../data/data_chars";
 function BattleScene() {
-  //PLAYER
+  const cardRefs = useRef([]); // pour stocker les refs des cartes
+  const playerRef = useRef(null); // la div qui englobe le perso joueur
+  const enemyRef = useRef(null); // la div qui englobe le perso adverse
+  const containerRef = useRef(null);
+  const [hovered, setHovered] = useState(null);
+  const [arrow, setArrow] = useState(null);
+  //PLAYER ONE
   const [namePlayer, setNamePlayer] = useState("");
   const [imgPlayer, setImgPlayer] = useState();
   const [lifeInitialPlayer, setLifeInitialPlayer] = useState(0);
@@ -18,8 +24,11 @@ function BattleScene() {
   const [magTempPlayer, setMagTempPlayer] = useState(0);
   const [defTempPlayer, setDefTempPlayer] = useState(0);
   const [actionPointPlayer, setActionPointPlayer] = useState(3);
+
   //COMPUTER
   const [nameComputer, setNameComputer] = useState("");
+  const [imgComputer, setImgComputer] = useState();
+
   const [lifeInitialComputer, setLifeInitialComputer] = useState(0);
   const [lifeActualComputer, setLifeActualComputer] = useState(0);
   const [atkComputer, setAtkComputer] = useState(0);
@@ -30,6 +39,7 @@ function BattleScene() {
   const [magTempComputer, setMagTempComputer] = useState(0);
   const [defTempComputer, setDefTempComputer] = useState(0);
   const [actionPointComputer, setActionPointComputer] = useState(0);
+
   //Variables
   const [isActive, setIsActive] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(null); // Nouvel état
@@ -61,19 +71,43 @@ function BattleScene() {
     }
   }, [resetTurn]); // Exécutez cet effet uniquement lorsque `shuffledCards` change
 
+  // dès qu’on survole une carte ou qu’on quitte…
+  // 2) And in your arrow‐computing useEffect:
   useEffect(() => {
-    //PLAYER
+    if (!hovered) {
+      setArrow(null);
+      return;
+    }
+    const { idx, type } = hovered;
+    const cardEl = cardRefs.current[idx];
+    const targetEl = type === "def" ? playerRef.current : enemyRef.current;
+    const contRect = containerRef.current.getBoundingClientRect();
+    const cRect = cardEl.getBoundingClientRect();
+    const tRect = targetEl.getBoundingClientRect();
+
+    // start at TOP-CENTER of card
+    const x1 = cRect.left + cRect.width / 2 - contRect.left;
+    const y1 = cRect.top - contRect.top;
+    // end at BOTTOM-CENTER of target
+    const x2 = tRect.left + tRect.width / 2 - contRect.left;
+    const y2 = (tRect.top + tRect.bottom)/2 - contRect.top;
+
+    setArrow({ x1, y1, x2, y2 });
+  }, [hovered]);
+
+  useEffect(() => {
+    //PLAYER ONE
     setNamePlayer(char_1.name);
-    // setImgPlayer(char_1.img);
-    setImgPlayer(char_1.sticker);
+    setImgPlayer(char_1.avatar);
     setAtkPlayer(char_1.atk);
     setMagPlayer(char_1.mag);
     setDefPlayer(char_1.def);
     setActionPointPlayer(char_1.ap);
     setCriticalRatePlayer(char_1.critical);
-
     //COM
     setNameComputer(char_2.name);
+    setImgComputer(char_2.avatar);
+
     setAtkComputer(char_2.atk);
     setMagComputer(char_2.mag);
     setDefComputer(char_2.def);
@@ -97,6 +131,7 @@ function BattleScene() {
   const maxLifeBarWidth = 100; // La barre sera toujours affichée comme si elle était à 100%
   const lifePlayerPercentage =
     (lifeActualPlayer / lifeInitialPlayer) * maxLifeBarWidth;
+
   const lifeComputerPercentage =
     (lifeActualComputer / lifeInitialComputer) * maxLifeBarWidth;
 
@@ -173,12 +208,18 @@ function BattleScene() {
     );
   }
 
-  // Effacez le message après 3 secondes
-  setTimeout(() => {
-    setBattleMessage("");
-    setCriticalMessage("");
-    setIsCritical(false);
-  }, 3000);
+  useEffect(() => {
+    if (battleMessage || criticalMessage) {
+      const timeout = setTimeout(() => {
+        setBattleMessage("");
+        setCriticalMessage("");
+        setIsCritical(false);
+      }, 4000);
+
+      // Nettoyez le timeout précédent si le message change avant la fin du délai
+      return () => clearTimeout(timeout);
+    }
+  }, [battleMessage, criticalMessage]);
 
   const endPhaseBtn = () => {
     setEndPhase(true);
@@ -240,60 +281,147 @@ function BattleScene() {
     console.log("FIN DU TOUR.");
   }
 
+  const displayNameWhenMouseOver = (e) => {
+    const target = e.target.alt;
+    console.log(target);
+  };
+
   return (
-    <div id="battleScene-container">
+    <div
+      ref={containerRef}
+      id="battleScene-container"
+      style={{ position: "relative" }}
+    >
+      <svg
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 50,
+        }}
+      >
+        <defs>
+          <marker
+            id="arrowhead"
+            markerWidth="4"
+            markerHeight="4"
+            refX="3"
+            refY="2"
+            orient="auto"
+          >
+           <path d="M0,0 L4,2 L0,4 Z" fill="#f57f18" />
+          </marker>
+        </defs>
+
+        {arrow && (
+          <path
+            d={`
+            M ${arrow.x1},${arrow.y1}
+            C ${arrow.x1},${(arrow.y1 + arrow.y2) / 4}
+              ${arrow.x2},${(arrow.y1 + arrow.y2) / 4}
+              ${arrow.x2},${arrow.y2}
+          `}
+            fill="none"
+            stroke="#f57f18"
+            strokeWidth="6"
+            markerEnd="url(#arrowhead)"
+            stroke-dasharray="5,5,5"
+          />
+        )}
+      </svg>
+
       <div className="battleScene-position-line-chars">
-        <Character
-          name={namePlayer}
-          life={lifeActualPlayer}
-          char_life={lifePlayerPercentage}
-          lifeMax={lifeInitialPlayer}
-          atk={atkPlayer}
-          mag={magPlayer}
-          def={defPlayer}
-          atk_temp={atkTempPlayer}
-          mag_temp={magTempPlayer}
-          def_temp={defTempPlayer}
-          ap={actionPointPlayer}
-          char_img={imgPlayer}
-        />
-        <Character
-          name={nameComputer}
-          life={lifeActualComputer}
-          char_life={lifeComputerPercentage}
-          atk={atkComputer}
-          mag={magComputer}
-          def={defComputer}
-          atk_temp={atkTempComputer}
-          mag_temp={magTempComputer}
-          def_temp={defTempComputer}
-          ap={actionPointComputer}
-        />
+        <div id="battleScene-column-chars">
+          <Character
+            name={namePlayer}
+            life={lifeActualPlayer}
+            char_life={lifePlayerPercentage}
+            lifeMax={lifeInitialPlayer}
+            atk={atkPlayer}
+            mag={magPlayer}
+            def={defPlayer}
+            atk_temp={atkTempPlayer}
+            mag_temp={magTempPlayer}
+            def_temp={defTempPlayer}
+            ap={actionPointPlayer}
+            char_img={imgPlayer}
+          />
+        </div>
+
+        <div className="battleScene-message">
+          {battleMessage && <p>{battleMessage}</p>}
+          {criticalMessage && <p>{criticalMessage}</p>}
+          {showEndPhaseButton && (
+            <button onClick={endPhaseBtn}>Terminer le tour</button>
+          )}
+        </div>
+        <div id="battleScene-stage"></div>
+        <div id="battleScene-display-chars">
+          {/* ↓ ta zone joueur, avec un ref pour la cible défensive ↓ */}
+          <img
+            src={char_1.img}
+            alt={char_1.name}
+            className="battleScene-display-img"
+            id="char_one"
+            onMouseEnter={displayNameWhenMouseOver}
+            ref={playerRef}
+          />
+
+          {/* ↓ ta zone adversaire, avec un ref pour la cible offensive ↓ */}
+          <img
+            src={char_2.img}
+            alt={char_2.name}
+            className="battleScene-display-img"
+            id="char_com_one"
+            onMouseEnter={displayNameWhenMouseOver}
+            ref={enemyRef}
+          />
+        </div>
+        <div id="battleScene-column-chars">
+          <Character
+            name={nameComputer}
+            life={lifeActualComputer}
+            char_life={lifeComputerPercentage}
+            lifeMax={lifeInitialComputer}
+            atk={atkComputer}
+            mag={magComputer}
+            def={defComputer}
+            atk_temp={atkTempComputer}
+            mag_temp={magTempComputer}
+            def_temp={defTempComputer}
+            ap={actionPointComputer}
+            char_img={imgComputer}
+          />
+        </div>
       </div>
       <div className="battleScene-position-line-cards">
         {remainingCards.map((card, index) => (
-          <Cards
+          <div
             key={index}
-            type={card.type}
-            value={card.value}
-            color={card.color}
-            img_bg={card.img_bg}
-            img_effect={card.effect_bg}
-            cost={card.cost}
-            title={card.title}
-            hasEffect={card.effect != ""}
-            img_element={card.img_element}
-            displayData={(e) => displayCardsInfos(e, index, card)} // Passe l'index
-            isActive={activeCardIndex === index} // Vérifie si cette carte est active
-          />
+            className="card-wrapper"
+            ref={(el) => (cardRefs.current[index] = el)}
+            onMouseEnter={() => setHovered({ idx: index, type: card.type })}
+            onMouseLeave={() => setHovered(null)}
+            onClick={(e) => displayCardsInfos(e, index, card)}
+            style={{ display: "inline-block", margin: "0 8px" }} // ou ta propre mise en page
+          >
+            <Cards
+              type={card.type}
+              value={card.value}
+              color={card.color}
+              img_bg={card.img_bg}
+              img_element={card.img_element}
+              cost={card.cost}
+              title={card.title}
+              hasEffect={card.effect !== ""}
+              img_effect={card.effect_bg}
+              isActive={activeCardIndex === index}
+            />
+          </div>
         ))}
-      </div>
-      <div className="battleScene-message">
-        {battleMessage && <p>{battleMessage}</p>}
-        {criticalMessage && <p>{criticalMessage}</p>}
-        {showEndPhaseButton && (
-          <button onClick={endPhaseBtn}>Terminer le tour</button>
-        )}
       </div>
     </div>
   );

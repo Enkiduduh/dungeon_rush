@@ -1,11 +1,13 @@
 .character-container {
   // width: 110px;
+  font-family: "Lemon", serif;
+  height: 120px;
 }
 
 .character-attributs-container {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 150px;
 }
 
 .character-attributs {
@@ -31,49 +33,98 @@
   background-color: rgba(0, 128, 0, 0.6);
 }
 
-.character-stats {
-  border: 1px solid white;
-  width: 170px;
+.character-stats-container {
+  // border: 1px solid white;
+  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  div {
-    display: flex;
-    align-items: center;
-  }
+}
+.character-stats {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 12;
 }
 
 .character-action-points {
   height: 25px;
-  border: 1px solid white;
+  margin-left:55px;
+  position: relative;
+  top:-20px;
+  // border: 3px solid white;
 }
 
 .character-stats-flex-line {
   display: flex;
-  flex-direction: column;
-  height: 100px;
+  width: 150px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+.character-stats-line {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
 }
 
 .character-stats-img {
-  width: 120px;
+  width: 80px;
+  border: 3px solid white;
+  border-radius: 50%;
 }
 
 .character-life-container {
-  width: 90%;
+  width: 130px;
   height: 20px;
-  background: darkgoldenrod;
+  background: darkred;
   margin: 5px 0;
   border: 3px solid white;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
   overflow: hidden; /* Empêche le débordement */
 }
 
 .character-life {
   height: 100%;
-  background: green;
+  background: rgba(28, 185, 28, 0.837);
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.character-stat-infos-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+  position: relative;
+  z-index: 13;
+  top:-10px;
+}
+
+.character-life-info {
+  display: flex;
+  align-items: last baseline;
+  position: relative;
+  z-index: 13;
+  top:25px;
+
+}
+.life-info {
+  color: rgb(252, 204, 80);
+text-shadow: 2px 2px 2px black;
+}
+#actual-life {
+font-size: 30px;
+}
+#separator-life {
+  font-size: 28px;
+
+}
+#initial-life {
+  font-size: 22px;
+
 }

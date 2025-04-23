@@ -1,20 +1,23 @@
 @charset "UTF-8";
 #battleScene-container {
   width: 100vw;
-  height: 650px;
+  height: 690px;
   border: 1px solid white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .battleScene-position-line-chars {
-  width: 800px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 40px 0;
+  margin: 20px 0;
 }
 
 .battleScene-position-line-cards {
@@ -26,12 +29,80 @@
 .battleScene-message {
   height: 20px;
   margin: 20px 0;
+  position: absolute;
+  z-index: 10;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "helvetica", serif;
+  font-size: 24px;
+}
+
+#battleScene-column-chars {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 370px;
+}
+
+#battleScene-display-chars {
+  position: relative;
+  z-index: 15;
+  width: 50%;
+  height: 300px;
+}
+
+.battleScene-display-img {
+  height: 260px;
+}
+
+#char_one {
+  position: absolute;
+  z-index: 16;
+  top: 20px;
+  left: 0px;
+}
+
+#char_com_one {
+  position: absolute;
+  z-index: 16;
+  top: 20px;
+  right: 0px;
+}
+
+#battleScene-display-chars-computer {
+  position: relative;
+  z-index: 15;
+  width: 50%;
+  height: 300px;
+}
+
+#battleScene-stage {
+  width: 60vw;
+  height: 100px;
+  border: 1px solid white;
+  position: absolute;
+  z-index: 0;
+  transform-origin: center top; /* Changez l'origine de la transformation */
+  transform: perspective(600px) rotateX(45deg) translateY(-35%);
+  top: 50%;
+  left: 20%;
+  background: grey;
+  background-image: url("../../../public/assets/background_mountain.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.character-container {
+  font-family: "Lemon", serif;
+  height: 120px;
 }
 
 .character-attributs-container {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 150px;
 }
 
 .character-attributs {
@@ -59,51 +130,100 @@
   background-color: rgba(0, 128, 0, 0.6);
 }
 
-.character-stats {
-  border: 1px solid white;
-  width: 170px;
+.character-stats-container {
+  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
-.character-stats div {
+
+.character-stats {
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 12;
 }
 
 .character-action-points {
   height: 25px;
-  border: 1px solid white;
+  margin-left: 55px;
+  position: relative;
+  top: -20px;
 }
 
 .character-stats-flex-line {
   display: flex;
-  flex-direction: column;
-  height: 100px;
+  width: 150px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+.character-stats-line {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
 }
 
 .character-stats-img {
-  width: 120px;
+  width: 80px;
+  border: 3px solid white;
+  border-radius: 50%;
 }
 
 .character-life-container {
-  width: 90%;
+  width: 130px;
   height: 20px;
-  background: darkgoldenrod;
+  background: darkred;
   margin: 5px 0;
   border: 3px solid white;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
   overflow: hidden; /* Empêche le débordement */
 }
 
 .character-life {
   height: 100%;
-  background: green;
+  background: rgba(28, 185, 28, 0.837);
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.character-stat-infos-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+  position: relative;
+  z-index: 13;
+  top: -10px;
+}
+
+.character-life-info {
+  display: flex;
+  align-items: last baseline;
+  position: relative;
+  z-index: 13;
+  top: 25px;
+}
+
+.life-info {
+  color: rgb(252, 204, 80);
+  text-shadow: 2px 2px 2px black;
+}
+
+#actual-life {
+  font-size: 30px;
+}
+
+#separator-life {
+  font-size: 28px;
+}
+
+#initial-life {
+  font-size: 22px;
 }
 
 .cards-container {
