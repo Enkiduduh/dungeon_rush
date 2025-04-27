@@ -3,8 +3,15 @@
   // CHARACTER
   "../components/Character/character",
   // CARDS
-  "../components/Cards/cards"
-;
+  "../components/Cards/cards",
+  // MENU
+  "../pages/Menu/menu",
+  //OPTIONS
+  "../pages/Options/options",
+  //COMBAT
+  "../pages/Combat/combat",
+  //SELECTOR
+  "../pages/Selector/selector";
 
 #root-app {
   margin: 0 auto;

@@ -1,6 +1,6 @@
 @charset "UTF-8";
 #battleScene-container {
-  width: 100vw;
+  width: 100%;
   height: 690px;
   border: 1px solid white;
   display: flex;
@@ -353,6 +353,149 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.menu-button {
+  width: 300px;
+  height: 100px;
+  border: 5px solid white;
+  border-radius: 10px;
+  margin: 50px;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Lemon", serif;
+}
+
+#selector-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Bungee Spice", sans-serif;
+}
+
+#selector-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selector-chars-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.selector-char-wrapper {
+  width: 200px;
+  padding: 5px;
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.selector-char-wrapper img {
+  width: 160px;
+  border: 7px solid white;
+  border-radius: 50%;
+}
+.selector-char-wrapper .selector-char-name {
+  font-size: 40px;
+  text-align: center;
+  text-shadow: 5px 5px 5px black;
+}
+.selector-char-wrapper:hover {
+  text-shadow: 5px 5px 5px green;
+}
+
+#selector-choice-text {
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+}
+#selector-choice-text div {
+  width: 50%;
+  text-align: center;
+  font-size: 40px;
+  text-shadow: 5px 5px 5px black;
+}
+
+#selector-selected-container {
+  display: flex;
+  width: 100vw;
+  justify-content: space-evenly;
+  align-items: center;
+  text-shadow: 2px 2px 2px black;
+}
+
+.selector-selected-char-wrapper {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selector-selected-char-name {
+  font-size: 24px;
+}
+
+.selector-selected-char {
+  width: 300px;
+  height: 300px;
+  border: 3px solid white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: darkslategray;
+}
+.selector-selected-char img {
+  height: 100px;
+}
+
+#selector-versus {
+  font-size: 150px;
+  position: absolute;
+}
+
+.selector-stats-line-wrapper {
+  display: flex;
+}
+
+.selector-stats-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+  margin: 0 10px;
+}
+.selector-stats-line img {
+  height: 40px;
+  margin: 0 5px;
+}
+
+.line-flex {
+  width: 230px;
+}
+
+#selector-char-resistance {
+  width: 40px;
+  height: 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#selector-char-weakness {
+  width: 40px;
+  height: 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #root-app {

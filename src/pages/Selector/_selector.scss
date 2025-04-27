@@ -1,0 +1,124 @@
+#selector-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // font-family: "MedievalSharp", cursive;
+  font-family: "Bungee Spice", sans-serif;
+  // font-family: "Pirata One", system-ui;
+}
+#selector-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selector-chars-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.selector-char-wrapper {
+  width: 200px;
+  padding: 5px;
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  img {
+    width: 160px;
+    border: 7px solid white;
+    border-radius: 50%;
+  }
+  .selector-char-name {
+    font-size: 40px;
+    text-align: center;
+    text-shadow: 5px 5px 5px black;
+  }
+  &:hover {
+    text-shadow: 5px 5px 5px green;
+  }
+}
+
+#selector-choice-text {
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+  div {
+    width: 50%;
+    text-align: center;
+    font-size: 40px;
+    text-shadow: 5px 5px 5px black;
+  }
+}
+#selector-selected-container {
+  display: flex;
+  width: 100vw;
+  justify-content: space-evenly;
+  align-items: center;
+  text-shadow: 2px 2px 2px black;
+}
+.selector-selected-char-wrapper {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.selector-selected-char-name {
+  font-size: 24px;
+}
+
+.selector-selected-char {
+  width: 300px;
+  height: 300px;
+  border: 3px solid white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: darkslategray;
+  img {
+    height: 100px;
+  }
+}
+
+#selector-versus {
+  font-size: 150px;
+  position: absolute;
+}
+.selector-stats-line-wrapper {
+  display: flex;
+}
+.selector-stats-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+  margin: 0 10px;
+  img {
+    height: 40px;
+    margin: 0 5px;
+  }
+}
+.line-flex {
+  width: 230px;
+}
+
+#selector-char-resistance {
+  width: 40px;
+  height: 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#selector-char-weakness {
+  width: 40px;
+  height: 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
