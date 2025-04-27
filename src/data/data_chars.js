@@ -18,6 +18,17 @@ import char_img_4 from "../../public/assets/characters/warrior_human_man_04.png"
 import char_sticker_4 from "../../public/assets/characters/sticker_warrior_human_man_04.png";
 import char_avatar_4 from "../../public/assets/characters/avatar_warrior_human_man_04.png";
 
+import char_img_6 from "../../public/assets/characters/resident_cyclope_man_01.png";
+import char_sticker_6 from "../../public/assets/characters/sticker_resident_cyclope_man_01.png";
+import char_avatar_6 from "../../public/assets/characters/avatar_resident_cyclope_man_01.png";
+
+import fire from "../../public/assets/icon_fire.png";
+import water from "../../public/assets/icon_water.png";
+import earth from "../../public/assets/icon_earth.png";
+import light from "../../public/assets/icon_light.png";
+import dark from "../../public/assets/icon_dark.png";
+import steel from "../../public/assets/element_steel.png";
+
 export const char_1 = {
   name: "Jaxynth",
   life: 140,
@@ -29,6 +40,10 @@ export const char_1 = {
   img: `${char_img_1}`,
   sticker: `${char_sticker_1}`,
   avatar: `${char_avatar_1}`,
+  resistance: "Fire",
+  resistance_img:`url(${fire})`,
+  weakness: "Water",
+  weakness_img: `url(${water})`,
 }
 
 export const char_2 = {
@@ -42,10 +57,14 @@ export const char_2 = {
   img: `${char_img_2}`,
   sticker: `${char_sticker_2}`,
   avatar: `${char_avatar_2}`,
+  resistance: "Fire",
+  resistance_img:`url(${fire})`,
+  weakness: "Water",
+  weakness_img: `url(${water})`,
 }
 
 export const char_3 = {
-  name: "Melvarth",
+  name: "Melvar",
   life: 80,
   atk: 2,
   mag: 7,
@@ -55,6 +74,10 @@ export const char_3 = {
   img: `${char_img_3}`,
   sticker: `${char_sticker_3}`,
   avatar: `${char_avatar_3}`,
+  resistance: "Fire",
+  resistance_img:`url(${fire})`,
+  weakness: "Water",
+  weakness_img: `url(${water})`,
 }
 
 export const char_4 = {
@@ -68,6 +91,10 @@ export const char_4 = {
   img: `${char_img_4}`,
   sticker: `${char_sticker_4}`,
   avatar: `${char_avatar_4}`,
+  resistance: "Fire",
+  resistance_img:`url(${fire})`,
+  weakness: "Water",
+  weakness_img: `url(${water})`,
 }
 
 
@@ -82,4 +109,25 @@ export const char_5 = {
   img: `${char_img_5}`,
   sticker: `${char_sticker_5}`,
   avatar: `${char_avatar_5}`,
+  resistance: "Fire",
+  resistance_img:`url(${fire})`,
+  weakness: "Water",
+  weakness_img: `url(${water})`,
+}
+
+export const char_6 = {
+  name: "Opribo",
+  life: 200,
+  atk: 8,
+  mag: 2,
+  def: 2,
+  critical: 0.3,
+  ap: 3,
+  img: `${char_img_6}`,
+  sticker: `${char_sticker_6}`,
+  avatar: `${char_avatar_6}`,
+  resistance: "Fire",
+  resistance_img:`url(${fire})`,
+  weakness: "Water",
+  weakness_img: `url(${water})`,
 }
