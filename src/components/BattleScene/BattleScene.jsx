@@ -66,7 +66,6 @@ function BattleScene() {
   const enemy = useSelector((state) => state.parameters.enemy);
   const gameStart = useSelector((state) => state.parameters.gameStart);
 
-
   useEffect(() => {
     if (!resetTurn) {
       console.log("DEBUT DU TOUR.");
@@ -100,7 +99,7 @@ function BattleScene() {
     const y1 = cRect.top - contRect.top;
     // end at BOTTOM-CENTER of target
     const x2 = tRect.left + tRect.width / 2 - contRect.left;
-    const y2 = (tRect.top + tRect.bottom)/2 - contRect.top;
+    const y2 = (tRect.top + tRect.bottom) / 2 - contRect.top;
 
     setArrow({ x1, y1, x2, y2 });
   }, [hovered]);
@@ -322,7 +321,7 @@ function BattleScene() {
             refY="2"
             orient="auto"
           >
-           <path d="M0,0 L4,2 L0,4 Z" fill="#f57f18" />
+            <path d="M0,0 L4,2 L0,4 Z" fill="#f57f18" />
           </marker>
         </defs>
 
@@ -371,24 +370,30 @@ function BattleScene() {
         <div id="battleScene-stage"></div>
         <div id="battleScene-display-chars">
           {/* ↓ ta zone joueur, avec un ref pour la cible défensive ↓ */}
-          <img
-            src={hero.img}
-            alt={hero.name}
-            className="battleScene-display-img"
-            id="char_one"
-            onMouseEnter={displayNameWhenMouseOver}
-            ref={playerRef}
-          />
+          <div className="battleScene-display-char-shadow">
+            <img
+              src={hero.img}
+              alt={hero.name}
+              className="battleScene-display-img"
+              id="char_one"
+              onMouseEnter={displayNameWhenMouseOver}
+              ref={playerRef}
+            />
+            <div id="battleScene-stage-shadow-hero"></div>
+          </div>
 
           {/* ↓ ta zone adversaire, avec un ref pour la cible offensive ↓ */}
-          <img
-            src={enemy.img}
-            alt={enemy.name}
-            className="battleScene-display-img"
-            id="char_com_one"
-            onMouseEnter={displayNameWhenMouseOver}
-            ref={enemyRef}
-          />
+          <div className="battleScene-display-char-shadow">
+            <img
+              src={enemy.img}
+              alt={enemy.name}
+              className="battleScene-display-img"
+              id="char_com_one"
+              onMouseEnter={displayNameWhenMouseOver}
+              ref={enemyRef}
+            />
+            <div id="battleScene-stage-shadow-enemy"></div>
+          </div>
         </div>
         <div id="battleScene-column-chars">
           <Character

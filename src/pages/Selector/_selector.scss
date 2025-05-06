@@ -32,14 +32,14 @@
     width: 160px;
     border: 7px solid white;
     border-radius: 50%;
+    &:hover {
+      border: 7px solid goldenrod;
+    }
   }
   .selector-char-name {
     font-size: 40px;
     text-align: center;
     text-shadow: 5px 5px 5px black;
-  }
-  &:hover {
-    text-shadow: 5px 5px 5px green;
   }
 }
 

@@ -19,8 +19,7 @@ function Character({
 }) {
   return (
     <div className="character-container">
-
-       {/* <div className="character-attributs-container">
+      {/* <div className="character-attributs-container">
         <div className="character-attributs ca-atk">
           <div className="character-attribut">
             <img src={icon_atk} alt="" />
@@ -42,10 +41,9 @@ function Character({
           <div className="character-attribut">{def_temp}</div>
         </div>
       </div> */}
-      
       <div className="character-stats-container">
         <div className="character-stats">
-
+          <div id="character-name">{name}</div>
           {/* DEBUT IMG CHAR */}
           <div className="character-stats-img-container">
             <img src={char_img} alt="" className="character-stats-img" />
@@ -92,8 +90,6 @@ function Character({
 
         {/* <div>{name}</div> */}
       </div>
-
-
 
       <div className="character-action-points">
         <div>AP: {ap}</div>
