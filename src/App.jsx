@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/home" element={<Page_menu />} />
           <Route path="/combat" element={<Page_combat />} />
-          <Route path="/combat" element={<Page_options />} />
+          <Route path="/options" element={<Page_options />} />
           <Route path="/selector" element={<Page_selector />} />
         </Routes>
       </Router>

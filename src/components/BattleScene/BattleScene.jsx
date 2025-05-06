@@ -1,10 +1,14 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Character from "../Character/Character";
 import Cards from "../Cards/Cards";
 import { cards } from "../../data/data_cards";
 import { shuffle } from "../../data/data_util";
 import { char_1, char_2, char_3, char_4, char_5 } from "../../data/data_chars";
+import { setHero, setEnemy, setGameStart } from "../../redux/parametersSlice";
+
 function BattleScene() {
+  const dispatch = useDispatch();
   const cardRefs = useRef([]); // pour stocker les refs des cartes
   const playerRef = useRef(null); // la div qui englobe le perso joueur
   const enemyRef = useRef(null); // la div qui englobe le perso adverse
@@ -57,6 +61,12 @@ function BattleScene() {
   // Loop game
   const [resetTurn, setResetTurn] = useState(false);
 
+  // Récupérer les données du store
+  const hero = useSelector((state) => state.parameters.hero);
+  const enemy = useSelector((state) => state.parameters.enemy);
+  const gameStart = useSelector((state) => state.parameters.gameStart);
+
+
   useEffect(() => {
     if (!resetTurn) {
       console.log("DEBUT DU TOUR.");
@@ -97,34 +107,34 @@ function BattleScene() {
 
   useEffect(() => {
     //PLAYER ONE
-    setNamePlayer(char_1.name);
-    setImgPlayer(char_1.avatar);
-    setAtkPlayer(char_1.atk);
-    setMagPlayer(char_1.mag);
-    setDefPlayer(char_1.def);
-    setActionPointPlayer(char_1.ap);
-    setCriticalRatePlayer(char_1.critical);
+    setNamePlayer(hero.name);
+    setImgPlayer(hero.avatar);
+    setAtkPlayer(hero.atk);
+    setMagPlayer(hero.mag);
+    setDefPlayer(hero.def);
+    setActionPointPlayer(hero.ap);
+    setCriticalRatePlayer(hero.critical);
     //COM
-    setNameComputer(char_2.name);
-    setImgComputer(char_2.avatar);
+    setNameComputer(enemy.name);
+    setImgComputer(enemy.avatar);
 
-    setAtkComputer(char_2.atk);
-    setMagComputer(char_2.mag);
-    setDefComputer(char_2.def);
-    setActionPointComputer(char_2.ap);
-    setCriticalRateComputer(char_2.critical);
+    setAtkComputer(enemy.atk);
+    setMagComputer(enemy.mag);
+    setDefComputer(enemy.def);
+    setActionPointComputer(enemy.ap);
+    setCriticalRateComputer(enemy.critical);
   }, []);
 
   useEffect(() => {
     // Initialisez la vie du joueur
-    setLifeInitialPlayer(char_1.life);
-    setLifeActualPlayer(char_1.life); // La vie actuelle commence à 100%
+    setLifeInitialPlayer(hero.life);
+    setLifeActualPlayer(hero.life); // La vie actuelle commence à 100%
   }, []);
 
   useEffect(() => {
     // Initialisez la vie de l'ordinateur
-    setLifeInitialComputer(char_2.life);
-    setLifeActualComputer(char_2.life); // La vie actuelle commence à 100%
+    setLifeInitialComputer(enemy.life);
+    setLifeActualComputer(enemy.life); // La vie actuelle commence à 100%
   }, []);
 
   // Calculez le pourcentage de vie restante
@@ -271,7 +281,7 @@ function BattleScene() {
       setAtkTempPlayer(0);
       setMagTempPlayer(0);
       setDefTempPlayer(0);
-      setActionPointPlayer(char_1.ap);
+      setActionPointPlayer(hero.ap);
       console.log("RESET DU TOUR.");
     }
   }, [resetTurn]);
@@ -362,8 +372,8 @@ function BattleScene() {
         <div id="battleScene-display-chars">
           {/* ↓ ta zone joueur, avec un ref pour la cible défensive ↓ */}
           <img
-            src={char_1.img}
-            alt={char_1.name}
+            src={hero.img}
+            alt={hero.name}
             className="battleScene-display-img"
             id="char_one"
             onMouseEnter={displayNameWhenMouseOver}
@@ -372,8 +382,8 @@ function BattleScene() {
 
           {/* ↓ ta zone adversaire, avec un ref pour la cible offensive ↓ */}
           <img
-            src={char_2.img}
-            alt={char_2.name}
+            src={enemy.img}
+            alt={enemy.name}
             className="battleScene-display-img"
             id="char_com_one"
             onMouseEnter={displayNameWhenMouseOver}

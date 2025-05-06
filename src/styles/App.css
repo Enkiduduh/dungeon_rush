@@ -451,14 +451,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: darkslategray;
+  background: seagreen;
+  background-image: url("/public/assets/bg_space_test.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .selector-selected-char img {
   height: 100px;
 }
 
 #selector-versus {
-  font-size: 150px;
+  font-size: 230px;
   position: absolute;
 }
 
@@ -496,6 +500,70 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.selector-heroes-background {
+  background-color: #1d7486;
+}
+
+.selector-enemies-background {
+  background-color: #911a1a;
+}
+
+.selector-button-return {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 3px solid white;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  background: black;
+  font-size: 20px;
+  cursor: pointer;
+}
+.selector-button-return:hover {
+  background: white;
+  border: 3px solid darkorange;
+}
+
+.selector-button-validate {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 3px solid white;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  background: black;
+  font-size: 20px;
+  animation: validate 0.8s infinite ease-in;
+  cursor: pointer;
+}
+.selector-button-validate:hover {
+  background: white;
+  border: 3px solid darkorange;
+}
+
+@keyframes validate {
+  0% {
+    font-size: 30px;
+  }
+  50% {
+    font-size: 26px;
+  }
+  100% {
+    font-size: 30px;
+  }
+}
+.selector-heroes-background {
+  background-color: #1d7486;
+}
+
+.selector-enemies-background {
+  background-color: #911a1a;
 }
 
 #root-app {
