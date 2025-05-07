@@ -2,11 +2,11 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Character from "../Character/Character";
 import Cards from "../Cards/Cards";
-import { cards } from "../../data/data_cards";
+import { cards, enemy_cards } from "../../data/data_cards";
 import { shuffle } from "../../data/data_util";
 import { char_1, char_2, char_3, char_4, char_5 } from "../../data/data_chars";
 import { setHero, setEnemy, setGameStart } from "../../redux/parametersSlice";
-import combat_001_sound from "../../../public/assets/music/combat_1.mp3"
+import combat_001_sound from "../../../public/assets/music/combat_1.mp3";
 
 function BattleScene() {
   const dispatch = useDispatch();
@@ -51,14 +51,20 @@ function BattleScene() {
   const [validateTurnEnd, setValidateTurnEnd] = useState(false);
   const [endPhase, setEndPhase] = useState(false);
   const [hasAnEffect, setHasAnEffect] = useState(false);
-  // const shuffledCards = useMemo(() => shuffle(cards), [cards]);
+  const [attackReady, setAttackReady] = useState(false);
+  const [magicReady, setMagicReady] = useState(false);
   const [showEndPhaseButton, setShowEndPhaseButton] = useState(false); // Nouvel état
   const [battleMessage, setBattleMessage] = useState(""); // Affichage des messages de combats
   const [criticalMessage, setCriticalMessage] = useState(""); // Affichage des coups critiques
   const [isCritical, setIsCritical] = useState(false); // Affichage des coups critiques
 
-  const [cardsPlay, setCardsPlay] = useState([]);
+  const [turnCom, setTurnCom] = useState(false); // Tour de l'ordi
+  const [randomNb, setRandomNb] = useState(0); // choix de la carte de l'ordi
+
+  const [cardsPlay, setCardsPlay] = useState([]); // Player
   const [remainingCards, setRemainingCards] = useState([]); // Initialisez également cet état
+  const [cardsEnemyPlay, setCardsEnemyPlay] = useState([]); // Com
+
   // Loop game
   const [resetTurn, setResetTurn] = useState(false);
 
@@ -71,7 +77,7 @@ function BattleScene() {
   const audioRef_combat_001 = useRef(null);
   useEffect(() => {
     audioRef_combat_001.current.play();
-    audioRef_combat_001.current.volume = 0.2;
+    audioRef_combat_001.current.volume = 0.1;
   }, []);
 
   const handleAudioEnded = () => {
@@ -80,6 +86,14 @@ function BattleScene() {
       audio.play(); // Redémarre la lecture
     }
   };
+
+  useEffect(() => {
+    if (enemy_cards.length > 0) {
+      setCardsEnemyPlay(enemy_cards);
+      const random = Math.floor(Math.random() * enemy_cards.length);
+      setRandomNb(random);
+    }
+  }, [enemy_cards]);
 
   useEffect(() => {
     if (!resetTurn) {
@@ -176,16 +190,19 @@ function BattleScene() {
       if (regexAtk.test(target)) {
         setAtkTempPlayer((prev) => prev + value);
         setActionPointPlayer((prev) => prev - card.cost);
+        setAttackReady(true);
       }
 
       if (regexMag.test(target)) {
         setMagTempPlayer((prev) => prev + value);
         setActionPointPlayer((prev) => prev - card.cost);
+        setMagicReady(true);
       }
 
       if (regexDef.test(target)) {
         setDefTempPlayer((prev) => prev + value);
         setActionPointPlayer((prev) => prev - card.cost);
+        setLifeActualPlayer((prev) => prev + value * defPlayer);
       }
 
       // Supprime la carte cliquée de la liste
@@ -198,13 +215,42 @@ function BattleScene() {
       }, 3000);
     }
   };
+
+  useEffect(() => {
+    if (attackReady) {
+      calculateDmg(
+        atkPlayer,
+        atkTempPlayer,
+        magPlayer,
+        magTempPlayer,
+        namePlayer,
+        criticalRatePlayer,
+        nameComputer
+      );
+      setAtkTempPlayer(0);
+      setAttackReady(false);
+    }
+
+    if (magicReady) {
+      calculateDmg(
+        atkPlayer,
+        atkTempPlayer,
+        magPlayer,
+        magTempPlayer,
+        namePlayer,
+        criticalRatePlayer,
+        nameComputer
+      );
+      setMagTempPlayer(0);
+      setMagicReady(false);
+    }
+  }, [attackReady, magicReady]);
+
   function calculateDmg(
     atkChar,
     atkTempChar,
     magChar,
     magTempChar,
-    defChar,
-    defTempChar,
     attacker,
     criticalRate,
     target
@@ -219,13 +265,16 @@ function BattleScene() {
       setIsCritical(true);
       console.log("critical hit");
     }
-    // const criticalRate = critical;
     const totalDamage =
-      (atkChar + atkTempChar) * cRate +
-      (magChar + magTempChar) * cRate -
-      (defChar + defTempChar);
-    setLifeActualComputer(lifeActualComputer - totalDamage);
+      atkTempChar * cRate * atkChar + magTempChar * cRate * magChar;
+    if (target == namePlayer) {
+      setLifeActualPlayer((prev) => prev - totalDamage);
+    }
 
+    if (target == nameComputer) {
+      setLifeActualComputer((prev) => prev - totalDamage);
+    }
+    console.log(totalDamage);
     // Mettez à jour le message via l'état
     setBattleMessage(
       `${attacker} a infligé ${totalDamage} dégats à ${target}.`
@@ -246,8 +295,53 @@ function BattleScene() {
   }, [battleMessage, criticalMessage]);
 
   const endPhaseBtn = () => {
-    setEndPhase(true);
+    /////////////////// GESTION DU TOUT ORDINATEUR ////////////////////
+    setTurnCom(true);
+    console.log("Turn : COM");
+    if (cardsEnemyPlay[randomNb].type == "atk") {
+      // Gestion de l'attaque physique de l'ennemi
+      const atkTempCom = cardsEnemyPlay[randomNb].value * atkComputer;
+      console.log(cardsEnemyPlay[randomNb].type);
+      calculateDmg(
+        atkComputer,
+        atkTempCom,
+        magComputer,
+        magTempComputer,
+        nameComputer,
+        criticalRateComputer,
+        namePlayer
+      );
+    } else if (cardsEnemyPlay[randomNb].type == "mag") {
+      // Gestion de l'attaque magique de l'ennemi
+      const magTempCom = cardsEnemyPlay[randomNb].value * magComputer;
+      console.log(
+        cardsEnemyPlay[randomNb].type,
+        cardsEnemyPlay[randomNb].value * magComputer
+      );
+      calculateDmg(
+        atkComputer,
+        atkTempComputer,
+        magComputer,
+        magTempCom,
+        nameComputer,
+        criticalRateComputer,
+        namePlayer
+      );
+    } else if (cardsEnemyPlay[randomNb].type == "def") {
+      // Gestion de la defense de l'ennemi
+      setDefTempComputer((prev) => prev + cardsEnemyPlay[randomNb].value);
+      setLifeActualComputer((prev) => prev + defTempComputer * defComputer);
+      console.log(cardsEnemyPlay[randomNb].type);
+    }
+    setTimeout(() => {
+      // setAtkTempComputer(0);
+      // setMagTempComputer(0);
+      setDefTempComputer(0);
+      setTurnCom(false);
+      setEndPhase(true);
+    }, 3000);
   };
+
 
   useEffect(() => {
     if (isCritical) {
@@ -268,25 +362,14 @@ function BattleScene() {
     }
     if (endPhase) {
       console.log("Bouton doit disparaitre et calcule des dégats");
-      setShowEndPhaseButton(false); // Cache le bouton après la fin de la phase
-      calculateDmg(
-        atkPlayer,
-        atkTempPlayer,
-        magPlayer,
-        magTempPlayer,
-        defComputer,
-        defTempComputer,
-        namePlayer,
-        criticalRatePlayer,
-        nameComputer
-      );
+      // setShowEndPhaseButton(false); // Cache le bouton après la fin de la phase
       gameResetTurn(); // Reinitialisation du tour
       setTimeout(() => {
         setResetTurn(false);
         setValidateTurnEnd(false);
         setEndPhase(false);
         console.log("DELAI: RESET / ENDTURN > VRAI");
-      }, 3000);
+      }, 2000);
     }
   }, [validateTurnEnd, endPhase]); // Dépendances pour surveiller les changements
 
@@ -377,11 +460,15 @@ function BattleScene() {
 
         <div className="battleScene-message">
           {battleMessage && <p>{battleMessage}</p>}
-          {criticalMessage && <p>{criticalMessage}</p>}
-          {showEndPhaseButton && (
-            <button onClick={endPhaseBtn}>Terminer le tour</button>
+          {criticalMessage && (
+            <p className="critical-message">{criticalMessage}</p>
           )}
         </div>
+        {showEndPhaseButton && (
+          <button id="button-endturn" onClick={endPhaseBtn}>
+            Terminer le tour
+          </button>
+        )}
         <div id="battleScene-stage"></div>
         <div id="battleScene-display-chars">
           {/* ↓ ta zone joueur, avec un ref pour la cible défensive ↓ */}
@@ -425,6 +512,21 @@ function BattleScene() {
             ap={actionPointComputer}
             char_img={imgComputer}
           />
+          {turnCom && (
+            <div className="battleScene-column-card-choice-com-container">
+              <Cards
+                type={cardsEnemyPlay[randomNb].type}
+                value={cardsEnemyPlay[randomNb].value}
+                color={cardsEnemyPlay[randomNb].color}
+                img_bg={cardsEnemyPlay[randomNb].img_bg}
+                img_element={cardsEnemyPlay[randomNb].img_element}
+                cost={cardsEnemyPlay[randomNb].cost}
+                title={cardsEnemyPlay[randomNb].title}
+                hasEffect={cardsEnemyPlay[randomNb].effect !== ""}
+                img_effect={cardsEnemyPlay[randomNb].effect_bg}
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="battleScene-position-line-cards">
@@ -454,10 +556,10 @@ function BattleScene() {
         ))}
       </div>
       <audio
-          ref={audioRef_combat_001}
-          src={combat_001_sound}
-          onEnded={handleAudioEnded}
-        />
+        ref={audioRef_combat_001}
+        src={combat_001_sound}
+        onEnded={handleAudioEnded}
+      />
     </div>
   );
 }

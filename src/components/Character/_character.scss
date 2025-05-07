@@ -4,8 +4,8 @@
   height: 120px;
 }
 #character-name {
-  position:absolute;
-  top: -10px;
+  position: absolute;
+  top: -15px;
   left: 70px;
   font-size: 24px;
 }
@@ -56,9 +56,9 @@
 
 .character-action-points {
   height: 25px;
-  margin-left:55px;
+  margin-left: 55px;
   position: relative;
-  top:-20px;
+  top: -20px;
   // border: 3px solid white;
 }
 
@@ -108,7 +108,7 @@
   align-items: baseline;
   position: relative;
   z-index: 13;
-  top:-10px;
+  top: -10px;
 }
 
 .character-life-info {
@@ -116,21 +116,18 @@
   align-items: last baseline;
   position: relative;
   z-index: 13;
-  top:25px;
-
+  top: 25px;
 }
 .life-info {
   color: rgb(252, 204, 80);
-text-shadow: 2px 2px 2px black;
+  text-shadow: 2px 2px 2px black;
 }
 #actual-life {
-font-size: 30px;
+  font-size: 30px;
 }
 #separator-life {
   font-size: 28px;
-
 }
 #initial-life {
   font-size: 22px;
-
 }

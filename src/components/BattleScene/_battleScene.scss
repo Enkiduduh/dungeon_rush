@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  // background-image: url("../../../public/assets/background_mountain.png");
+  // background-image: url("../../../public/assets/background/background_mountain.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -28,8 +28,12 @@
 }
 
 .battleScene-message {
+  width: 700px;
+  // display: flex;
+  // justify-content: space-between;
+  text-align: center;
   height: 20px;
-  margin: 20px 0;
+  margin: 5px 0;
   position: absolute;
   z-index: 10;
   top:20px;
@@ -37,6 +41,22 @@
   transform: translateX(-50%);
   font-family: "helvetica", serif;
   font-size: 24px;
+  font-family: "Lemon", serif;
+  p {
+    padding: 0;
+    margin: 0;
+  }
+  .critical-message {
+    color: darkorange;
+  }
+}
+
+#button-endturn {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50px;
+  padding: 10px;
 }
 
 #battleScene-column-chars {
@@ -44,6 +64,7 @@
   flex-direction: column;
   justify-content: start;
   height: 370px;
+  position: relative;
 }
 
 #battleScene-display-chars {
@@ -102,7 +123,7 @@
   top: 50%;
   left:20%;
   background: grey;
-   background-image: url("../../../public/assets/background_mountain.png");
+   background-image: url("../../../public/assets/background/background_mountain.png");
    background-position: center;
    background-repeat: no-repeat;
    background-size: cover;
@@ -132,4 +153,18 @@
   top: 88%;
   left:50%;
   background: rgba(0, 0, 0, 0.5);
+}
+
+
+
+////// CARD CHOICE COM ////
+.battleScene-column-card-choice-com-container {
+  width: 160px;
+  position: absolute;
+  z-index: 2;
+  bottom: 20px;
+  height: 200px;
+  // border:1px solid white;
+  // background: rgba(211, 211, 211, 0.812);
+  transform: scale(0.8);
 }

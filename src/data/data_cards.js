@@ -48,3 +48,12 @@ export const cards = [
   { title: "Luminestria", type: "mag", effect_bg: `url(${blind})`, effect: "blind", element: "light", value: 4, cost: 2, color: "rgba(0, 0, 255, 0.2)", img_bg: `url(${mag_4})`, img_element: `url(${light})` },
   { title: "Sky Drop", type: "mag", effect_bg: `url(${freeze})`, effect: "freeze", element: "water", value: 5, cost: 3, color: "rgba(0, 0, 255, 0.2)", img_bg: `url(${mag_5})`, img_element: `url(${water})` }
 ];
+
+
+export const enemy_cards = [
+  { title: "Bash", type: "atk", effect: "",effect_bg: `url(${normal})`, element: "steel", value: 3, cost: 2, color: "rgba(139, 0, 0, 0.2)", img_bg: `url(${atk_3})`, img_element: `url(${steel})` },
+  { title: "Fire Slash", type: "atk", effect_bg: `url(${burn})`, effect: "burn", element: "fire", value: 5, cost: 3, color: "rgba(139, 0, 0, 0.2)", img_bg: `url(${atk_5})`, img_element: `url(${fire})` },
+  { title: "Holy Protection", type: "def", effect: "",effect_bg: `url(${shield})`, element: "steel", value: 5, cost: 3, color: "rgba(0, 128, 0, 0.2)", img_bg: `url(${def_5})`, img_element: `url(${steel})` },
+  { title: "Rock Bullet", type: "mag", effect_bg: `url(${stun})`, effect: "stun", element: "earth", value: 1, cost: 1, color: "rgba(0, 0, 255, 0.2)", img_bg: `url(${mag_1})`, img_element: `url(${earth})` },
+  { title: "Energy Void", type: "mag", effect_bg: `url(${poison})`, effect: "poison", element: "dark", value: 3, cost: 2, color: "rgba(0, 0, 255, 0.2)", img_bg: `url(${mag_3})`, img_element: `url(${dark})` },
+];

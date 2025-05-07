@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import icon_atk from "../../../public/assets/icon_atk.png";
 import icon_magic from "../../../public/assets/icon_magic.png";
 import icon_def from "../../../public/assets/icon_def.png";
@@ -17,30 +17,15 @@ function Character({
   char_life,
   lifeMax,
 }) {
+  useEffect(() => {
+    const lifeHMTL = document.getElementById("actual-life");
+    if (life > lifeMax) {
+      lifeHMTL.style.color = "rgb(170, 147, 147)";
+    } 
+  });
+
   return (
     <div className="character-container">
-      {/* <div className="character-attributs-container">
-        <div className="character-attributs ca-atk">
-          <div className="character-attribut">
-            <img src={icon_atk} alt="" />
-          </div>
-          <div className="character-attribut">{atk_temp}</div>
-        </div>
-
-        <div className="character-attributs ca-mag">
-          <div className="character-attribut">
-            <img src={icon_magic} alt="" />
-          </div>
-          <div className="character-attribut">{mag_temp}</div>
-        </div>
-
-        <div className="character-attributs ca-def">
-          <div className="character-attribut">
-            <img src={icon_def} alt="" />
-          </div>
-          <div className="character-attribut">{def_temp}</div>
-        </div>
-      </div> */}
       <div className="character-stats-container">
         <div className="character-stats">
           <div id="character-name">{name}</div>
