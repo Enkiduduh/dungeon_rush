@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -11,6 +11,7 @@ import {
 } from "../../data/data_chars";
 import Selected_char from "../../components/SelectedChar/SelectedChar";
 import { setHero, setEnemy, setGameStart } from "../../redux/parametersSlice";
+import selection_sound from "../../../public/assets/music/player_selection.mp3"
 
 function Selector() {
   const navigate = useNavigate();
@@ -23,6 +24,20 @@ function Selector() {
   const [selectedCharFoe, setSelectedCharFoe] = useState(null);
   const [selectedReady, setSelectedReady] = useState(false);
 
+  // Références pour les sons
+  const audioRef_selection = useRef(null);
+  useEffect(() => {
+    audioRef_selection.current.play();
+    audioRef_selection.current.volume = 0.3;
+  }, []);
+
+  const handleAudioEnded = () => {
+    const audio = audioRef_selection.current;
+    if (audio) {
+      audio.play(); // Redémarre la lecture
+    }
+  };
+
   const selectedPortraitHero = (e) => {
     const target = e.target.alt;
     console.log(target);
@@ -31,10 +46,10 @@ function Selector() {
 
   useEffect(() => {
     dispatch(setHero(selectedChar));
-    console.log(selectedChar)
+    console.log(selectedChar);
     dispatch(setEnemy(selectedCharFoe));
-    console.log(selectedCharFoe)
-  })
+    console.log(selectedCharFoe);
+  });
 
   const selectedPortraitEnemy = (e) => {
     const target = e.target.alt;
@@ -49,11 +64,11 @@ function Selector() {
   });
 
   const buttonReturnToMenu = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   const buttonLaunchBattle = () => {
-    dispatch(setGameStart(true))
+    dispatch(setGameStart(true));
     navigate("/combat");
   };
 
@@ -135,6 +150,11 @@ function Selector() {
           )}
         </div>
       </div>
+      <audio
+          ref={audioRef_selection}
+          src={selection_sound}
+          onEnded={handleAudioEnded}
+        />
     </div>
   );
 }

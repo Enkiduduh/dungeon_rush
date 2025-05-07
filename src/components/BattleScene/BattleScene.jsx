@@ -6,6 +6,7 @@ import { cards } from "../../data/data_cards";
 import { shuffle } from "../../data/data_util";
 import { char_1, char_2, char_3, char_4, char_5 } from "../../data/data_chars";
 import { setHero, setEnemy, setGameStart } from "../../redux/parametersSlice";
+import combat_001_sound from "../../../public/assets/music/combat_1.mp3"
 
 function BattleScene() {
   const dispatch = useDispatch();
@@ -65,6 +66,20 @@ function BattleScene() {
   const hero = useSelector((state) => state.parameters.hero);
   const enemy = useSelector((state) => state.parameters.enemy);
   const gameStart = useSelector((state) => state.parameters.gameStart);
+
+  // Références pour les sons
+  const audioRef_combat_001 = useRef(null);
+  useEffect(() => {
+    audioRef_combat_001.current.play();
+    audioRef_combat_001.current.volume = 0.2;
+  }, []);
+
+  const handleAudioEnded = () => {
+    const audio = audioRef_combat_001.current;
+    if (audio) {
+      audio.play(); // Redémarre la lecture
+    }
+  };
 
   useEffect(() => {
     if (!resetTurn) {
@@ -438,6 +453,11 @@ function BattleScene() {
           </div>
         ))}
       </div>
+      <audio
+          ref={audioRef_combat_001}
+          src={combat_001_sound}
+          onEnded={handleAudioEnded}
+        />
     </div>
   );
 }

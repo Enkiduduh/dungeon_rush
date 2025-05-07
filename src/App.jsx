@@ -11,7 +11,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/home" element={<Page_menu />} />
+          <Route path="/" element={<Page_menu />} />
           <Route path="/combat" element={<Page_combat />} />
           <Route path="/options" element={<Page_options />} />
           <Route path="/selector" element={<Page_selector />} />
