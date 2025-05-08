@@ -87,11 +87,18 @@ function BattleScene() {
     }
   };
 
+  const generateRandomNb = () => {
+    if (cardsEnemyPlay.length > 0) {
+      const random = Math.floor(Math.random() * cardsEnemyPlay.length);
+      setRandomNb(random);
+      // console.log("New random index:", random);
+    }
+  };
+
   useEffect(() => {
     if (enemy_cards.length > 0) {
       setCardsEnemyPlay(enemy_cards);
-      const random = Math.floor(Math.random() * enemy_cards.length);
-      setRandomNb(random);
+      generateRandomNb(); // Générer un index aléatoire initial
     }
   }, [enemy_cards]);
 
@@ -186,7 +193,7 @@ function BattleScene() {
 
     if (match && actionPointPlayer >= card.cost) {
       const value = parseInt(match[0], 10); // Convertir la chaîne en nombre
-      console.log("Valeur extraite :", value);
+      // console.log("Valeur extraite :", value);
       if (regexAtk.test(target)) {
         setAtkTempPlayer((prev) => prev + value);
         setActionPointPlayer((prev) => prev - card.cost);
@@ -265,12 +272,11 @@ function BattleScene() {
       setIsCritical(true);
       console.log("critical hit");
     }
-    const totalDamage =
+    let totalDamage =
       atkTempChar * cRate * atkChar + magTempChar * cRate * magChar;
     if (target == namePlayer) {
       setLifeActualPlayer((prev) => prev - totalDamage);
     }
-
     if (target == nameComputer) {
       setLifeActualComputer((prev) => prev - totalDamage);
     }
@@ -280,6 +286,26 @@ function BattleScene() {
       `${attacker} a infligé ${totalDamage} dégats à ${target}.`
     );
   }
+
+  // function verifyAttackType(
+  //   atk,
+  //   mag,
+  //   atkTempCharacter,
+  //   critCharacter,
+  //   atkCharacter,
+  //   magTempCharacter,
+  //   magCharacter
+  // ) {
+  //   if (atk > 0) {
+  //     const totalDamage = atkTempCharacter * critCharacter * atkCharacter;
+  //     return totalDamage;
+  //   }
+
+  //   if (mag > 0) {
+  //     const totalDamage = magTempCharacter * critCharacter * magCharacter;
+  //     return totalDamage;
+  //   }
+  // }
 
   useEffect(() => {
     if (battleMessage || criticalMessage) {
@@ -296,12 +322,16 @@ function BattleScene() {
 
   const endPhaseBtn = () => {
     /////////////////// GESTION DU TOUT ORDINATEUR ////////////////////
+    setShowEndPhaseButton(false); // Cache le bouton après la fin de la phase
     setTurnCom(true);
     console.log("Turn : COM");
+
+    // Générer un nouvel index aléatoire
+    generateRandomNb();
+
     if (cardsEnemyPlay[randomNb].type == "atk") {
       // Gestion de l'attaque physique de l'ennemi
-      const atkTempCom = cardsEnemyPlay[randomNb].value * atkComputer;
-      console.log(cardsEnemyPlay[randomNb].type);
+      const atkTempCom = cardsEnemyPlay[randomNb].value;
       calculateDmg(
         atkComputer,
         atkTempCom,
@@ -313,11 +343,7 @@ function BattleScene() {
       );
     } else if (cardsEnemyPlay[randomNb].type == "mag") {
       // Gestion de l'attaque magique de l'ennemi
-      const magTempCom = cardsEnemyPlay[randomNb].value * magComputer;
-      console.log(
-        cardsEnemyPlay[randomNb].type,
-        cardsEnemyPlay[randomNb].value * magComputer
-      );
+      const magTempCom = cardsEnemyPlay[randomNb].value;
       calculateDmg(
         atkComputer,
         atkTempComputer,
@@ -327,21 +353,22 @@ function BattleScene() {
         criticalRateComputer,
         namePlayer
       );
-    } else if (cardsEnemyPlay[randomNb].type == "def") {
+    } else {
       // Gestion de la defense de l'ennemi
-      setDefTempComputer((prev) => prev + cardsEnemyPlay[randomNb].value);
-      setLifeActualComputer((prev) => prev + defTempComputer * defComputer);
+      const defTempCom = cardsEnemyPlay[randomNb].value;
+      setLifeActualComputer((prev) => prev + defTempCom * defComputer);
       console.log(cardsEnemyPlay[randomNb].type);
+      console.log("ENEMY should gain ARMOR:",defTempCom )
     }
     setTimeout(() => {
-      // setAtkTempComputer(0);
-      // setMagTempComputer(0);
+      setAtkTempComputer(0);
+      setMagTempComputer(0);
       setDefTempComputer(0);
       setTurnCom(false);
       setEndPhase(true);
+      setShowEndPhaseButton(true); // Réaffiche le bouton après la fin de la phase
     }, 3000);
   };
-
 
   useEffect(() => {
     if (isCritical) {
@@ -368,7 +395,7 @@ function BattleScene() {
         setResetTurn(false);
         setValidateTurnEnd(false);
         setEndPhase(false);
-        console.log("DELAI: RESET / ENDTURN > VRAI");
+        // console.log("DELAI: RESET / ENDTURN > VRAI");
       }, 2000);
     }
   }, [validateTurnEnd, endPhase]); // Dépendances pour surveiller les changements
@@ -379,18 +406,18 @@ function BattleScene() {
       setMagTempPlayer(0);
       setDefTempPlayer(0);
       setActionPointPlayer(hero.ap);
-      console.log("RESET DU TOUR.");
+      // console.log("RESET DU TOUR.");
     }
   }, [resetTurn]);
 
   function gameResetTurn() {
     setResetTurn(true);
-    console.log("FIN DU TOUR.");
+    // console.log("FIN DU TOUR.");
   }
 
   const displayNameWhenMouseOver = (e) => {
     const target = e.target.alt;
-    console.log(target);
+    // console.log(target);
   };
 
   return (
