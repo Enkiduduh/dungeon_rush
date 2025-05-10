@@ -1,0 +1,233 @@
+#fullscreen-shoot {
+  // cursor: url('../../../public/assets/Cross.png') 32 32, crosshair;
+  cursor: crosshair;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.weapon-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
+}
+.weapon-ammo {
+  margin: 0 20px;
+  font-size: 20px;
+}
+.bullet-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 340px;
+  justify-content: center;
+  align-items: center;
+  background-color: grey;
+  border-radius: 12px;
+  padding:5px;
+}
+.bullet {
+  width: 40px;
+  height: 40px;
+  border: 3px solid white;
+  margin: 5px;
+  background-color: darkgoldenrod;
+  border-radius: 50%;
+}
+
+#scores-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: 400px;
+  height: 140px;
+  top: 20px;
+  left: 50%;
+  // border:1px solid white;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+table {
+  text-align: center;
+  th, td, tr {
+    border:1px solid white;
+    background: rgb(99, 100, 100);
+    text-shadow: 1px 1px 1px black;
+    font-size: 18px;
+  }
+}
+
+.target-red {
+  color: red;
+}
+.target-goldenrod {
+  color: goldenrod;
+}
+.target-green {
+  color: green;
+}
+.target-blue {
+  color: blue;
+}
+
+
+
+.char-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+#button-reload {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 1;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 80px;
+  border: 5px solid darkgoldenrod;
+  color: darkgoldenrod;
+  font-size: 28px;
+  border-radius: 8px;
+  background: lightcyan;
+  &:hover {
+    background: black;
+    color: white;
+    border: 5px solid white;
+  }
+}
+.fired {
+  background-color: rgb(92, 91, 91);
+}
+
+.targets-container {
+  width: 95vw;
+  height: 70vh;
+  border: 1px solid white;
+  position: absolute;
+  bottom: 20px;
+}
+
+#targets-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid white;
+  margin: 10px;
+  padding: 2px 5px;
+
+}
+
+.target-outer {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: blue;
+}
+.target-inner {
+  width: 110px;
+  height: 110px;
+  background-color: green;
+}
+.target-near-center {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: goldenrod;
+}
+.target-center {
+  width: 30px;
+  height: 30px;
+  background-color: red;
+}
+
+.target-style {
+  border: 2px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.target-one {
+  animation: move1 10s infinite ease;
+}
+
+.target-two {
+  animation: move2 4s infinite linear;
+}
+
+.target-three {
+  animation: move3 5s infinite ease;
+}
+
+@keyframes move1 {
+  from {
+    transform: translateX(5vw);
+  }
+  to {
+    transform: translateX(80vw);
+  }
+}
+
+@keyframes move2 {
+  0% {
+    transform: translateX(5vw) translateY(0px);
+  }
+  10% {
+    transform: translateX(12vw) translateY(50px);
+  }
+  20% {
+    transform: translateX(22vw) translateY(0px);
+  }
+  30% {
+    transform: translateX(33vw) translateY(50px);
+  }
+  40% {
+    transform: translateX(42vw) translateY(0px);
+  }
+  50% {
+    transform: translateX(50vw) translateY(50px);
+  }
+  60% {
+    transform: translateX(55vw) translateY(0px);
+  }
+  80% {
+    transform: translateX(65vw) translateY(50px);
+  }
+  90% {
+    transform: translateX(70vw) translateY(0px);
+  }
+  100% {
+    transform: translateX(75vw) translateY(50px);
+  }
+}
+
+@keyframes move3 {
+  0% {
+    transform: translateX(5vw);
+  }
+  25% {
+    transform: translateX(80vw);
+  }
+  50% {
+    transform: translateX(5vw);
+  }
+  75% {
+    transform: translateX(80vw);
+  }
+  100% {
+    transform: translateX(5vw);
+  }
+}
