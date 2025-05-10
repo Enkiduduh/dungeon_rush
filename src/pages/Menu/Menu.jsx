@@ -17,6 +17,10 @@ function Menu() {
     navigate("/options");
   }
 
+  function navigateToStoryPage() {
+    navigate("/story");
+  }
+
   // Références pour les sons
   const audioRef_Intro_theme = useRef(null);
   useEffect(() => {
@@ -40,6 +44,11 @@ function Menu() {
           <img src={dogwild} alt="" className="menu_dogwild dogwild" />
           <div className="menu-title">Dungeon Rush</div>
           </div>
+
+          <div className="menu-button" onClick={navigateToStoryPage}>
+            Story
+          </div>
+
           <div className="menu-button" onClick={navigateToCombatPage}>
             Versus
           </div>
