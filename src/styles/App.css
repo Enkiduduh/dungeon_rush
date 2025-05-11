@@ -850,12 +850,16 @@ table tr {
   height: 150px;
   border-radius: 50%;
   background-color: blue;
+  position: relative;
+  z-index: 2;
 }
 
 .target-inner {
   width: 110px;
   height: 110px;
   background-color: green;
+  position: relative;
+  z-index: 2;
 }
 
 .target-near-center {
@@ -863,12 +867,16 @@ table tr {
   height: 70px;
   border-radius: 50%;
   background-color: goldenrod;
+  position: relative;
+  z-index: 2;
 }
 
 .target-center {
   width: 30px;
   height: 30px;
   background-color: red;
+  position: relative;
+  z-index: 2;
 }
 
 .target-style {
@@ -967,6 +975,23 @@ table tr {
   width: 5px;
   height: 5px;
   background-color: darkred;
+  pointer-events: none;
+}
+
+.redshots {
+  color: red;
+}
+
+.yellowshots {
+  color: goldenrod;
+}
+
+.greenshots {
+  color: green;
+}
+
+.blueshots {
+  color: blue;
 }
 
 #root-app {

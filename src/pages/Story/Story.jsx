@@ -8,6 +8,8 @@ import audio_reload_3 from "../../../public/assets/music/reload_3.mp3";
 import audio_reload_4 from "../../../public/assets/music/reload_4.mp3";
 import audio_gun_empty from "../../../public/assets/music/gun_empty.mp3";
 
+import { setImpactOnTarget } from "../../data/data_util";
+
 function Story() {
   const [munitions, setMunitions] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
@@ -18,9 +20,27 @@ function Story() {
   const [noAmmo, setNoAmmo] = useState(false);
   const [reload, setReload] = useState(false);
 
+  // TIMER
+  const [timer, setTimer] = useState(0);
+
   const [currentBulletIndex, setCurrentBulletIndex] = useState(0);
   // STATS
   const [missShots, setMissShots] = useState(0);
+  // Target 1
+  const [blueShots_t1, setBlueShots_t1] = useState(0);
+  const [greenShots_t1, setGreenShots_t1] = useState(0);
+  const [yellowShots_t1, setYellowShots_t1] = useState(0);
+  const [redShots_t1, setRedShots_t1] = useState(0);
+  // Target 2
+  const [blueShots_t2, setBlueShots_t2] = useState(0);
+  const [greenShots_t2, setGreenShots_t2] = useState(0);
+  const [yellowShots_t2, setYellowShots_t2] = useState(0);
+  const [redShots_t2, setRedShots_t2] = useState(0);
+  // Target 3
+  const [blueShots_t3, setBlueShots_t3] = useState(0);
+  const [greenShots_t3, setGreenShots_t3] = useState(0);
+  const [yellowShots_t3, setYellowShots_t3] = useState(0);
+  const [redShots_t3, setRedShots_t3] = useState(0);
 
   const audioRef_gunshot = useRef(null);
   const audioRef_reload_1 = useRef(null);
@@ -33,7 +53,7 @@ function Story() {
     const target = e.target;
     const x = e.clientX; // Coordonnée X du clic
     const y = e.clientY; // Coordonnée Y du clic
-    console.log(`Shoot : X=${x}, Y=${y}`);
+    // console.log(`Shoot : X=${x}, Y=${y}`);
 
     if (actualAmmo > 0) {
       setHasFired(true);
@@ -44,10 +64,10 @@ function Story() {
         audio.currentTime = 0; // Remet la position de lecture à 0
         audio.play(); // Joue le son
       }
-      console.log("SHOOT > true");
+      // console.log("SHOOT > true");
 
       // Creation de l'impact d'un tir
-      let divSHOOT = document.createElement("div"+"-shoot");
+      let divSHOOT = document.createElement("div" + "-shoot");
       divSHOOT.classList.add("impact");
       divSHOOT.style.top = `${y - 12}px`;
       divSHOOT.style.left = `${x - 14}px`;
@@ -55,38 +75,106 @@ function Story() {
       // Association de l'impact avec la zone touchée
       document.getElementById("fullscreen-shoot").appendChild(divSHOOT);
 
-      const t1_z_center = document
-        .querySelector(".target-one")
-        .querySelector(".target-outer");
+      const targetOne = document.querySelector(".target-one");
+      const targetTwo = document.querySelector(".target-two");
+      const targetThree = document.querySelector(".target-three");
 
-      const divSHOOTRect = divSHOOT.getBoundingClientRect();
+      // Dimensions pour targetOne
+      const t1_z_outer = targetOne.querySelector(".target-outer");
+      const t1_z_outerRect = t1_z_outer.getBoundingClientRect();
+      const t1_z_inner = targetOne.querySelector(".target-inner");
+      const t1_z_innerRect = t1_z_inner.getBoundingClientRect();
+      const t1_z_near_center = targetOne.querySelector(".target-near-center");
+      const t1_z_near_centerRect = t1_z_near_center.getBoundingClientRect();
+      const t1_z_center = targetOne.querySelector(".target-center");
       const t1_z_centerRect = t1_z_center.getBoundingClientRect();
 
-      if (
-        divSHOOTRect.left >= t1_z_centerRect.left &&
-        divSHOOTRect.right <= t1_z_centerRect.right &&
-        divSHOOTRect.top >= t1_z_centerRect.top &&
-        divSHOOTRect.bottom <= t1_z_centerRect.bottom
-      ) {
-        console.log("Hit detected in target.");
+      // Dimensions pour targetTwo
+      const t2_z_outer = targetTwo.querySelector(".target-outer");
+      const t2_z_outerRect = t2_z_outer.getBoundingClientRect();
+      const t2_z_inner = targetTwo.querySelector(".target-inner");
+      const t2_z_innerRect = t2_z_inner.getBoundingClientRect();
+      const t2_z_near_center = targetTwo.querySelector(".target-near-center");
+      const t2_z_near_centerRect = t2_z_near_center.getBoundingClientRect();
+      const t2_z_center = targetTwo.querySelector(".target-center");
+      const t2_z_centerRect = t2_z_center.getBoundingClientRect();
 
-        // Recalculez les coordonnées relatives à t1_z_center
-        const relativeX = divSHOOTRect.left - t1_z_centerRect.left;
-        const relativeY = divSHOOTRect.top - t1_z_centerRect.top;
+      // Dimensions pour targetThree
+      const t3_z_outer = targetThree.querySelector(".target-outer");
+      const t3_z_outerRect = t3_z_outer.getBoundingClientRect();
+      const t3_z_inner = targetThree.querySelector(".target-inner");
+      const t3_z_innerRect = t3_z_inner.getBoundingClientRect();
+      const t3_z_near_center = targetThree.querySelector(".target-near-center");
+      const t3_z_near_centerRect = t3_z_near_center.getBoundingClientRect();
+      const t3_z_center = targetThree.querySelector(".target-center");
+      const t3_z_centerRect = t3_z_center.getBoundingClientRect();
 
-        t1_z_center.appendChild(divSHOOT); // Ajoute l'impact à la cible
+      const divSHOOTRect = divSHOOT.getBoundingClientRect();
+      // Vérifiez les cibles
+      const hitTargetOne = setImpactOnTarget(
+        divSHOOT,
+        divSHOOTRect,
+        t1_z_centerRect,
+        t1_z_near_centerRect,
+        t1_z_innerRect,
+        t1_z_outerRect,
+        t1_z_center,
+        t1_z_near_center,
+        t1_z_inner,
+        t1_z_outer,
+        setMissShots,
+        setRedShots_t1,
+        setYellowShots_t1,
+        setBlueShots_t1,
+        setGreenShots_t1
+      );
 
-        // Appliquez les nouvelles coordonnées
-        divSHOOT.style.left = `${relativeX}px`;
-        divSHOOT.style.top = `${relativeY}px`;
+      if (!hitTargetOne) {
+        const hitTargetTwo = setImpactOnTarget(
+          divSHOOT,
+          divSHOOTRect,
+          t2_z_centerRect,
+          t2_z_near_centerRect,
+          t2_z_innerRect,
+          t2_z_outerRect,
+          t2_z_center,
+          t2_z_near_center,
+          t2_z_inner,
+          t2_z_outer,
+          setMissShots,
+          setRedShots_t2,
+          setYellowShots_t2,
+          setBlueShots_t2,
+          setGreenShots_t2
+        );
 
-      } else {
-        console.log("Missed the target center.");
-        divSHOOT.style.display = "none";
-        divSHOOT.classList.add("miss-shot");
-        setMissShots(prev => prev + 1);
+        if (!hitTargetTwo) {
+          const hitTargetThree = setImpactOnTarget(
+            divSHOOT,
+            divSHOOTRect,
+            t3_z_centerRect,
+            t3_z_near_centerRect,
+            t3_z_innerRect,
+            t3_z_outerRect,
+            t3_z_center,
+            t3_z_near_center,
+            t3_z_inner,
+            t3_z_outer,
+            setMissShots,
+            setRedShots_t3,
+            setYellowShots_t3,
+            setBlueShots_t3,
+            setGreenShots_t3
+          );
+
+          if (!hitTargetThree) {
+            // Si aucune cible n'est touchée, incrémentez les tirs manqués
+            console.log("Missed all targets.");
+            setMissShots((prev) => prev + 1);
+            divSHOOT.style.display = "none";
+          }
+        }
       }
-
       // Change le style de la balle actuelle
       setCurrentBulletIndex((prevIndex) => prevIndex + 1);
 
@@ -94,19 +182,19 @@ function Story() {
         setNoAmmo(true);
       }
     } else {
-      console.log("No more ammo!!");
+      // console.log("No more ammo!!");
       audioRef_gun_empty.current.play();
     }
   };
 
   const clickToReload = () => {
-    console.log("Reload Weapon");
+    // console.log("Reload Weapon");
     setReload(true);
   };
 
   useEffect(() => {
     if (hasFired && actualAmmo > 0) {
-      console.log("AMMO -1");
+      // console.log("AMMO -1");
       setActualAmmo((prev) => prev - 1);
     }
     setHasFired(false);
@@ -165,30 +253,29 @@ function Story() {
             <tbody>
               <tr>
                 <th className="target-red">Z1</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td className="redshots">{redShots_t1}</td>
+                <td className="redshots">{redShots_t2}</td>
+                <td className="redshots">{redShots_t3}</td>
                 <td rowSpan="4">{missShots}</td>
               </tr>
               <tr>
                 <th className="target-goldenrod">Z2</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td className="yellowshots">{yellowShots_t1}</td>
+                <td className="yellowshots">{yellowShots_t2}</td>
+                <td className="yellowshots">{yellowShots_t3}</td>
               </tr>
               <tr>
                 <th className="target-green">Z3</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td className="greenshots">{greenShots_t1}</td>
+                <td className="greenshots">{greenShots_t2}</td>
+                <td className="greenshots">{greenShots_t3}</td>
               </tr>
               <tr>
                 <th className="target-blue">Z4</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td className="blueshots">{blueShots_t1}</td>
+                <td className="blueshots">{blueShots_t2}</td>
+                <td className="blueshots">{blueShots_t3}</td>
               </tr>
-
             </tbody>
           </table>
         </div>
@@ -217,7 +304,7 @@ function Story() {
           </div>
         )}
         {/* RELOAD  */}
-        <div className="targets-container"  onClick={clickToFire}>
+        <div className="targets-container" onClick={clickToFire}>
           <div id="targets-title">Targets</div>
           {/* target1 */}
           <div className="target-wrapper target-one">
