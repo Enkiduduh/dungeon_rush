@@ -19,6 +19,8 @@ function Story() {
   const [reload, setReload] = useState(false);
 
   const [currentBulletIndex, setCurrentBulletIndex] = useState(0);
+  // STATS
+  const [missShots, setMissShots] = useState(0);
 
   const audioRef_gunshot = useRef(null);
   const audioRef_reload_1 = useRef(null);
@@ -43,6 +45,47 @@ function Story() {
         audio.play(); // Joue le son
       }
       console.log("SHOOT > true");
+
+      // Creation de l'impact d'un tir
+      let divSHOOT = document.createElement("div"+"-shoot");
+      divSHOOT.classList.add("impact");
+      divSHOOT.style.top = `${y - 12}px`;
+      divSHOOT.style.left = `${x - 14}px`;
+
+      // Association de l'impact avec la zone touchée
+      document.getElementById("fullscreen-shoot").appendChild(divSHOOT);
+
+      const t1_z_center = document
+        .querySelector(".target-one")
+        .querySelector(".target-outer");
+
+      const divSHOOTRect = divSHOOT.getBoundingClientRect();
+      const t1_z_centerRect = t1_z_center.getBoundingClientRect();
+
+      if (
+        divSHOOTRect.left >= t1_z_centerRect.left &&
+        divSHOOTRect.right <= t1_z_centerRect.right &&
+        divSHOOTRect.top >= t1_z_centerRect.top &&
+        divSHOOTRect.bottom <= t1_z_centerRect.bottom
+      ) {
+        console.log("Hit detected in target.");
+
+        // Recalculez les coordonnées relatives à t1_z_center
+        const relativeX = divSHOOTRect.left - t1_z_centerRect.left;
+        const relativeY = divSHOOTRect.top - t1_z_centerRect.top;
+
+        t1_z_center.appendChild(divSHOOT); // Ajoute l'impact à la cible
+
+        // Appliquez les nouvelles coordonnées
+        divSHOOT.style.left = `${relativeX}px`;
+        divSHOOT.style.top = `${relativeY}px`;
+
+      } else {
+        console.log("Missed the target center.");
+        divSHOOT.style.display = "none";
+        divSHOOT.classList.add("miss-shot");
+        setMissShots(prev => prev + 1);
+      }
 
       // Change le style de la balle actuelle
       setCurrentBulletIndex((prevIndex) => prevIndex + 1);
@@ -98,7 +141,7 @@ function Story() {
 
   return (
     <div id="root-app">
-      <div id="fullscreen-shoot" onClick={clickToFire}>
+      <div id="fullscreen-shoot">
         {/* INFOCHAR  */}
         <div className="char-container">
           <div className="char-name"> Character_1</div>
@@ -116,6 +159,7 @@ function Story() {
                 <th>Target 1</th>
                 <th>Target 2</th>
                 <th>Target 3</th>
+                <th>Miss Shot</th>
               </tr>
             </thead>
             <tbody>
@@ -124,6 +168,7 @@ function Story() {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td rowSpan="4">{missShots}</td>
               </tr>
               <tr>
                 <th className="target-goldenrod">Z2</th>
@@ -143,10 +188,7 @@ function Story() {
                 <td></td>
                 <td></td>
               </tr>
-              <tr>
-                <th>Miss Shot</th>
-                <td colspan="3"></td>
-              </tr>
+
             </tbody>
           </table>
         </div>
@@ -175,7 +217,7 @@ function Story() {
           </div>
         )}
         {/* RELOAD  */}
-        <div className="targets-container">
+        <div className="targets-container"  onClick={clickToFire}>
           <div id="targets-title">Targets</div>
           {/* target1 */}
           <div className="target-wrapper target-one">
