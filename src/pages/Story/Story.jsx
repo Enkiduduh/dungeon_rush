@@ -6,6 +6,7 @@ import audio_reload_1 from "../../../public/assets/music/reload_1.mp3";
 import audio_reload_2 from "../../../public/assets/music/reload_2.mp3";
 import audio_reload_3 from "../../../public/assets/music/reload_3.mp3";
 import audio_reload_4 from "../../../public/assets/music/reload_4.mp3";
+import audio_gun_empty from "../../../public/assets/music/gun_empty.mp3";
 
 function Story() {
   const [munitions, setMunitions] = useState([
@@ -24,6 +25,7 @@ function Story() {
   const audioRef_reload_2 = useRef(null);
   const audioRef_reload_3 = useRef(null);
   const audioRef_reload_4 = useRef(null);
+  const audioRef_gun_empty = useRef(null);
 
   const clickToFire = (e) => {
     const target = e.target;
@@ -50,6 +52,7 @@ function Story() {
       }
     } else {
       console.log("No more ammo!!");
+      audioRef_gun_empty.current.play();
     }
   };
 
@@ -89,6 +92,7 @@ function Story() {
     }
 
     if (maxAmmo == 0 && actualAmmo == 0) {
+      ammoBtn.style.display = "none";
     }
   });
 
@@ -120,21 +124,18 @@ function Story() {
                 <td></td>
                 <td></td>
                 <td></td>
-
               </tr>
               <tr>
                 <th className="target-goldenrod">Z2</th>
                 <td></td>
                 <td></td>
                 <td></td>
-
               </tr>
               <tr>
                 <th className="target-green">Z3</th>
                 <td></td>
                 <td></td>
                 <td></td>
-
               </tr>
               <tr>
                 <th className="target-blue">Z4</th>
@@ -213,6 +214,7 @@ function Story() {
       <audio ref={audioRef_reload_2} src={audio_reload_2} />
       <audio ref={audioRef_reload_3} src={audio_reload_3} />
       <audio ref={audioRef_reload_4} src={audio_reload_4} />
+      <audio ref={audioRef_gun_empty} src={audio_gun_empty} />
     </div>
   );
 }
