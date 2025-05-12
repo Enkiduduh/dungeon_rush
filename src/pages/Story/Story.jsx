@@ -9,23 +9,41 @@ import audio_reload_4 from "../../../public/assets/music/reload_4.mp3";
 import audio_gun_empty from "../../../public/assets/music/gun_empty.mp3";
 
 import { setImpactOnTarget } from "../../data/data_util";
+import Targets from "../../components/Targets/Targets";
+
+import bullet_gun from "../../../public/assets/bullets/bullet_gun.png";
+import bullet_rifle from "../../../public/assets/bullets/bullet_rifle.png";
+import rifle from "../../../public/assets/bullets/rifle.png";
+import pistol from "../../../public/assets/bullets/pistol.png";
 
 function Story() {
+  const [choiceGun, setChoiceGun] = useState(true);
+  const [choiceRifle, setChoiceRifle] = useState(false);
+
   const [munitions, setMunitions] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
   ]);
   const [actualAmmo, setActualAmmo] = useState(12);
+  const [AmmoMag, setAmmoMag] = useState(12);
   const [maxAmmo, setMaxAmmo] = useState(36);
   const [hasFired, setHasFired] = useState(false);
   const [noAmmo, setNoAmmo] = useState(false);
   const [reload, setReload] = useState(false);
 
+  const [bulletImg, setBulletImg] = useState(bullet_gun);
+
   // TIMER
   const [timer, setTimer] = useState(0);
+  // VARIABLES BUTTONS
+  const [isShooting, setIsShooting] = useState(false); // Rifle
+  const [isScopeActive, setIsScopeActive] = useState(false);
+  const [scopePos, setScopePos] = useState({ x: 0, y: 0 });
+  const onMouseMove = (e) => setScopePos({ x: e.clientX, y: e.clientY });
 
   const [currentBulletIndex, setCurrentBulletIndex] = useState(0);
   // STATS
   const [missShots, setMissShots] = useState(0);
+  const [score, setScore] = useState(0);
   // Target 1
   const [blueShots_t1, setBlueShots_t1] = useState(0);
   const [greenShots_t1, setGreenShots_t1] = useState(0);
@@ -49,8 +67,10 @@ function Story() {
   const audioRef_reload_4 = useRef(null);
   const audioRef_gun_empty = useRef(null);
 
+  const isShootingRef = useRef(false);
+  const scopePosRef = useRef({ x: 0, y: 0 });
+
   const clickToFire = (e) => {
-    const target = e.target;
     const x = e.clientX; // Coordonnée X du clic
     const y = e.clientY; // Coordonnée Y du clic
     // console.log(`Shoot : X=${x}, Y=${y}`);
@@ -192,6 +212,16 @@ function Story() {
     setReload(true);
   };
 
+  const handleMouseDown = () => {
+    isShootingRef.current = true;
+    setIsShooting(true);
+  };
+
+  const handleMouseUp = () => {
+    isShootingRef.current = false;
+    setIsShooting(false);
+  };
+
   useEffect(() => {
     if (hasFired && actualAmmo > 0) {
       // console.log("AMMO -1");
@@ -215,10 +245,10 @@ function Story() {
       audioRef_reload_2.current.play();
       audioRef_reload_3.current.play();
       audioRef_reload_4.current.play();
-      setActualAmmo(12);
+      setActualAmmo(AmmoMag);
       setNoAmmo(false);
       setCurrentBulletIndex(0);
-      setMaxAmmo((prev) => prev - 12);
+      setMaxAmmo((prev) => prev - AmmoMag);
       setReload(false);
     }
 
@@ -226,16 +256,159 @@ function Story() {
       ammoBtn.style.display = "none";
     }
   });
+  function calculateScore() {
+    const redPoints = 100 * (redShots_t1 + redShots_t2 + redShots_t3);
+    const yellowPoints =
+      30 * (yellowShots_t1 + yellowShots_t2 + yellowShots_t3);
+    const greenPoints = 5 * (greenShots_t1 + greenShots_t2 + greenShots_t3);
+    const bluePoints = 1 * (blueShots_t1 + blueShots_t2 + blueShots_t3);
+
+    setScore(redPoints + yellowPoints + greenPoints + bluePoints);
+  }
+
+  useEffect(() => {
+    calculateScore();
+  });
+
+  // GESTION DE L'ACTIVATION DU SCOPE
+  useEffect(() => {
+    const cursor = document.querySelector(".targets-container");
+    if (isScopeActive) {
+      const scope = document.getElementById("targets-scope");
+      cursor.style.cursor = "none";
+
+      const handleMouseMove = (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        // Déplace le viseur pour suivre la souris
+        scope.style.left = `${x}px`;
+        scope.style.top = `${y}px`;
+      };
+
+      // Ajoute un écouteur d'événements pour le mouvement de la souris
+      document.addEventListener("mousemove", handleMouseMove);
+
+      // Nettoie l'écouteur d'événements lorsque le composant est démonté
+      return () => {
+        document.removeEventListener("mousemove", handleMouseMove);
+      };
+    } else {
+      cursor.style.cursor = `url("../../../public/assets/Cross.png") 32 32, crosshair`;
+    }
+  }, [isScopeActive]);
+
+  const activateScope = () => {
+    setIsScopeActive((prev) => !prev);
+    console.log("toggle");
+  };
+
+  //GESTION DU MOUVEMENT DE LA SOURIS POUR VISER
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const newScopePos = { x: e.clientX, y: e.clientY };
+      scopePosRef.current = newScopePos;
+      setScopePos(newScopePos); // Met à jour l'état pour le rendu si nécessaire
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  // GESTION DU TIR CONTINU
+  useEffect(() => {
+    if (choiceRifle) {
+      let shootingInterval;
+
+      if (isShooting) {
+        shootingInterval = setInterval(() => {
+          if (isShootingRef.current && actualAmmo > 0) {
+            clickToFire({
+              clientX: scopePosRef.current.x,
+              clientY: scopePosRef.current.y,
+            });
+          }
+        }, 90); // Tirs toutes les 90ms
+      }
+
+      return () => {
+        clearInterval(shootingInterval);
+      };
+    }
+  }, [isShooting, actualAmmo]);
+
+  // GESTION DU TIMER
+  useEffect(() => {
+    let timer;
+    timer = setInterval(() => {
+      setTimer((prev) => prev + 1);
+    }, 1000); // 1sec
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [timer]);
+
+  const weaponChoiceGun = () => {
+    setChoiceGun(true);
+    setChoiceRifle(false);
+  };
+
+  const weaponChoiceRifle = () => {
+    setChoiceGun(false);
+    setChoiceRifle(true);
+  };
+
+  useEffect(() => {
+    if (choiceGun) {
+      setMunitions([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      setActualAmmo(12);
+      setMaxAmmo(36);
+      setAmmoMag(12);
+      setBulletImg(bullet_gun);
+    }
+  }, [choiceGun]);
+
+  useEffect(() => {
+    if (choiceRifle) {
+      setMunitions([
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21,
+        22, 23, 24,
+      ]);
+      setActualAmmo(24);
+      setMaxAmmo(48);
+      setAmmoMag(24);
+      setBulletImg(bullet_rifle);
+    }
+  }, [choiceRifle]);
 
   return (
     <div id="root-app">
-      <div id="fullscreen-shoot">
+      <div
+        id="fullscreen-shoot"
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+      >
         {/* INFOCHAR  */}
         <div className="char-container">
           <div className="char-name"> Character_1</div>
           <div className="char-info">LIFE: 30/30</div>
-          <div className="weapon-info">WEAPON: Revolver</div>
+          <div className="weapon-info">
+            <button className="scope-button " onClick={weaponChoiceGun}>
+              <img src={pistol} alt="" className="pistol-img"/>
+            </button>
+            <button className="scope-button " onClick={weaponChoiceRifle}>
+              <img src={rifle} alt="" className="rifle-img"/>
+            </button>
+          </div>
+          <button className="scope-button" onClick={activateScope}>
+            Scope
+          </button>
         </div>
+        <div className="timer">TIMER: {timer}s</div>
         {/* INFOCHAR  */}
         {/* SCORE  */}
         <div id="scores-container">
@@ -248,6 +421,7 @@ function Story() {
                 <th>Target 2</th>
                 <th>Target 3</th>
                 <th>Miss Shot</th>
+                <th>Score</th>
               </tr>
             </thead>
             <tbody>
@@ -257,6 +431,9 @@ function Story() {
                 <td className="redshots">{redShots_t2}</td>
                 <td className="redshots">{redShots_t3}</td>
                 <td rowSpan="4">{missShots}</td>
+                <td rowSpan="4" className="highscore">
+                  {score}
+                </td>
               </tr>
               <tr>
                 <th className="target-goldenrod">Z2</th>
@@ -282,18 +459,22 @@ function Story() {
         {/* SCORE  */}
         {/* WEAPON  */}
         <div className="weapon-container">
-          <div className="weapon-ammo">
-            {actualAmmo}/{maxAmmo}
-          </div>
-          <div className="bullet-container">
-            {munitions.map((_, index) => (
-              <div
-                key={index}
-                className={`bullet ${
-                  index < currentBulletIndex ? "fired" : ""
-                }`}
-              ></div>
-            ))}
+          <div className="bullets">
+            <div className="weapon-ammo">
+              <div>{actualAmmo}</div>
+              <div>{maxAmmo}</div>
+            </div>
+            <div className="bullet-container">
+              {munitions.map((_, index) => (
+                <div key={index} className="bullet">
+                  {index < currentBulletIndex ? (
+                    <img src="" alt="" className="magazine-display" />
+                  ) : (
+                    <img src={bulletImg} alt="" className="magazine-display" />
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         {/* WEAPON  */}
@@ -304,39 +485,15 @@ function Story() {
           </div>
         )}
         {/* RELOAD  */}
-        <div className="targets-container" onClick={clickToFire}>
-          <div id="targets-title">Targets</div>
-          {/* target1 */}
-          <div className="target-wrapper target-one">
-            <div className="target-outer target-style">
-              <div className="target-inner target-style">
-                <div className="target-near-center target-style">
-                  <div className="target-center target-style"></div>
-                </div>
-              </div>
-            </div>
+        {/* SCOPE ZONE */}
+
+        {isScopeActive && (
+          <div id="targets-scope">
+            <div className="scope-zoom">+</div>
           </div>
-          {/* target2 */}
-          <div className="target-wrapper target-two">
-            <div className="target-outer target-style">
-              <div className="target-inner target-style">
-                <div className="target-near-center target-style">
-                  <div className="target-center target-style"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* target3 */}
-          <div className="target-wrapper target-three">
-            <div className="target-outer target-style">
-              <div className="target-inner target-style">
-                <div className="target-near-center target-style">
-                  <div className="target-center target-style"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
+        <Targets clickToFire={clickToFire} />
+        {/* SCOPE ZONE */}
       </div>
       <audio ref={audioRef_gunshot} src={audio_gunshot} />
       <audio ref={audioRef_reload_1} src={audio_reload_1} />

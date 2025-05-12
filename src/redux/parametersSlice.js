@@ -6,6 +6,8 @@ const initialState = {
   gameStart: false,
 };
 
+
+
 const parametersSlice = createSlice({
   name: 'parameters',
   initialState,

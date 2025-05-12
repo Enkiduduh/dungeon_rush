@@ -6,36 +6,55 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Jersey 10", sans-serif;
 }
 .weapon-container {
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
   position: absolute;
   top: 20px;
   right: 20px;
   z-index: 1;
 }
 .weapon-ammo {
-  margin: 0 20px;
+  margin: 0 10px;
+  font-size: 32px;
+  text-shadow: 2px 2px 2px black;
+}
+
+.char-name,
+.char-info,
+.timer {
   font-size: 20px;
+}
+.bullets {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: darkslategray;
+  border-radius: 8px;
+  padding: 10px;
+  width: 450px;
 }
 .bullet-container {
   display: flex;
-  flex-wrap: wrap;
-  width: 340px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background-color: grey;
+  background-color: rgb(80, 108, 108);
   border-radius: 12px;
-  padding: 5px;
+  padding: 10px;
+  width: 450px;
 }
+
 .bullet {
-  width: 40px;
-  height: 40px;
-  border: 3px solid white;
-  margin: 5px;
-  background-color: darkgoldenrod;
-  border-radius: 50%;
+  width: 10px;
+  margin: 2px;
+}
+
+.magazine-display {
+  height: 60px;
 }
 
 #scores-container {
@@ -45,25 +64,27 @@
   width: 400px;
   height: 140px;
   top: 20px;
-  left: 50%;
+  left: 40%;
   // border:1px solid white;
-  transform: translateX(-50%);
+  transform: translateX(-40%);
   z-index: 1;
 }
 
 table {
   text-align: center;
-  th,
-  td,
-  tr {
-    border: 1px solid white;
-    background: rgb(99, 100, 100);
-    text-shadow: 1px 1px 1px black;
-    font-size: 18px;
-    width: 150px;
-    height: 25px;
-    padding: 0;
-  }
+  width: 500px;
+  table-layout: fixed;
+}
+th,
+td,
+tr {
+  border: 1px solid white;
+  background: rgb(99, 100, 100);
+  text-shadow: 1px 1px 1px black;
+  font-size: 20px;
+  width: 85px;
+  height: 25px;
+  padding: 0;
 }
 
 .target-red {
@@ -85,6 +106,13 @@ table {
   position: absolute;
   top: 20px;
   left: 20px;
+}
+.timer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20px;
+  left: 250px;
 }
 
 #button-reload {
@@ -113,147 +141,6 @@ table {
   background-color: rgb(92, 91, 91);
 }
 
-.targets-container {
-  width: 95vw;
-  height: 70vh;
-  border: 1px solid white;
-  position: absolute;
-  bottom: 20px;
-    cursor: url('../../../public/assets/Cross.png') 32 32, crosshair;
-
-}
-
-#targets-title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  border: 1px solid white;
-  margin: 10px;
-  padding: 2px 5px;
-}
-
-.target-outer {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: blue;
-   position: relative;
-  z-index: 2;
-}
-.target-inner {
-  width: 110px;
-  height: 110px;
-  background-color: green;
-   position: relative;
-  z-index: 2;
-}
-.target-near-center {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background-color: goldenrod;
-   position: relative;
-  z-index: 2;
-}
-.target-center {
-  width: 30px;
-  height: 30px;
-  background-color: red;
-   position: relative;
-  z-index: 2;
-}
-
-.target-style {
-  border: 2px solid white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  position: relative;
-  z-index: 2;
-}
-
-.target-one {
-  animation: move1 6s infinite ease;
-}
-
-.target-two {
-  animation: move2 4s infinite linear;
-}
-
-.target-three {
-  animation: move3 5s infinite ease-in-out;
-}
-
-@keyframes move1 {
-  0% {
-    transform: translateX(5vw);
-  }
-  25% {
-    transform: translateX(40vw);
-  }
-  50% {
-    transform: translateX(20vw);
-  }
-  75% {
-    transform: translateX(80vw);
-  }
-  100% {
-    transform: translateX(5vw);
-  }
-}
-
-@keyframes move2 {
-  0% {
-    transform: translateX(5vw) translateY(0px);
-  }
-  10% {
-    transform: translateX(25vw) translateY(50px);
-  }
-  20% {
-    transform: translateX(40vw) translateY(0px);
-  }
-  30% {
-    transform: translateX(50vw) translateY(50px);
-  }
-  40% {
-    transform: translateX(70vw) translateY(0px);
-  }
-  50% {
-    transform: translateX(80vw) translateY(50px);
-  }
-  60% {
-    transform: translateX(70vw) translateY(0px);
-  }
-  80% {
-    transform: translateX(50vw) translateY(50px);
-  }
-  90% {
-    transform: translateX(25vw) translateY(30px);
-  }
-  100% {
-    transform: translateX(5vw) translateY(0px);
-  }
-}
-
-@keyframes move3 {
-  0% {
-    transform: translateX(5vw);
-  }
-  25% {
-    transform: translateX(80vw);
-  }
-  50% {
-    transform: translateX(5vw);
-  }
-  75% {
-    transform: translateX(80vw);
-  }
-  100% {
-    transform: translateX(5vw);
-  }
-}
-
 .impact {
   position: absolute;
   z-index: 5;
@@ -264,19 +151,60 @@ table {
   background-color: darkred;
   pointer-events: none;
 }
+.scope-button {
+  border-radius: 5px;
+  border: 3px solid white;
+  width: 90px;
+  height: 35px;
+  padding: 4px 10px;
+  margin: 5px 10px 5px 0;
+}
+.pistol-img {
+  width: 30px;
+}
+
+.rifle-img {
+  width: 60px;
+}
 
 .redshots {
-color: red;
+  color: red;
 }
 
 .yellowshots {
-color: goldenrod;
+  color: goldenrod;
 }
 
 .greenshots {
-color: green;
+  color: green;
 }
 
 .blueshots {
-color: blue;
+  color: blue;
+}
+.highscore {
+  color: #ffffff;
+  text-shadow: 0 -1px 4px #fff, 0 -2px 10px #ff0, 0 -10px 20px #ff8000,
+    0 -18px 40px #f00;
+}
+
+#targets-scope {
+  position: absolute;
+  width: 130px; /* Taille du viseur */
+  height: 130px;
+  border: 2px solid white; /* Bordure du viseur */
+  border-radius: 50%; /* Forme circulaire */
+  overflow: hidden; /* Cache tout ce qui dépasse */
+  pointer-events: none; /* Empêche les interactions avec la souris */
+  transform: translate(-50%, -50%); /* Centre le viseur sur la souris */
+  z-index: 10; /* Place le viseur au-dessus des autres éléments */
+  background-color: rgba(0, 0, 0, 0.3); /* Effet de transparence */
+  backdrop-filter: blur(3px); /* Effet de flou pour la loupe */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  div {
+    transform: scale(2) translateY(-2px);
+  }
 }
