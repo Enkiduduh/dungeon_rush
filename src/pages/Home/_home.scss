@@ -1,0 +1,50 @@
+#home-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 98vw;
+  height: 98vh;
+  border: 1px solid red;
+  font-family: "Jersey 10", sans-serif;
+}
+#home-choose-game {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 60px;
+}
+.home-buttons {
+  width: 500px;
+  height: 300px;
+
+  font-size: 60px;
+  position: relative;
+}
+
+.home-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 3px 3px 3px black;
+  width: 100%;
+  height: 100%;
+
+  border: 3px solid white;
+  border-radius: 8px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  &:hover {
+    color: red;
+    border: 3px solid red;
+  }
+}
+
+#dr_bg {
+  background-image: url("../../../public/assets/background/dungeon_rush.jpg");
+}
+#as_bg {
+  background-image: url("../../../public/assets/background/aim_shooter.jpg");
+}

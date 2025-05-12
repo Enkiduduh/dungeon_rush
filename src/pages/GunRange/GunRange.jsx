@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 
 import audio_gunshot from "../../../public/assets/music/gun_shot.mp3";
+import audio_smgshot from "../../../public/assets/music/smg_shot.wav";
 import audio_reload_1 from "../../../public/assets/music/reload_1.mp3";
 import audio_reload_2 from "../../../public/assets/music/reload_2.mp3";
 import audio_reload_3 from "../../../public/assets/music/reload_3.mp3";
@@ -13,13 +14,15 @@ import Targets from "../../components/Targets/Targets";
 
 import bullet_gun from "../../../public/assets/bullets/bullet_gun.png";
 import bullet_rifle from "../../../public/assets/bullets/bullet_rifle.png";
+import bullet_smg from "../../../public/assets/bullets/bullet_smg.png";
 import rifle from "../../../public/assets/bullets/rifle.png";
 import pistol from "../../../public/assets/bullets/pistol.png";
+import smg from "../../../public/assets/bullets/smg.png";
 
-function Story() {
+function GunRange() {
   const [choiceGun, setChoiceGun] = useState(true);
   const [choiceRifle, setChoiceRifle] = useState(false);
-
+  const [choiceSmg, setChoiceSmg] = useState(false);
   const [munitions, setMunitions] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
   ]);
@@ -61,6 +64,7 @@ function Story() {
   const [redShots_t3, setRedShots_t3] = useState(0);
 
   const audioRef_gunshot = useRef(null);
+  const audioRef_smgshot = useRef(null);
   const audioRef_reload_1 = useRef(null);
   const audioRef_reload_2 = useRef(null);
   const audioRef_reload_3 = useRef(null);
@@ -77,9 +81,11 @@ function Story() {
 
     if (actualAmmo > 0) {
       setHasFired(true);
-
       // Réinitialisez l'audio avant de le jouer
-      const audio = audioRef_gunshot.current;
+      let audio = audioRef_gunshot.current;
+      if (choiceSmg) {
+        audio = audioRef_smgshot.current;
+      }
       if (audio) {
         audio.currentTime = 0; // Remet la position de lecture à 0
         audio.play(); // Joue le son
@@ -202,7 +208,6 @@ function Story() {
         setNoAmmo(true);
       }
     } else {
-      // console.log("No more ammo!!");
       audioRef_gun_empty.current.play();
     }
   };
@@ -224,7 +229,6 @@ function Story() {
 
   useEffect(() => {
     if (hasFired && actualAmmo > 0) {
-      // console.log("AMMO -1");
       setActualAmmo((prev) => prev - 1);
     }
     setHasFired(false);
@@ -254,6 +258,9 @@ function Story() {
 
     if (maxAmmo == 0 && actualAmmo == 0) {
       ammoBtn.style.display = "none";
+      const bulletsHolder = document.querySelector(".bullet-container");
+      bulletsHolder.textContent = "NO AMMO LEFT !!!";
+      bulletsHolder.classList.add("empty");
     }
   });
   function calculateScore() {
@@ -320,8 +327,15 @@ function Story() {
 
   // GESTION DU TIR CONTINU
   useEffect(() => {
-    if (choiceRifle) {
+    if (choiceRifle || choiceSmg) {
       let shootingInterval;
+      let interval = 0;
+
+      if (choiceRifle) {
+        interval = 130;
+      } else if (choiceSmg) {
+        interval = 110;
+      }
 
       if (isShooting) {
         shootingInterval = setInterval(() => {
@@ -331,7 +345,7 @@ function Story() {
               clientY: scopePosRef.current.y,
             });
           }
-        }, 90); // Tirs toutes les 90ms
+        }, interval); // Tirs toutes les 90ms
       }
 
       return () => {
@@ -343,6 +357,7 @@ function Story() {
   // GESTION DU TIMER
   useEffect(() => {
     let timer;
+
     timer = setInterval(() => {
       setTimer((prev) => prev + 1);
     }, 1000); // 1sec
@@ -355,11 +370,19 @@ function Story() {
   const weaponChoiceGun = () => {
     setChoiceGun(true);
     setChoiceRifle(false);
+    setChoiceSmg(false);
   };
 
   const weaponChoiceRifle = () => {
     setChoiceGun(false);
     setChoiceRifle(true);
+    setChoiceSmg(false);
+  };
+
+  const weaponChoiceSmg = () => {
+    setChoiceGun(false);
+    setChoiceRifle(false);
+    setChoiceSmg(true);
   };
 
   useEffect(() => {
@@ -369,6 +392,7 @@ function Story() {
       setMaxAmmo(36);
       setAmmoMag(12);
       setBulletImg(bullet_gun);
+      audioRef_reload_4.current.play();
     }
   }, [choiceGun]);
 
@@ -382,9 +406,29 @@ function Story() {
       setMaxAmmo(48);
       setAmmoMag(24);
       setBulletImg(bullet_rifle);
+      audioRef_reload_1.current.play();
+      audioRef_reload_2.current.play();
+      audioRef_reload_3.current.play();
+      audioRef_reload_4.current.play();
     }
   }, [choiceRifle]);
 
+  useEffect(() => {
+    if (choiceSmg) {
+      setMunitions([
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21,
+        22, 23, 24, 25, 26, 27, 28
+      ]);
+      setActualAmmo(28);
+      setMaxAmmo(56);
+      setAmmoMag(28);
+      setBulletImg(bullet_smg);
+      audioRef_reload_1.current.play();
+      audioRef_reload_2.current.play();
+      audioRef_reload_3.current.play();
+      audioRef_reload_4.current.play();
+    }
+  }, [choiceSmg]);
   return (
     <div id="root-app">
       <div
@@ -398,10 +442,13 @@ function Story() {
           <div className="char-info">LIFE: 30/30</div>
           <div className="weapon-info">
             <button className="scope-button " onClick={weaponChoiceGun}>
-              <img src={pistol} alt="" className="pistol-img"/>
+              <img src={pistol} alt="" className="pistol-img" />
+            </button>
+            <button className="scope-button " onClick={weaponChoiceSmg}>
+              <img src={smg} alt="" className="smg-img" />
             </button>
             <button className="scope-button " onClick={weaponChoiceRifle}>
-              <img src={rifle} alt="" className="rifle-img"/>
+              <img src={rifle} alt="" className="rifle-img" />
             </button>
           </div>
           <button className="scope-button" onClick={activateScope}>
@@ -468,13 +515,16 @@ function Story() {
               {munitions.map((_, index) => (
                 <div key={index} className="bullet">
                   {index < currentBulletIndex ? (
-                    <img src="" alt="" className="magazine-display" />
+                    <div className="magazine-display"></div>
                   ) : (
                     <img src={bulletImg} alt="" className="magazine-display" />
                   )}
                 </div>
               ))}
             </div>
+            {maxAmmo === 0 && actualAmmo === 0 ? null : actualAmmo === 0 ? (
+              <div className="empty-ammo">RELOAD!</div>
+            ) : null}
           </div>
         </div>
         {/* WEAPON  */}
@@ -496,6 +546,7 @@ function Story() {
         {/* SCOPE ZONE */}
       </div>
       <audio ref={audioRef_gunshot} src={audio_gunshot} />
+      <audio ref={audioRef_smgshot} src={audio_smgshot} />
       <audio ref={audioRef_reload_1} src={audio_reload_1} />
       <audio ref={audioRef_reload_2} src={audio_reload_2} />
       <audio ref={audioRef_reload_3} src={audio_reload_3} />
@@ -505,4 +556,4 @@ function Story() {
   );
 }
 
-export default Story;
+export default GunRange;

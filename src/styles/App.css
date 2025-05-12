@@ -714,6 +714,11 @@
   justify-content: center;
   align-items: center;
   font-family: "Jersey 10", sans-serif;
+  background-image: url("../../../public/assets/background/metalbg2.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-shadow: 2px 2px 2px black;
 }
 
 .weapon-container {
@@ -747,6 +752,7 @@
   border-radius: 8px;
   padding: 10px;
   width: 450px;
+  position: relative;
 }
 
 .bullet-container {
@@ -766,6 +772,15 @@
 
 .magazine-display {
   height: 60px;
+}
+
+.empty-ammo {
+  position: absolute;
+  bottom: 25%;
+  right: 0%;
+  width: 200px;
+  transform: translateX(-40%);
+  font-size: 40px;
 }
 
 #scores-container {
@@ -791,7 +806,7 @@ td,
 tr {
   border: 1px solid white;
   background: rgb(99, 100, 100);
-  text-shadow: 1px 1px 1px black;
+  text-shadow: 2px 2px 2px black;
   font-size: 20px;
   width: 85px;
   height: 25px;
@@ -828,6 +843,15 @@ tr {
   position: absolute;
   top: 20px;
   left: 250px;
+}
+
+.empty {
+  text-align: center;
+  font-size: 32px;
+  text-shadow: 2px 2px 2px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #button-reload {
@@ -885,6 +909,10 @@ tr {
   width: 60px;
 }
 
+.smg-img {
+  width: 41px;
+}
+
 .redshots {
   color: red;
 }
@@ -934,6 +962,10 @@ tr {
   border: 1px solid white;
   position: absolute;
   bottom: 20px;
+  background-image: url("../../../public/assets/background/gun_range.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #targets-title {
@@ -1067,6 +1099,58 @@ tr {
     transform: translateX(5vw);
   }
 }
+#home-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 98vw;
+  height: 98vh;
+  border: 1px solid red;
+  font-family: "Jersey 10", sans-serif;
+}
+
+#home-choose-game {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 60px;
+}
+
+.home-buttons {
+  width: 500px;
+  height: 300px;
+  font-size: 60px;
+  position: relative;
+}
+
+.home-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 3px 3px 3px black;
+  width: 100%;
+  height: 100%;
+  border: 3px solid white;
+  border-radius: 8px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+.home-button:hover {
+  color: red;
+  border: 3px solid red;
+}
+
+#dr_bg {
+  background-image: url("../../../public/assets/background/dungeon_rush.jpg");
+}
+
+#as_bg {
+  background-image: url("../../../public/assets/background/aim_shooter.jpg");
+}
+
 #root-app {
   margin: 0 auto;
   display: flex;

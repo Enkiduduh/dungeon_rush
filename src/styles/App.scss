@@ -15,9 +15,11 @@
   // SelectedChar component
   "../components/SelectedChar/selectedChar",
   // STORY
-  "../pages/Story/story",
+  "../pages/GunRange/gunRange",
   // TARGETS
-  "../components/Targets/targets";
+  "../components/Targets/targets",
+  // HOME
+  "../pages/Home/home";
 
 #root-app {
   margin: 0 auto;
