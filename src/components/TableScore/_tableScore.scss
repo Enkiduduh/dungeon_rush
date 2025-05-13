@@ -1,0 +1,29 @@
+table {
+  text-align: center;
+  width: 400px;
+  table-layout: fixed;
+}
+th,
+td,
+tr {
+  border: 1px solid white;
+  background: rgb(99, 100, 100);
+  text-shadow: 2px 2px 2px black;
+  font-size: 20px;
+  width: 85px;
+  height: 25px;
+  padding: 0;
+}
+
+.target-red {
+  color: red;
+}
+.target-goldenrod {
+  color: goldenrod;
+}
+.target-green {
+  color: green;
+}
+.target-blue {
+  color: blue;
+}

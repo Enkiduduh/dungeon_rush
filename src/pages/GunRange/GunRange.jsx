@@ -11,6 +11,7 @@ import audio_gun_empty from "../../../public/assets/music/gun_empty.mp3";
 
 import { setImpactOnTarget } from "../../data/data_util";
 import Targets from "../../components/Targets/Targets";
+import TargetScore from "../../components/TableScore/TableScore";
 
 import bullet_gun from "../../../public/assets/bullets/bullet_gun.png";
 import bullet_rifle from "../../../public/assets/bullets/bullet_rifle.png";
@@ -34,6 +35,12 @@ function GunRange() {
   const [reload, setReload] = useState(false);
 
   const [bulletImg, setBulletImg] = useState(bullet_gun);
+  // INITIALISATION
+  const [name, setName] = useState("");
+  const [isNameChosen, setIsNameChosen] = useState(false);
+  const [isModalActive, setIsModalActive] = useState(true);
+  const [startTimer, setStartTimer] = useState(false);
+  const [endTimer, setEndTimer] = useState(false);
 
   // TIMER
   const [timer, setTimer] = useState(0);
@@ -101,9 +108,9 @@ function GunRange() {
       // Association de l'impact avec la zone touchée
       document.getElementById("fullscreen-shoot").appendChild(divSHOOT);
 
-      const targetOne = document.querySelector(".target-one");
-      const targetTwo = document.querySelector(".target-two");
-      const targetThree = document.querySelector(".target-three");
+      const targetOne = document.querySelector(".target-1");
+      const targetTwo = document.querySelector(".target-2");
+      const targetThree = document.querySelector(".target-3");
 
       // Dimensions pour targetOne
       const t1_z_outer = targetOne.querySelector(".target-outer");
@@ -356,16 +363,21 @@ function GunRange() {
 
   // GESTION DU TIMER
   useEffect(() => {
-    let timer;
+    let timerOBJ;
+    if (startTimer) {
+      timerOBJ = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000); // 1sec
 
-    timer = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000); // 1sec
+      if (timer === 20) {
+        setEndTimer(timer);
+      }
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, [timer]);
+      return () => {
+        clearInterval(timerOBJ);
+      };
+    }
+  }, [timer, startTimer]);
 
   const weaponChoiceGun = () => {
     setChoiceGun(true);
@@ -386,18 +398,24 @@ function GunRange() {
   };
 
   useEffect(() => {
+    const gunBtn = document.querySelector(".scope-button-gun");
     if (choiceGun) {
+      gunBtn.style.border = "3px solid red";
       setMunitions([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
       setActualAmmo(12);
       setMaxAmmo(36);
       setAmmoMag(12);
       setBulletImg(bullet_gun);
       audioRef_reload_4.current.play();
+    } else {
+      gunBtn.style.border = "3px solid white";
     }
   }, [choiceGun]);
 
   useEffect(() => {
+    const rifleBtn = document.querySelector(".scope-button-rifle");
     if (choiceRifle) {
+      rifleBtn.style.border = "3px solid red";
       setMunitions([
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21,
         22, 23, 24,
@@ -410,14 +428,18 @@ function GunRange() {
       audioRef_reload_2.current.play();
       audioRef_reload_3.current.play();
       audioRef_reload_4.current.play();
+    } else {
+      rifleBtn.style.border = "3px solid white";
     }
   }, [choiceRifle]);
 
   useEffect(() => {
+    const smgBtn = document.querySelector(".scope-button-smg");
     if (choiceSmg) {
+      smgBtn.style.border = "3px solid red";
       setMunitions([
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21,
-        22, 23, 24, 25, 26, 27, 28
+        22, 23, 24, 25, 26, 27, 28,
       ]);
       setActualAmmo(28);
       setMaxAmmo(56);
@@ -427,8 +449,39 @@ function GunRange() {
       audioRef_reload_2.current.play();
       audioRef_reload_3.current.play();
       audioRef_reload_4.current.play();
+    } else {
+      smgBtn.style.border = "3px solid white";
     }
   }, [choiceSmg]);
+
+  // GESTION DU NOM / PSEUDO
+  const setNameHTML = () => {
+    setIsNameChosen(true);
+  };
+
+  useEffect(() => {
+    if (isNameChosen) {
+      const nameHTML = document.querySelector(".gr-input");
+      console.log(nameHTML.value);
+      setIsModalActive(false);
+
+      const nameScore = document.querySelector(".char-name");
+      nameScore.textContent = `${name}`;
+      setStartTimer(true);
+    }
+  }, [isNameChosen]);
+
+  useEffect(() => {
+    if (endTimer) {
+      const targetsAll = document.querySelectorAll(".target-wrapper");
+      for (let i = 0; i < targetsAll.length; i++) {
+        const targetContainer = document.querySelector(`.modal-score-${i + 1}`);
+        targetContainer.appendChild(targetsAll[i]);
+        targetsAll[i].classList.remove(`target-${i + 1}`);
+      }
+    }
+  }, [endTimer]);
+
   return (
     <div id="root-app">
       <div
@@ -436,26 +489,91 @@ function GunRange() {
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
       >
+        {!isModalActive ? null : (
+          <>
+            <div id="gun-range-input">
+              <input
+                type="text"
+                className="gr-input"
+                placeholder="Enter your name..."
+                name="input-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+
+              <button className="gr-input-btn" onClick={setNameHTML}>
+                OK
+              </button>
+            </div>
+            <div id="gun-range-modal-shadow"></div>
+          </>
+        )}
+        {!endTimer ? null : (
+          <div id="gun-range-modal-score">
+            {/* <div>{endTimer}</div> */}
+            <div className="modal-score modal-score-1">
+              <TargetScore
+                shots_z1={redShots_t1}
+                shots_z2={yellowShots_t1}
+                shots_z3={greenShots_t1}
+                shots_z4={blueShots_t1}
+              />
+            </div>
+            <div className="modal-score modal-score-2">
+              <TargetScore
+                shots_z1={redShots_t2}
+                shots_z2={yellowShots_t2}
+                shots_z3={greenShots_t2}
+                shots_z4={blueShots_t2}
+              />
+            </div>
+            <div className="modal-score modal-score-3">
+              <TargetScore
+                shots_z1={redShots_t3}
+                shots_z2={yellowShots_t3}
+                shots_z3={greenShots_t3}
+                shots_z4={blueShots_t3}
+              />
+            </div>
+            <div className="gun-range-final-score">
+              <div>Miss: {missShots}</div>
+              <div>Score: {score}</div>
+            </div>
+          </div>
+        )}
+
         {/* INFOCHAR  */}
         <div className="char-container">
-          <div className="char-name"> Character_1</div>
-          <div className="char-info">LIFE: 30/30</div>
+          <div className="char-name">Character_1</div>
+          <div className="timer">
+            <div>TIMER: </div>
+            <div> {timer}s</div>
+          </div>
           <div className="weapon-info">
-            <button className="scope-button " onClick={weaponChoiceGun}>
+            <button
+              className="scope-button scope-button-gun"
+              onClick={weaponChoiceGun}
+            >
               <img src={pistol} alt="" className="pistol-img" />
             </button>
-            <button className="scope-button " onClick={weaponChoiceSmg}>
+            <button
+              className="scope-button scope-button-smg"
+              onClick={weaponChoiceSmg}
+            >
               <img src={smg} alt="" className="smg-img" />
             </button>
-            <button className="scope-button " onClick={weaponChoiceRifle}>
+            <button
+              className="scope-button scope-button-rifle"
+              onClick={weaponChoiceRifle}
+            >
               <img src={rifle} alt="" className="rifle-img" />
             </button>
           </div>
           <button className="scope-button" onClick={activateScope}>
-            Scope
+            SCOPE
           </button>
         </div>
-        <div className="timer">TIMER: {timer}s</div>
+
         {/* INFOCHAR  */}
         {/* SCORE  */}
         <div id="scores-container">
