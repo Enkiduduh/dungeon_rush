@@ -1,0 +1,60 @@
+.targets-container {
+  width: 95vw;
+  height: 70vh;
+  border: 1px solid white;
+  position: absolute;
+  bottom: 20px;
+cursor: crosshair;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.bf-target-objects {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.objects-1 {
+  left: 100px;
+}
+
+.objects-2 {
+  left: 800px;
+  bottom: 0;
+}
+
+#targets-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid white;
+  margin: 10px;
+  padding: 2px 5px;
+}
+
+.bf-target-outer {
+  left: 100px;
+}
+
+.bf-target-style {
+  position: relative;
+  z-index: 2;
+}
+
+.target-enemy {
+  width: 80px;
+  pointer-events: none;
+}
+
+.bf-obstacle {
+  position: absolute;
+  top: 90px;
+  z-index: 5;
+  width: 300px;
+  height: 150px;
+  background: black;
+  border: 1px solid red;
+}

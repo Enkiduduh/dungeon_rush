@@ -1,8 +1,11 @@
 import React from "react";
+import bg_targets from "/assets/background/gun_range.jpg";
 
 function Targets({clickToFire}) {
   return (
-    <div className="targets-container" onClick={clickToFire}>
+    <div className="targets-container" onClick={clickToFire}
+    style={{ backgroundImage: `url(${bg_targets})` }}
+    >
       <div id="targets-title">Targets</div>
       {/* target1 */}
       <div className="target-wrapper target-1">

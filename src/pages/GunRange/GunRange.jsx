@@ -12,13 +12,16 @@ import audio_gun_empty from "../../../public/assets/music/gun_empty.mp3";
 import { setImpactOnTarget } from "../../data/data_util";
 import Targets from "../../components/Targets/Targets";
 import TargetScore from "../../components/TableScore/TableScore";
-
+import WeaponAmmo from "../../components/WeaponAmmo/WeaponAmmo";
+import BattlefieldOne from "../../components/BattlefieldOne/BattlefieldOne";
 import bullet_gun from "../../../public/assets/bullets/bullet_gun.png";
 import bullet_rifle from "../../../public/assets/bullets/bullet_rifle.png";
 import bullet_smg from "../../../public/assets/bullets/bullet_smg.png";
 import rifle from "../../../public/assets/bullets/rifle.png";
 import pistol from "../../../public/assets/bullets/pistol.png";
 import smg from "../../../public/assets/bullets/smg.png";
+
+import bg_screen from "/assets/background/metalbg2.jpg";
 
 function GunRange() {
   const [choiceGun, setChoiceGun] = useState(true);
@@ -218,28 +221,15 @@ function GunRange() {
       audioRef_gun_empty.current.play();
     }
   };
-
+  // GESTION DU RELOAD
   const clickToReload = () => {
     // console.log("Reload Weapon");
     setReload(true);
   };
 
-  const handleMouseDown = () => {
-    isShootingRef.current = true;
-    setIsShooting(true);
+  const pressSpaceToReload = () => {
+    setReload(true);
   };
-
-  const handleMouseUp = () => {
-    isShootingRef.current = false;
-    setIsShooting(false);
-  };
-
-  useEffect(() => {
-    if (hasFired && actualAmmo > 0) {
-      setActualAmmo((prev) => prev - 1);
-    }
-    setHasFired(false);
-  }, [hasFired]);
 
   useEffect(() => {
     const ammoBtn = document.getElementById("button-reload");
@@ -270,6 +260,38 @@ function GunRange() {
       bulletsHolder.classList.add("empty");
     }
   });
+
+  useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (e.key === " " || e.key === "Space") {
+      pressSpaceToReload();
+    }
+  };
+
+  document.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    document.removeEventListener("keydown", handleKeyDown);
+  };
+}, []);
+
+  const handleMouseDown = () => {
+    isShootingRef.current = true;
+    setIsShooting(true);
+  };
+
+  const handleMouseUp = () => {
+    isShootingRef.current = false;
+    setIsShooting(false);
+  };
+
+  useEffect(() => {
+    if (hasFired && actualAmmo > 0) {
+      setActualAmmo((prev) => prev - 1);
+    }
+    setHasFired(false);
+  }, [hasFired]);
+
   function calculateScore() {
     const redPoints = 100 * (redShots_t1 + redShots_t2 + redShots_t3);
     const yellowPoints =
@@ -369,9 +391,9 @@ function GunRange() {
         setTimer((prev) => prev + 1);
       }, 1000); // 1sec
 
-      if (timer === 20) {
-        setEndTimer(timer);
-      }
+      // if (timer === 20) {
+      //   setEndTimer(timer);
+      // }
 
       return () => {
         clearInterval(timerOBJ);
@@ -488,6 +510,7 @@ function GunRange() {
         id="fullscreen-shoot"
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
+        style={{ backgroundImage: `url(${bg_screen})` }}
       >
         {!isModalActive ? null : (
           <>
@@ -578,7 +601,7 @@ function GunRange() {
         {/* SCORE  */}
         <div id="scores-container">
           {/* <div>Score</div> */}
-          <table>
+          {/* <table>
             <thead>
               <tr>
                 <th>TARGETS</th>
@@ -619,37 +642,22 @@ function GunRange() {
                 <td className="blueshots">{blueShots_t3}</td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
         </div>
         {/* SCORE  */}
         {/* WEAPON  */}
-        <div className="weapon-container">
-          <div className="bullets">
-            <div className="weapon-ammo">
-              <div>{actualAmmo}</div>
-              <div>{maxAmmo}</div>
-            </div>
-            <div className="bullet-container">
-              {munitions.map((_, index) => (
-                <div key={index} className="bullet">
-                  {index < currentBulletIndex ? (
-                    <div className="magazine-display"></div>
-                  ) : (
-                    <img src={bulletImg} alt="" className="magazine-display" />
-                  )}
-                </div>
-              ))}
-            </div>
-            {maxAmmo === 0 && actualAmmo === 0 ? null : actualAmmo === 0 ? (
-              <div className="empty-ammo">RELOAD!</div>
-            ) : null}
-          </div>
-        </div>
+        <WeaponAmmo
+          actualAmmo={actualAmmo}
+          maxAmmo={maxAmmo}
+          munitions={munitions}
+          currentBulletIndex={currentBulletIndex}
+          bulletImg={bulletImg}
+        />
         {/* WEAPON  */}
         {/* RELOAD  */}
         {noAmmo && (
           <div id="button-reload" onClick={clickToReload}>
-            Reload !
+            Click here or Press Space to reload !
           </div>
         )}
         {/* RELOAD  */}
@@ -660,7 +668,8 @@ function GunRange() {
             <div className="scope-zoom">+</div>
           </div>
         )}
-        <Targets clickToFire={clickToFire} />
+        {/* <Targets clickToFire={clickToFire} /> */}
+        <BattlefieldOne />
         {/* SCOPE ZONE */}
       </div>
       <audio ref={audioRef_gunshot} src={audio_gunshot} />

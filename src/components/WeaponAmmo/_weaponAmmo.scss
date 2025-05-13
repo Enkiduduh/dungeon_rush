@@ -1,0 +1,51 @@
+.weapon-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
+}
+.weapon-ammo {
+  margin: 0 10px;
+  font-size: 32px;
+  text-shadow: 2px 2px 2px black;
+}
+.bullets {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: darkslategray;
+  border-radius: 8px;
+  padding: 10px;
+  width: 450px;
+  position: relative;
+}
+.bullet-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(80, 108, 108);
+  border-radius: 12px;
+  padding: 10px;
+  width: 450px;
+}
+
+.bullet {
+  width: 10px;
+  margin: 2px;
+}
+
+.magazine-display {
+  height: 60px;
+}
+.empty-ammo {
+  position: absolute;
+  bottom: 25%;
+  right: 0%;
+  width: 200px;
+  transform: translateX(-40%);
+  font-size: 40px;
+}

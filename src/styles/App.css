@@ -714,27 +714,9 @@
   justify-content: center;
   align-items: center;
   font-family: "Jersey 10", sans-serif;
-  background-image: url("/assets/background/metalbg2.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  text-shadow: 2px 2px 2px black;
-}
-
-.weapon-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 1;
-}
-
-.weapon-ammo {
-  margin: 0 10px;
-  font-size: 32px;
   text-shadow: 2px 2px 2px black;
 }
 
@@ -742,45 +724,6 @@
 .char-info,
 .timer {
   font-size: 20px;
-}
-
-.bullets {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: darkslategray;
-  border-radius: 8px;
-  padding: 10px;
-  width: 450px;
-  position: relative;
-}
-
-.bullet-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgb(80, 108, 108);
-  border-radius: 12px;
-  padding: 10px;
-  width: 450px;
-}
-
-.bullet {
-  width: 10px;
-  margin: 2px;
-}
-
-.magazine-display {
-  height: 60px;
-}
-
-.empty-ammo {
-  position: absolute;
-  bottom: 25%;
-  right: 0%;
-  width: 200px;
-  transform: translateX(-40%);
-  font-size: 40px;
 }
 
 #scores-container {
@@ -826,18 +769,18 @@
 
 #button-reload {
   display: none;
-  justify-content: center;
+  text-align: center;
   align-items: center;
   position: absolute;
   z-index: 1;
   bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;
-  height: 80px;
+  width: 250px;
+  height: 100px;
   border: 5px solid darkgoldenrod;
   color: darkgoldenrod;
-  font-size: 28px;
+  font-size: 32px;
   border-radius: 8px;
   background: lightcyan;
 }
@@ -993,7 +936,7 @@
   border: 1px solid white;
   position: absolute;
   bottom: 20px;
-  background-image: url("/assets/background/gun_range.jpg");
+  background-image: url("../../../public/assets/background/gun_range.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1214,6 +1157,126 @@ tr {
 
 .target-blue {
   color: blue;
+}
+
+.weapon-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
+}
+
+.weapon-ammo {
+  margin: 0 10px;
+  font-size: 32px;
+  text-shadow: 2px 2px 2px black;
+}
+
+.bullets {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: darkslategray;
+  border-radius: 8px;
+  padding: 10px;
+  width: 450px;
+  position: relative;
+}
+
+.bullet-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(80, 108, 108);
+  border-radius: 12px;
+  padding: 10px;
+  width: 450px;
+}
+
+.bullet {
+  width: 10px;
+  margin: 2px;
+}
+
+.magazine-display {
+  height: 60px;
+}
+
+.empty-ammo {
+  position: absolute;
+  bottom: 25%;
+  right: 0%;
+  width: 200px;
+  transform: translateX(-40%);
+  font-size: 40px;
+}
+
+.targets-container {
+  width: 95vw;
+  height: 70vh;
+  border: 1px solid white;
+  position: absolute;
+  bottom: 20px;
+  cursor: crosshair;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  -webkit-user-drag: none;
+}
+
+.bf-target-objects {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.objects-1 {
+  left: 100px;
+}
+
+.objects-2 {
+  left: 800px;
+  bottom: 0;
+}
+
+#targets-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid white;
+  margin: 10px;
+  padding: 2px 5px;
+}
+
+.bf-target-outer {
+  left: 100px;
+}
+
+.bf-target-style {
+  position: relative;
+  z-index: 2;
+}
+
+.target-enemy {
+  width: 80px;
+  pointer-events: none;
+}
+
+.bf-obstacle {
+  position: absolute;
+  top: 90px;
+  z-index: 5;
+  width: 300px;
+  height: 150px;
+  background: black;
+  border: 1px solid red;
 }
 
 #root-app {

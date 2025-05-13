@@ -16,12 +16,16 @@
   "../components/SelectedChar/selectedChar",
   // STORY
   "../pages/GunRange/gunRange",
-  // TARGETS
+  // TARGETS component
   "../components/Targets/targets",
   // HOME
   "../pages/Home/home",
-  // TARGETSCORE
-  "../components/TableScore/tableScore";
+  // TARGETSCORE component
+  "../components/TableScore/tableScore",
+  // WEAPON AMMO component
+  "../components/WeaponAmmo/weaponAmmo",
+  // BattlefieldOne component
+  "../components/BattlefieldOne/battlefieldOne";
 
 #root-app {
   margin: 0 auto;

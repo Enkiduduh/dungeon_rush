@@ -17,24 +17,6 @@ export function setImpactOnTarget(
   setRedShots, setYellowShots, setGreenShots, setBlueShots
 
 ) {
-  // // ZONE ASSOCIATION
-  // targetOuterHTML = targetNumber
-  //   .querySelector(".target-outer"); // Zone bleue
-  // // Dimension zone bleue
-  // targetOuterOBJ = targetOuterHTML.getBoundingClientRect();
-
-  // targetInnerHTML = targetNumber
-  //   .querySelector(".target-inner"); // Zone verte
-  // targetInnerOBJ = targetInnerHTML.getBoundingClientRect();
-
-  // targetNearCenterHTML = targetNumber
-  //   .querySelector(".target-near-center"); // Zone jaune
-  // targetNearCenterOBJ = targetNearCenterHTML.getBoundingClientRect();
-
-  // targetCenterHTML = targetNumber
-  //   .querySelector(".target-center"); // Zone rouge
-  // targetCenterOBJ = targetCenterHTML.getBoundingClientRect();
-
   // ASSOCIATION IMPACT SUR ZONE ROUGE
   if (
     shootOBJ.left >= targetCenterOBJ.left &&
