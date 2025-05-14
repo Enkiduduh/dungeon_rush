@@ -3,18 +3,28 @@ import { useRef } from "react";
 import audio_sound_aim_shooter from "../../../public/assets/music/aim_shooter.mp3";
 import audio_sound_dungeon_rush from "../../../public/assets/music/dungeon_rush.mp3";
 
-function Home() {
+function Home({}) {
   const navigate = useNavigate();
   const audio_aim_shooter = useRef(null);
   const audio_dungeon_rush = useRef(null);
 
-  const enterGameAimShooter = () => {
+  const enterGameAimShooterScenario = () => {
     const audio = audio_aim_shooter.current;
     if (audio) {
       audio.play();
       setTimeout(() => {
         navigate("/gun-range");
-      }, 3000);
+      }, 1900);
+    }
+  };
+
+   const enterGameAimShooterTraining = () => {
+    const audio = audio_aim_shooter.current;
+    if (audio) {
+      audio.play();
+      setTimeout(() => {
+        navigate("/gun-range-training");
+      }, 1900);
     }
   };
   const enterGameDungeonRush = () => {
@@ -23,7 +33,7 @@ function Home() {
       audio.play();
       setTimeout(() => {
         navigate("/menu");
-      }, 3000);
+      }, 1900);
     }
   };
 
@@ -36,8 +46,13 @@ function Home() {
         </div>
       </div>
       <div className="home-buttons">
-        <div className="home-button" id="as_bg" onClick={enterGameAimShooter}>
-          AIM SHOOTER
+        <div className="home-button" id="as_bg" onClick={enterGameAimShooterScenario}>
+          AIM SHOOTER SCENARIO
+        </div>
+      </div>
+       <div className="home-buttons">
+        <div className="home-button" id="ast_bg" onClick={enterGameAimShooterTraining}>
+          AIM SHOOTER TRAINING
         </div>
       </div>
       <audio ref={audio_aim_shooter} src={audio_sound_aim_shooter}></audio>

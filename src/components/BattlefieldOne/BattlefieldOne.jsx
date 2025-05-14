@@ -10,7 +10,10 @@ function BattlefieldOne({ clickToFire }) {
     >
       <div id="targets-title">Targets</div>
       {/* OBJ 1 */}
-      <div className="bf-target-objects objects-1">
+      <div className="bf-objects objects-1">
+        <div className="bf-enemy-lifecontainer">
+          <div className="bf-enemy-life"></div>
+        </div>
         <img
           src={soldier_blue}
           alt=""
@@ -19,7 +22,8 @@ function BattlefieldOne({ clickToFire }) {
         <div className="bf-obstacle"></div>
       </div>
       {/* OBJ 2 */}
-      <div className="bf-target-objects objects-2">
+      <div className="bf-objects objects-2">
+        <div className="bf-enemy-lifecontainer"></div>
         <img
           src={soldier_blue}
           alt=""

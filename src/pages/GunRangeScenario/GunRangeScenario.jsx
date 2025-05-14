@@ -620,7 +620,8 @@ function GunRange() {
             <div className="scope-zoom">+</div>
           </div>
         )}
-        <Targets clickToFire={clickToFire} />
+        {/* <Targets clickToFire={clickToFire} /> */}
+        <BattlefieldOne />
         {/* SCOPE ZONE */}
       </div>
       <audio ref={audioRef_gunshot} src={audio_gunshot} />
