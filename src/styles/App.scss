@@ -16,7 +16,7 @@
   "../components/SelectedChar/selectedChar",
   // GUNRANGE
   "../pages/GunRange/gunRange",
-   // GUNRANGE STORY
+  // GUNRANGE STORY
   "../pages/GunRangeScenario/gunRangeScenario",
   // TARGETS component
   "../components/Targets/targets",
@@ -27,7 +27,9 @@
   // WEAPON AMMO component
   "../components/WeaponAmmo/weaponAmmo",
   // BattlefieldOne component
-  "../components/BattlefieldOne/battlefieldOne";
+  "../components/BattlefieldOne/battlefieldOne",
+  // SOLDIER component
+  "../components/Soldier/soldier";
 
 #root-app {
   margin: 0 auto;

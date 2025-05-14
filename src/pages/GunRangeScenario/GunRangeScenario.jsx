@@ -9,7 +9,7 @@ import audio_reload_3 from "../../../public/assets/music/reload_3.mp3";
 import audio_reload_4 from "../../../public/assets/music/reload_4.mp3";
 import audio_gun_empty from "../../../public/assets/music/gun_empty.mp3";
 
-import { setImpactOnTarget } from "../../data/data_util";
+import { setImpactOnTargetBf } from "../../data/data_util_battlefield";
 import Targets from "../../components/Targets/Targets";
 import TargetScore from "../../components/TableScore/TableScore";
 import WeaponAmmo from "../../components/WeaponAmmo/WeaponAmmo";
@@ -37,6 +37,9 @@ function GunRange() {
   const [noAmmo, setNoAmmo] = useState(false);
   const [reload, setReload] = useState(false);
 
+  const [headShot, setHeadShot] = useState(100);
+  const [otherShot, setOtherShot] = useState(20);
+
   const [bulletImg, setBulletImg] = useState(bullet_gun);
   // INITIALISATION
   const [name, setName] = useState("");
@@ -59,19 +62,19 @@ function GunRange() {
   const [score, setScore] = useState(0);
   // Target 1
   const [blueShots_t1, setBlueShots_t1] = useState(0);
-  const [greenShots_t1, setGreenShots_t1] = useState(0);
-  const [yellowShots_t1, setYellowShots_t1] = useState(0);
   const [redShots_t1, setRedShots_t1] = useState(0);
+  const [soldierLifeBlue, setSoldierLifeBlue] = useState(100);
+  const [initialSoldierLifeBlue, setInitialSoldierLifeBlue] = useState(100);
   // Target 2
   const [blueShots_t2, setBlueShots_t2] = useState(0);
-  const [greenShots_t2, setGreenShots_t2] = useState(0);
-  const [yellowShots_t2, setYellowShots_t2] = useState(0);
   const [redShots_t2, setRedShots_t2] = useState(0);
+  const [soldierLifeGreen, setSoldierLifeGreen] = useState(100);
+  const [initialSoldierLifeGreen, setInitialSoldierLifeGreen] = useState(100);
   // Target 3
   const [blueShots_t3, setBlueShots_t3] = useState(0);
-  const [greenShots_t3, setGreenShots_t3] = useState(0);
-  const [yellowShots_t3, setYellowShots_t3] = useState(0);
   const [redShots_t3, setRedShots_t3] = useState(0);
+  const [soldierLifeWhite, setSoldierLifeWhite] = useState(100);
+  const [initialSoldierLifeWhite, setInitialSoldierLifeWhite] = useState(100);
 
   const audioRef_gunshot = useRef(null);
   const audioRef_smgshot = useRef(null);
@@ -111,96 +114,86 @@ function GunRange() {
       // Association de l'impact avec la zone touchée
       document.getElementById("fullscreen-shoot").appendChild(divSHOOT);
 
-      const targetOne = document.querySelector(".target-1");
-      const targetTwo = document.querySelector(".target-2");
-      const targetThree = document.querySelector(".target-3");
+      const targetSoldierBlue = document.querySelector(".soldier-blue");
+      const soldierLifeHTMLBlue = document.querySelector(`.life-soldier-blue`);
+      const targetSoldierGreen = document.querySelector(".soldier-green");
+      const soldierLifeHTMLGreen =
+        document.querySelector(`.life-soldier-green`);
+      const targetSoldierWhite = document.querySelector(".soldier-white");
+      const soldierLifeHTMLWhite =
+        document.querySelector(`.life-soldier-white`);
 
-      // Dimensions pour targetOne
-      const t1_z_outer = targetOne.querySelector(".target-outer");
+      // Dimensions pour targetSoldierBlue
+      const t1_z_outer = targetSoldierBlue.querySelector(".bf-target-outer");
       const t1_z_outerRect = t1_z_outer.getBoundingClientRect();
-      const t1_z_inner = targetOne.querySelector(".target-inner");
-      const t1_z_innerRect = t1_z_inner.getBoundingClientRect();
-      const t1_z_near_center = targetOne.querySelector(".target-near-center");
-      const t1_z_near_centerRect = t1_z_near_center.getBoundingClientRect();
-      const t1_z_center = targetOne.querySelector(".target-center");
+      const t1_z_center = targetSoldierBlue.querySelector(".bf-target-center");
       const t1_z_centerRect = t1_z_center.getBoundingClientRect();
 
-      // Dimensions pour targetTwo
-      const t2_z_outer = targetTwo.querySelector(".target-outer");
+      // Dimensions pour targetSoldierGreen
+      const t2_z_outer = targetSoldierGreen.querySelector(".bf-target-outer");
       const t2_z_outerRect = t2_z_outer.getBoundingClientRect();
-      const t2_z_inner = targetTwo.querySelector(".target-inner");
-      const t2_z_innerRect = t2_z_inner.getBoundingClientRect();
-      const t2_z_near_center = targetTwo.querySelector(".target-near-center");
-      const t2_z_near_centerRect = t2_z_near_center.getBoundingClientRect();
-      const t2_z_center = targetTwo.querySelector(".target-center");
+      const t2_z_center = targetSoldierGreen.querySelector(".bf-target-center");
       const t2_z_centerRect = t2_z_center.getBoundingClientRect();
 
-      // Dimensions pour targetThree
-      const t3_z_outer = targetThree.querySelector(".target-outer");
+      // Dimensions pour targetSoldierWhite
+      const t3_z_outer = targetSoldierWhite.querySelector(".bf-target-outer");
       const t3_z_outerRect = t3_z_outer.getBoundingClientRect();
-      const t3_z_inner = targetThree.querySelector(".target-inner");
-      const t3_z_innerRect = t3_z_inner.getBoundingClientRect();
-      const t3_z_near_center = targetThree.querySelector(".target-near-center");
-      const t3_z_near_centerRect = t3_z_near_center.getBoundingClientRect();
-      const t3_z_center = targetThree.querySelector(".target-center");
+      const t3_z_center = targetSoldierWhite.querySelector(".bf-target-center");
       const t3_z_centerRect = t3_z_center.getBoundingClientRect();
 
       const divSHOOTRect = divSHOOT.getBoundingClientRect();
       // Vérifiez les cibles
-      const hitTargetOne = setImpactOnTarget(
+      const hitTargetOne = setImpactOnTargetBf(
         divSHOOT,
         divSHOOTRect,
         t1_z_centerRect,
-        t1_z_near_centerRect,
-        t1_z_innerRect,
         t1_z_outerRect,
         t1_z_center,
-        t1_z_near_center,
-        t1_z_inner,
         t1_z_outer,
-        setMissShots,
         setRedShots_t1,
-        setYellowShots_t1,
         setBlueShots_t1,
-        setGreenShots_t1
+        otherShot,
+        headShot,
+        setSoldierLifeBlue,
+        soldierLifeBlue,
+        initialSoldierLifeBlue,
+        soldierLifeHTMLBlue
       );
 
       if (!hitTargetOne) {
-        const hitTargetTwo = setImpactOnTarget(
+        const hitTargetTwo = setImpactOnTargetBf(
           divSHOOT,
           divSHOOTRect,
           t2_z_centerRect,
-          t2_z_near_centerRect,
-          t2_z_innerRect,
           t2_z_outerRect,
           t2_z_center,
-          t2_z_near_center,
-          t2_z_inner,
           t2_z_outer,
-          setMissShots,
           setRedShots_t2,
-          setYellowShots_t2,
           setBlueShots_t2,
-          setGreenShots_t2
+          otherShot,
+          headShot,
+          setSoldierLifeGreen,
+          soldierLifeGreen,
+          initialSoldierLifeGreen,
+          soldierLifeHTMLGreen
         );
 
         if (!hitTargetTwo) {
-          const hitTargetThree = setImpactOnTarget(
+          const hitTargetThree = setImpactOnTargetBf(
             divSHOOT,
             divSHOOTRect,
             t3_z_centerRect,
-            t3_z_near_centerRect,
-            t3_z_innerRect,
             t3_z_outerRect,
             t3_z_center,
-            t3_z_near_center,
-            t3_z_inner,
             t3_z_outer,
-            setMissShots,
             setRedShots_t3,
-            setYellowShots_t3,
             setBlueShots_t3,
-            setGreenShots_t3
+            otherShot,
+            headShot,
+            setSoldierLifeWhite,
+            soldierLifeWhite,
+            initialSoldierLifeWhite,
+            soldierLifeHTMLWhite
           );
 
           if (!hitTargetThree) {
@@ -262,18 +255,18 @@ function GunRange() {
   });
 
   useEffect(() => {
-  const handleKeyDown = (e) => {
-    if (e.key === " " || e.key === "Space") {
-      pressSpaceToReload();
-    }
-  };
+    const handleKeyDown = (e) => {
+      if (e.key === " " || e.key === "Space") {
+        pressSpaceToReload();
+      }
+    };
 
-  document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
-  return () => {
-    document.removeEventListener("keydown", handleKeyDown);
-  };
-}, []);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const handleMouseDown = () => {
     isShootingRef.current = true;
@@ -292,19 +285,19 @@ function GunRange() {
     setHasFired(false);
   }, [hasFired]);
 
-  function calculateScore() {
-    const redPoints = 100 * (redShots_t1 + redShots_t2 + redShots_t3);
-    const yellowPoints =
-      30 * (yellowShots_t1 + yellowShots_t2 + yellowShots_t3);
-    const greenPoints = 5 * (greenShots_t1 + greenShots_t2 + greenShots_t3);
-    const bluePoints = 1 * (blueShots_t1 + blueShots_t2 + blueShots_t3);
+  // function calculateScore() {
+  //   const redPoints = 100 * (redShots_t1 + redShots_t2 + redShots_t3);
+  //   const yellowPoints =
+  //     30 * (yellowShots_t1 + yellowShots_t2 + yellowShots_t3);
+  //   const greenPoints = 5 * (greenShots_t1 + greenShots_t2 + greenShots_t3);
+  //   const bluePoints = 1 * (blueShots_t1 + blueShots_t2 + blueShots_t3);
 
-    setScore(redPoints + yellowPoints + greenPoints + bluePoints);
-  }
+  //   setScore(redPoints + yellowPoints + greenPoints + bluePoints);
+  // }
 
-  useEffect(() => {
-    calculateScore();
-  });
+  // useEffect(() => {
+  //   calculateScore();
+  // });
 
   // GESTION DE L'ACTIVATION DU SCOPE
   useEffect(() => {
@@ -391,9 +384,9 @@ function GunRange() {
         setTimer((prev) => prev + 1);
       }, 1000); // 1sec
 
-      if (timer === 20) {
-        setEndTimer(timer);
-      }
+      // if (timer === 20) {
+      //   setEndTimer(timer);
+      // }
 
       return () => {
         clearInterval(timerOBJ);
@@ -531,32 +524,18 @@ function GunRange() {
             <div id="gun-range-modal-shadow"></div>
           </>
         )}
+
         {!endTimer ? null : (
           <div id="gun-range-modal-score">
             {/* <div>{endTimer}</div> */}
             <div className="modal-score modal-score-1">
-              <TargetScore
-                shots_z1={redShots_t1}
-                shots_z2={yellowShots_t1}
-                shots_z3={greenShots_t1}
-                shots_z4={blueShots_t1}
-              />
+              <TargetScore shots_z1={redShots_t1} shots_z4={blueShots_t1} />
             </div>
             <div className="modal-score modal-score-2">
-              <TargetScore
-                shots_z1={redShots_t2}
-                shots_z2={yellowShots_t2}
-                shots_z3={greenShots_t2}
-                shots_z4={blueShots_t2}
-              />
+              <TargetScore shots_z1={redShots_t2} shots_z4={blueShots_t2} />
             </div>
             <div className="modal-score modal-score-3">
-              <TargetScore
-                shots_z1={redShots_t3}
-                shots_z2={yellowShots_t3}
-                shots_z3={greenShots_t3}
-                shots_z4={blueShots_t3}
-              />
+              <TargetScore shots_z1={redShots_t3} shots_z4={blueShots_t3} />
             </div>
             <div className="gun-range-final-score">
               <div>Miss: {missShots}</div>
@@ -621,7 +600,13 @@ function GunRange() {
           </div>
         )}
         {/* <Targets clickToFire={clickToFire} /> */}
-        <BattlefieldOne />
+
+        <BattlefieldOne
+          clickToFire={clickToFire}
+          soldierLife_blue={soldierLifeBlue}
+          soldierLife_green={soldierLifeGreen}
+          soldierLife_white={soldierLifeWhite}
+        />
         {/* SCOPE ZONE */}
       </div>
       <audio ref={audioRef_gunshot} src={audio_gunshot} />
