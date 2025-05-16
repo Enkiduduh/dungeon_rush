@@ -13,7 +13,6 @@ import { setImpactOnTarget } from "../../data/data_util";
 import Targets from "../../components/Targets/Targets";
 import TargetScore from "../../components/TableScore/TableScore";
 import WeaponAmmo from "../../components/WeaponAmmo/WeaponAmmo";
-import BattlefieldOne from "../../components/BattlefieldOne/BattlefieldOne";
 import bullet_gun from "../../../public/assets/bullets/bullet_gun.png";
 import bullet_rifle from "../../../public/assets/bullets/bullet_rifle.png";
 import bullet_smg from "../../../public/assets/bullets/bullet_smg.png";
@@ -81,6 +80,7 @@ function GunRange() {
   const audioRef_reload_4 = useRef(null);
   const audioRef_gun_empty = useRef(null);
 
+  const navigate = useNavigate();
   const isShootingRef = useRef(false);
   const scopePosRef = useRef({ x: 0, y: 0 });
 
@@ -262,18 +262,18 @@ function GunRange() {
   });
 
   useEffect(() => {
-  const handleKeyDown = (e) => {
-    if (e.key === " " || e.key === "Space") {
-      pressSpaceToReload();
-    }
-  };
+    const handleKeyDown = (e) => {
+      if (e.key === " " || e.key === "Space") {
+        pressSpaceToReload();
+      }
+    };
 
-  document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
-  return () => {
-    document.removeEventListener("keydown", handleKeyDown);
-  };
-}, []);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const handleMouseDown = () => {
     isShootingRef.current = true;
@@ -504,6 +504,20 @@ function GunRange() {
     }
   }, [endTimer]);
 
+  // GESTION des actions ENDGAME
+  const retryGame = () => {
+    navigate("/gun-range-training");
+  };
+
+  const returnToMenu = () => {
+    navigate("/");
+  };
+
+   const printScores = () => {
+    console.log("PRINT SCORES")
+  };
+
+
   return (
     <div id="root-app">
       <div
@@ -559,8 +573,17 @@ function GunRange() {
               />
             </div>
             <div className="gun-range-final-score">
-              <div>Miss: {missShots}</div>
-              <div>Score: {score}</div>
+              <div className="gun-range-modal-score-action">
+                Miss: {missShots}
+              </div>
+              <div className="gun-range-modal-score-action">Score: {score}</div>
+            </div>
+            <div className="gun-range-modal-score-actions-container">
+              <div className="gun-range-modal-score-action" onClick={printScores}>
+                Print your score
+              </div>
+              <div className="gun-range-modal-score-action" onClick={retryGame}>Retry</div>
+              <div className="gun-range-modal-score-action" onClick={returnToMenu}>Return to menu</div>
             </div>
           </div>
         )}
