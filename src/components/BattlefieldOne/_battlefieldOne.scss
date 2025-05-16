@@ -11,21 +11,6 @@
   user-select: none;
   -webkit-user-drag: none;
 }
-.bf-objects {
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.objects-1 {
-  left: 100px;
-  top: 50px;
-}
-
-.objects-2 {
-  left: 800px;
-  bottom: 0;
-}
 
 #targets-title {
   position: absolute;
@@ -45,13 +30,24 @@
   z-index: 2;
 }
 
-
 .bf-obstacle {
   position: absolute;
-  top: 120px;
   z-index: 5;
-  width: 300px;
-  height: 120px;
+  width: 150px;
+  height: 300px;
   background: black;
   border: 1px solid red;
+}
+
+.obstacle1 {
+  top: 0;
+  left: 0px;
+}
+.obstacle2 {
+  top:0;
+  left: 500px;
+}
+.obstacle3 {
+  top:0;
+  left: 800px;
 }

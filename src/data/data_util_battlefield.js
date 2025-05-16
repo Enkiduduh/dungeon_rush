@@ -27,7 +27,8 @@ export function setImpactOnTargetBf(
 
     // Appliquez les dégats du tir sur l'ennemi
     if (objectLife > 0) {
-      const newObjectLife = objectLife - criticalDamage;
+      // const newObjectLife = objectLife - criticalDamage;
+      const newObjectLife = 0;
       setObjectLife(newObjectLife);
       lifeHTML.style.width = `${(newObjectLife * 100) / InitialObjectLife}%`;
     }

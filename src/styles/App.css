@@ -881,6 +881,26 @@
   background: darkorange;
 }
 
+.gun-range-return-btn {
+  font-size: 40px;
+  padding: 10px;
+  width: 100px;
+  text-align: center;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  font-family: "Jersey 10", sans-serif;
+  position: absolute;
+  z-index: 100;
+  border: 5px solid white;
+  border-radius: 10px;
+  background: darkslategrey;
+  cursor: pointer;
+}
+.gun-range-return-btn:hover {
+  background: black;
+}
+
 #gun-range-modal-shadow {
   position: absolute;
   z-index: 95;
@@ -1427,22 +1447,6 @@ tr {
   -webkit-user-drag: none;
 }
 
-.bf-objects {
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.objects-1 {
-  left: 100px;
-  top: 50px;
-}
-
-.objects-2 {
-  left: 800px;
-  bottom: 0;
-}
-
 #targets-title {
   position: absolute;
   top: 20px;
@@ -1463,12 +1467,26 @@ tr {
 
 .bf-obstacle {
   position: absolute;
-  top: 120px;
   z-index: 5;
-  width: 300px;
-  height: 120px;
+  width: 150px;
+  height: 300px;
   background: black;
   border: 1px solid red;
+}
+
+.obstacle1 {
+  top: 0;
+  left: 0px;
+}
+
+.obstacle2 {
+  top: 0;
+  left: 500px;
+}
+
+.obstacle3 {
+  top: 0;
+  left: 800px;
 }
 
 .bf-enemy-lifecontainer {
@@ -1525,8 +1543,9 @@ tr {
 }
 
 .soldier-blue {
-  left: 10px;
+  left: 50px;
   top: 30px;
+  animation: soldierMove1 4s infinite linear;
 }
 
 .soldier-img-green {
@@ -1536,8 +1555,9 @@ tr {
 }
 
 .soldier-green {
-  left: 300px;
+  left: 550px;
   top: 30px;
+  animation: soldierMove2 3s infinite linear;
 }
 
 .soldier-img-white {
@@ -1547,10 +1567,258 @@ tr {
 }
 
 .soldier-white {
-  left: 600px;
+  left: 850px;
   top: 30px;
+  animation: soldierMove3 1s infinite linear;
 }
 
+@keyframes soldierMove1 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(130px);
+  }
+  75% {
+    transform: translateX(130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+@keyframes soldierMove2 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(-130px);
+  }
+  75% {
+    transform: translateX(-130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+@keyframes soldierMove3 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(130px);
+  }
+  75% {
+    transform: translateX(130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+.bf-enemy-lifecontainer {
+  width: 50px;
+  height: 6px;
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid white;
+  background-color: red;
+}
+
+.bf-enemy-life {
+  height: 100%;
+  background: green;
+}
+
+.bf-target-outer-test {
+  width: 36px;
+  height: 60px;
+  background-color: rgba(0, 0, 255, 0.3);
+  position: relative;
+  left: 45px;
+  bottom: -20px;
+}
+
+.bf-target-center-test {
+  width: 20px;
+  height: 28px;
+  background-color: rgba(255, 0, 0, 0.3);
+  position: relative;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-55%);
+}
+
+.bf-target-style-test {
+  border: 2px solid white;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+}
+
+.soldier-img-blue {
+  top: 0;
+  left: -5px;
+  width: 85px;
+}
+
+.soldier-blue {
+  left: 50px;
+  top: 30px;
+  animation: soldierMove1 4s infinite linear;
+}
+
+.soldier-img-green {
+  top: 0;
+  left: -40px;
+  width: 120px;
+}
+
+.soldier-green {
+  left: 550px;
+  top: 30px;
+  animation: soldierMove2 3s infinite linear;
+}
+
+.soldier-img-white {
+  top: 0;
+  left: -20px;
+  width: 100px;
+}
+
+.soldier-white {
+  left: 850px;
+  top: 30px;
+  animation: soldierMove3 1s infinite linear;
+}
+
+.soldier-img-test {
+  position: absolute;
+  pointer-events: none;
+  width: 133px;
+  height: 131px;
+  left: 250px;
+  top: 250px;
+  transform-origin: center; /* Centre la transformation */
+  animation-name: soldierBeta;
+  animation-duration: 0.7s;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(4);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.soldier-beta {
+  position: absolute;
+  pointer-events: none;
+  width: 133px;
+  height: 131px;
+  left: 250px;
+  top: 250px;
+  transform-origin: center; /* Centre la transformation */
+  animation: soldierBeta 1s steps(4) infinite, soldierScale 10s linear forwards;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/public/assets/aim_shooter_char/Soldier_001_walk.png");
+}
+
+.soldier-zeta {
+  position: absolute;
+  pointer-events: none;
+  width: 133px;
+  height: 131px;
+  left: 350px;
+  top: 250px;
+  transform-origin: center; /* Centre la transformation */
+  animation: soldierBeta 1s steps(4) infinite, soldierScale 10s linear forwards;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/public/assets/aim_shooter_char/Soldier_001_walk.png");
+}
+
+.soldier-epyon {
+  position: absolute;
+  pointer-events: none;
+  width: 133px;
+  height: 131px;
+  left: 150px;
+  top: 250px;
+  transform-origin: center; /* Centre la transformation */
+  animation: soldierBeta 1s steps(4) infinite, soldierScale 10s linear forwards;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("/public/assets/aim_shooter_char/Soldier_001_walk.png");
+}
+
+@keyframes soldierBeta {
+  from {
+    background-position: 0 0px;
+  }
+  to {
+    background-position: -525px 0px;
+  }
+}
+@keyframes soldierScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  75% {
+    transform: scale(1.7);
+  }
+  100% {
+    transform: scale(2);
+  }
+}
+@keyframes soldierMove1 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(130px);
+  }
+  75% {
+    transform: translateX(130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+@keyframes soldierMove2 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(-130px);
+  }
+  75% {
+    transform: translateX(-130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+@keyframes soldierMove3 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(130px);
+  }
+  75% {
+    transform: translateX(130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
 #root-app {
   margin: 0 auto;
   display: flex;

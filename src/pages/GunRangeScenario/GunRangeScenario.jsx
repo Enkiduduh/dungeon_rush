@@ -24,6 +24,7 @@ import smg from "../../../public/assets/bullets/smg.png";
 import bg_screen from "/assets/background/metalbg2.jpg";
 
 function GunRange() {
+  const navigate= useNavigate();
   const [choiceGun, setChoiceGun] = useState(true);
   const [choiceRifle, setChoiceRifle] = useState(false);
   const [choiceSmg, setChoiceSmg] = useState(false);
@@ -497,6 +498,10 @@ function GunRange() {
     }
   }, [endTimer]);
 
+  const returnToMenu = () => {
+    navigate("/");
+  };
+
   return (
     <div id="root-app">
       <div
@@ -521,7 +526,11 @@ function GunRange() {
                 OK
               </button>
             </div>
-            <div id="gun-range-modal-shadow"></div>
+            <div id="gun-range-modal-shadow">
+              <div className="gun-range-return-btn" onClick={returnToMenu}>
+                Return
+              </div>
+            </div>
           </>
         )}
 

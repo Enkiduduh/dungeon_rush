@@ -15,7 +15,6 @@
   background: green;
 }
 
-
 .bf-target-outer {
   width: 60px;
   height: 200px;
@@ -54,8 +53,9 @@
   width: 85px;
 }
 .soldier-blue {
-  left: 10px;
+  left: 50px;
   top: 30px;
+  animation: soldierMove1 4s infinite linear;
 }
 
 ///////// GREEN /////////
@@ -65,8 +65,9 @@
   width: 120px;
 }
 .soldier-green {
-  left: 300px;
+  left: 550px;
   top: 30px;
+  animation: soldierMove2 3s infinite linear;
 }
 /////// WHITE /////////
 .soldier-img-white {
@@ -76,6 +77,51 @@
 }
 
 .soldier-white {
-  left: 600px;
+  left: 850px;
   top: 30px;
+  animation: soldierMove3 1s infinite linear;
+}
+
+@keyframes soldierMove1 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(130px);
+  }
+  75% {
+    transform: translateX(130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes soldierMove2 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(-130px);
+  }
+  75% {
+    transform: translateX(-130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+@keyframes soldierMove3 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(130px);
+  }
+  75% {
+    transform: translateX(130px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }

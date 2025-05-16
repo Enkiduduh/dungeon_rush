@@ -506,17 +506,16 @@ function GunRange() {
 
   // GESTION des actions ENDGAME
   const retryGame = () => {
-    navigate("/gun-range-training");
+    window.location.reload();
   };
 
   const returnToMenu = () => {
     navigate("/");
   };
 
-   const printScores = () => {
-    console.log("PRINT SCORES")
+  const printScores = () => {
+    console.log("PRINT SCORES");
   };
-
 
   return (
     <div id="root-app">
@@ -542,7 +541,9 @@ function GunRange() {
                 OK
               </button>
             </div>
-            <div id="gun-range-modal-shadow"></div>
+            <div id="gun-range-modal-shadow">
+              <div className="gun-range-return-btn" onClick={returnToMenu}>Return</div>
+            </div>
           </>
         )}
         {!endTimer ? null : (
@@ -579,11 +580,21 @@ function GunRange() {
               <div className="gun-range-modal-score-action">Score: {score}</div>
             </div>
             <div className="gun-range-modal-score-actions-container">
-              <div className="gun-range-modal-score-action" onClick={printScores}>
+              <div
+                className="gun-range-modal-score-action"
+                onClick={printScores}
+              >
                 Print your score
               </div>
-              <div className="gun-range-modal-score-action" onClick={retryGame}>Retry</div>
-              <div className="gun-range-modal-score-action" onClick={returnToMenu}>Return to menu</div>
+              <div className="gun-range-modal-score-action" onClick={retryGame}>
+                Retry
+              </div>
+              <div
+                className="gun-range-modal-score-action"
+                onClick={returnToMenu}
+              >
+                Return to menu
+              </div>
             </div>
           </div>
         )}
