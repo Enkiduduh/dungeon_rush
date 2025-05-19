@@ -9,7 +9,10 @@ import audio_reload_3 from "../../../public/assets/music/reload_3.mp3";
 import audio_reload_4 from "../../../public/assets/music/reload_4.mp3";
 import audio_gun_empty from "../../../public/assets/music/gun_empty.mp3";
 
-import { setImpactOnTargetBf } from "../../data/data_util_battlefield";
+import {
+  setImpactOnTargetBf,
+  displayDeath,
+} from "../../data/data_util_battlefield";
 import Targets from "../../components/Targets/Targets";
 import TargetScore from "../../components/TableScore/TableScore";
 import WeaponAmmo from "../../components/WeaponAmmo/WeaponAmmo";
@@ -22,9 +25,9 @@ import pistol from "../../../public/assets/bullets/pistol.png";
 import smg from "../../../public/assets/bullets/smg.png";
 
 import bg_screen from "/assets/background/metalbg2.jpg";
-
+import deathSoldier from "/assets/aim_shooter_char/Soldier_001_death.png";
 function GunRange() {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const [choiceGun, setChoiceGun] = useState(true);
   const [choiceRifle, setChoiceRifle] = useState(false);
   const [choiceSmg, setChoiceSmg] = useState(false);
@@ -115,31 +118,53 @@ function GunRange() {
       // Association de l'impact avec la zone touchée
       document.getElementById("fullscreen-shoot").appendChild(divSHOOT);
 
-      const targetSoldierBlue = document.querySelector(".soldier-blue");
-      const soldierLifeHTMLBlue = document.querySelector(`.life-soldier-blue`);
-      const targetSoldierGreen = document.querySelector(".soldier-green");
+      const targetSoldierBlue =
+        document.querySelector(".soldier-blue") ||
+        document.querySelector(".soldier-beta");
+      const soldierLifeHTMLBlue =
+        document.querySelector(`.life-soldier-blue`) ||
+        document.querySelector(`.life-soldier-beta`);
+      const targetSoldierGreen =
+        document.querySelector(".soldier-green") ||
+        document.querySelector(".soldier-zeta");
       const soldierLifeHTMLGreen =
-        document.querySelector(`.life-soldier-green`);
-      const targetSoldierWhite = document.querySelector(".soldier-white");
+        document.querySelector(`.life-soldier-green`) ||
+        document.querySelector(`.life-soldier-zeta`);
+      const targetSoldierWhite =
+        document.querySelector(".soldier-white") ||
+        document.querySelector(".soldier-epyon");
       const soldierLifeHTMLWhite =
-        document.querySelector(`.life-soldier-white`);
+        document.querySelector(`.life-soldier-white`) ||
+        document.querySelector(`.life-soldier-epyon`);
 
       // Dimensions pour targetSoldierBlue
-      const t1_z_outer = targetSoldierBlue.querySelector(".bf-target-outer");
+      const t1_z_outer =
+        targetSoldierBlue.querySelector(".bf-target-outer") ||
+        targetSoldierBlue.querySelector(".bf-target-outer-test");
       const t1_z_outerRect = t1_z_outer.getBoundingClientRect();
-      const t1_z_center = targetSoldierBlue.querySelector(".bf-target-center");
+      const t1_z_center =
+        targetSoldierBlue.querySelector(".bf-target-center") ||
+        targetSoldierBlue.querySelector(".bf-target-center-test");
       const t1_z_centerRect = t1_z_center.getBoundingClientRect();
 
       // Dimensions pour targetSoldierGreen
-      const t2_z_outer = targetSoldierGreen.querySelector(".bf-target-outer");
+      const t2_z_outer =
+        targetSoldierGreen.querySelector(".bf-target-outer") ||
+        targetSoldierGreen.querySelector(".bf-target-outer-test");
       const t2_z_outerRect = t2_z_outer.getBoundingClientRect();
-      const t2_z_center = targetSoldierGreen.querySelector(".bf-target-center");
+      const t2_z_center =
+        targetSoldierGreen.querySelector(".bf-target-center") ||
+        targetSoldierGreen.querySelector(".bf-target-center-test");
       const t2_z_centerRect = t2_z_center.getBoundingClientRect();
 
       // Dimensions pour targetSoldierWhite
-      const t3_z_outer = targetSoldierWhite.querySelector(".bf-target-outer");
+      const t3_z_outer =
+        targetSoldierWhite.querySelector(".bf-target-outer") ||
+        targetSoldierWhite.querySelector(".bf-target-outer-test");
       const t3_z_outerRect = t3_z_outer.getBoundingClientRect();
-      const t3_z_center = targetSoldierWhite.querySelector(".bf-target-center");
+      const t3_z_center =
+        targetSoldierWhite.querySelector(".bf-target-center") ||
+        targetSoldierWhite.querySelector(".bf-target-center-test");
       const t3_z_centerRect = t3_z_center.getBoundingClientRect();
 
       const divSHOOTRect = divSHOOT.getBoundingClientRect();
@@ -160,7 +185,7 @@ function GunRange() {
         initialSoldierLifeBlue,
         soldierLifeHTMLBlue
       );
-
+      displayDeath(targetSoldierBlue, soldierLifeHTMLBlue, deathSoldier,divSHOOT);
       if (!hitTargetOne) {
         const hitTargetTwo = setImpactOnTargetBf(
           divSHOOT,
@@ -178,7 +203,7 @@ function GunRange() {
           initialSoldierLifeGreen,
           soldierLifeHTMLGreen
         );
-
+        displayDeath(targetSoldierGreen, soldierLifeHTMLGreen, deathSoldier,divSHOOT);
         if (!hitTargetTwo) {
           const hitTargetThree = setImpactOnTargetBf(
             divSHOOT,
@@ -196,6 +221,7 @@ function GunRange() {
             initialSoldierLifeWhite,
             soldierLifeHTMLWhite
           );
+          displayDeath(targetSoldierWhite, soldierLifeHTMLWhite, deathSoldier,divSHOOT);
 
           if (!hitTargetThree) {
             // Si aucune cible n'est touchée, incrémentez les tirs manqués
@@ -324,7 +350,7 @@ function GunRange() {
         document.removeEventListener("mousemove", handleMouseMove);
       };
     } else {
-      cursor.style.cursor = `url("../../../public/assets/Cross.png") 32 32, crosshair`;
+      cursor.style.cursor = `url("../../../public/assets/Cross.png") 15 15, crosshair`;
     }
   }, [isScopeActive]);
 

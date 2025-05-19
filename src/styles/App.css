@@ -1440,11 +1440,12 @@ tr {
   cursor: crosshair;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 90vw 90vh;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
   -webkit-user-drag: none;
+  overflow: hidden;
 }
 
 #targets-title {
@@ -1623,6 +1624,7 @@ tr {
   transform: translateX(-50%);
   border: 1px solid white;
   background-color: red;
+  display: none;
 }
 
 .bf-enemy-life {
@@ -1632,25 +1634,22 @@ tr {
 
 .bf-target-outer-test {
   width: 36px;
-  height: 60px;
-  background-color: rgba(0, 0, 255, 0.3);
+  height: 55px;
   position: relative;
-  left: 45px;
-  bottom: -20px;
+  left: 40px;
+  bottom: -25px;
 }
 
 .bf-target-center-test {
-  width: 20px;
+  width: 25px;
   height: 28px;
-  background-color: rgba(255, 0, 0, 0.3);
   position: relative;
-  top: 20px;
-  left: 50%;
+  top: 25px;
+  left: 45%;
   transform: translateX(-55%);
 }
 
 .bf-target-style-test {
-  border: 2px solid white;
   display: flex;
   justify-content: center;
   position: relative;
@@ -1693,36 +1692,20 @@ tr {
   animation: soldierMove3 1s infinite linear;
 }
 
-.soldier-img-test {
-  position: absolute;
-  pointer-events: none;
-  width: 133px;
-  height: 131px;
-  left: 250px;
-  top: 250px;
-  transform-origin: center; /* Centre la transformation */
-  animation-name: soldierBeta;
-  animation-duration: 0.7s;
-  animation-iteration-count: infinite;
-  animation-timing-function: steps(4);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .soldier-beta {
   position: absolute;
   pointer-events: none;
   width: 133px;
   height: 131px;
-  left: 250px;
-  top: 250px;
+  left: 650px;
+  top: 200px;
   transform-origin: center; /* Centre la transformation */
-  animation: soldierBeta 1s steps(4) infinite, soldierScale 10s linear forwards;
+  animation: soldierBeta 1s steps(7) infinite;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("/public/assets/aim_shooter_char/Soldier_001_walk.png");
+  background-image: url("/public/assets/aim_shooter_char/soldier_1.png");
+  transform: scale(2.2);
 }
 
 .soldier-zeta {
@@ -1730,14 +1713,15 @@ tr {
   pointer-events: none;
   width: 133px;
   height: 131px;
-  left: 350px;
-  top: 250px;
+  left: 950px;
+  top: 270px;
   transform-origin: center; /* Centre la transformation */
-  animation: soldierBeta 1s steps(4) infinite, soldierScale 10s linear forwards;
+  animation: soldierBeta 1s steps(7) infinite;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("/public/assets/aim_shooter_char/Soldier_001_walk.png");
+  background-image: url("/public/assets/aim_shooter_char/soldier_1.png");
+  transform: scale(4);
 }
 
 .soldier-epyon {
@@ -1745,14 +1729,15 @@ tr {
   pointer-events: none;
   width: 133px;
   height: 131px;
-  left: 150px;
+  left: 380px;
   top: 250px;
   transform-origin: center; /* Centre la transformation */
-  animation: soldierBeta 1s steps(4) infinite, soldierScale 10s linear forwards;
+  animation: soldierBeta 1s steps(7) infinite;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("/public/assets/aim_shooter_char/Soldier_001_walk.png");
+  background-image: url("/public/assets/aim_shooter_char/soldier_1.png");
+  transform: scale(3);
 }
 
 @keyframes soldierBeta {
@@ -1760,21 +1745,7 @@ tr {
     background-position: 0 0px;
   }
   to {
-    background-position: -525px 0px;
-  }
-}
-@keyframes soldierScale {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  75% {
-    transform: scale(1.7);
-  }
-  100% {
-    transform: scale(2);
+    background-position: -919px 0px;
   }
 }
 @keyframes soldierMove1 {
@@ -1817,6 +1788,14 @@ tr {
   }
   100% {
     transform: translateX(0px);
+  }
+}
+@keyframes soldierDeath {
+  from {
+    background-position: 0 0px;
+  }
+  to {
+    background-position: -528px 0px;
   }
 }
 #root-app {

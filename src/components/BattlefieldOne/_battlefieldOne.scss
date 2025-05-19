@@ -7,9 +7,10 @@
   cursor: crosshair;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size:90vw 90vh;
   user-select: none;
   -webkit-user-drag: none;
+  overflow: hidden;
 }
 
 #targets-title {

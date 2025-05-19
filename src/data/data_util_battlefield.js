@@ -43,7 +43,6 @@ export function setImpactOnTargetBf(
   ) {
     console.log("Hit detected in target : BLUE.");
     setBlueShots(prev => prev + 1);
-
     // Recalculez les coordonnées relatives à t1_z_outer
     const relativeX = shootOBJ.left - targetOuterOBJ.left;
     const relativeY = shootOBJ.top - targetOuterOBJ.top;
@@ -67,3 +66,12 @@ export function setImpactOnTargetBf(
   }
 
 }
+
+
+export function displayDeath(targetHTML, targetLifeHTML, newBackgroundImage, divShoot) {
+  if (targetLifeHTML.style.width == "0%") {
+    targetHTML.style.backgroundImage = `url(${newBackgroundImage})`;
+    targetHTML.style.animation = `soldierDeath 0.8s steps(4) forwards`;
+    divShoot.classList.remove("impact");
+  }
+};
