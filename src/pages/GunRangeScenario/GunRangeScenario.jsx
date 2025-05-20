@@ -8,6 +8,7 @@ import audio_reload_2 from "../../../public/assets/music/reload_2.mp3";
 import audio_reload_3 from "../../../public/assets/music/reload_3.mp3";
 import audio_reload_4 from "../../../public/assets/music/reload_4.mp3";
 import audio_gun_empty from "../../../public/assets/music/gun_empty.mp3";
+import audio_soldier_001_death from "/assets/music/Soldier_001_death.wav";
 
 import {
   setImpactOnTargetBf,
@@ -42,16 +43,16 @@ function GunRange() {
   const [reload, setReload] = useState(false);
 
   const [headShot, setHeadShot] = useState(100);
-  const [otherShot, setOtherShot] = useState(20);
+  const [otherShot, setOtherShot] = useState(25);
 
   const [bulletImg, setBulletImg] = useState(bullet_gun);
   // INITIALISATION
   const [name, setName] = useState("");
-  const [isNameChosen, setIsNameChosen] = useState(false);
+  const [IsLevelStarted, setIsLevelStarted] = useState(false);
   const [isModalActive, setIsModalActive] = useState(true);
   const [startTimer, setStartTimer] = useState(false);
   const [endTimer, setEndTimer] = useState(false);
-
+  const [levelMessage, setLevelMessage] = useState("LEVEL 1");
   // TIMER
   const [timer, setTimer] = useState(0);
   // VARIABLES BUTTONS
@@ -87,6 +88,7 @@ function GunRange() {
   const audioRef_reload_3 = useRef(null);
   const audioRef_reload_4 = useRef(null);
   const audioRef_gun_empty = useRef(null);
+  const audioRef_soldier_001_death = useRef(null);
 
   const isShootingRef = useRef(false);
   const scopePosRef = useRef({ x: 0, y: 0 });
@@ -185,7 +187,13 @@ function GunRange() {
         initialSoldierLifeBlue,
         soldierLifeHTMLBlue
       );
-      displayDeath(targetSoldierBlue, soldierLifeHTMLBlue, deathSoldier,divSHOOT);
+      displayDeath(
+        targetSoldierBlue,
+        soldierLifeHTMLBlue,
+        deathSoldier,
+        divSHOOT,
+        audioRef_soldier_001_death.current
+      );
       if (!hitTargetOne) {
         const hitTargetTwo = setImpactOnTargetBf(
           divSHOOT,
@@ -203,7 +211,13 @@ function GunRange() {
           initialSoldierLifeGreen,
           soldierLifeHTMLGreen
         );
-        displayDeath(targetSoldierGreen, soldierLifeHTMLGreen, deathSoldier,divSHOOT);
+        displayDeath(
+          targetSoldierGreen,
+          soldierLifeHTMLGreen,
+          deathSoldier,
+          divSHOOT,
+          audioRef_soldier_001_death.current
+        );
         if (!hitTargetTwo) {
           const hitTargetThree = setImpactOnTargetBf(
             divSHOOT,
@@ -221,7 +235,13 @@ function GunRange() {
             initialSoldierLifeWhite,
             soldierLifeHTMLWhite
           );
-          displayDeath(targetSoldierWhite, soldierLifeHTMLWhite, deathSoldier,divSHOOT);
+          displayDeath(
+            targetSoldierWhite,
+            soldierLifeHTMLWhite,
+            deathSoldier,
+            divSHOOT,
+            audioRef_soldier_001_death.current
+          );
 
           if (!hitTargetThree) {
             // Si aucune cible n'est touchée, incrémentez les tirs manqués
@@ -312,23 +332,9 @@ function GunRange() {
     setHasFired(false);
   }, [hasFired]);
 
-  // function calculateScore() {
-  //   const redPoints = 100 * (redShots_t1 + redShots_t2 + redShots_t3);
-  //   const yellowPoints =
-  //     30 * (yellowShots_t1 + yellowShots_t2 + yellowShots_t3);
-  //   const greenPoints = 5 * (greenShots_t1 + greenShots_t2 + greenShots_t3);
-  //   const bluePoints = 1 * (blueShots_t1 + blueShots_t2 + blueShots_t3);
-
-  //   setScore(redPoints + yellowPoints + greenPoints + bluePoints);
-  // }
-
-  // useEffect(() => {
-  //   calculateScore();
-  // });
-
   // GESTION DE L'ACTIVATION DU SCOPE
   useEffect(() => {
-    const cursor = document.querySelector(".targets-container");
+    const cursor = document.querySelector(".bf-targets-container");
     if (isScopeActive) {
       const scope = document.getElementById("targets-scope");
       cursor.style.cursor = "none";
@@ -496,37 +502,36 @@ function GunRange() {
     }
   }, [choiceSmg]);
 
-  // GESTION DU NOM / PSEUDO
-  const setNameHTML = () => {
-    setIsNameChosen(true);
-  };
-
-  useEffect(() => {
-    if (isNameChosen) {
-      const nameHTML = document.querySelector(".gr-input");
-      console.log(nameHTML.value);
-      setIsModalActive(false);
-
-      const nameScore = document.querySelector(".char-name");
-      nameScore.textContent = `${name}`;
-      setStartTimer(true);
-    }
-  }, [isNameChosen]);
-
-  useEffect(() => {
-    if (endTimer) {
-      const targetsAll = document.querySelectorAll(".target-wrapper");
-      for (let i = 0; i < targetsAll.length; i++) {
-        const targetContainer = document.querySelector(`.modal-score-${i + 1}`);
-        targetContainer.appendChild(targetsAll[i]);
-        targetsAll[i].classList.remove(`target-${i + 1}`);
-      }
-    }
-  }, [endTimer]);
-
   const returnToMenu = () => {
     navigate("/");
   };
+
+  // GESTION DU DEBUT DU NIVEAU
+  const levelStart = () => {
+    setIsLevelStarted(true);
+  };
+
+  useEffect(() => {
+    if (IsLevelStarted) {
+      setIsModalActive(false);
+      setStartTimer(true);
+    }
+  }, [IsLevelStarted]);
+
+  useEffect(() => {
+    let i = 1;
+    if (
+      soldierLifeBlue == 0 &&
+      soldierLifeGreen == 0 &&
+      soldierLifeWhite == 0
+    ) {
+      console.log("Level completed !");
+      i += 1;
+      setIsLevelStarted(false);
+      setIsModalActive(true);
+      setLevelMessage(`LEVEL ${i}`);
+    }
+  }, [soldierLifeBlue, soldierLifeGreen, soldierLifeWhite]);
 
   return (
     <div id="root-app">
@@ -539,44 +544,16 @@ function GunRange() {
         {!isModalActive ? null : (
           <>
             <div id="gun-range-input">
-              <input
-                type="text"
-                className="gr-input"
-                placeholder="Enter your name..."
-                name="input-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-
-              <button className="gr-input-btn" onClick={setNameHTML}>
-                OK
+              <button className="gr-input-btn" onClick={levelStart}>
+                {levelMessage}
               </button>
             </div>
-            <div id="gun-range-modal-shadow">
+            <div id="bf-gun-range-modal-shadow">
               <div className="gun-range-return-btn" onClick={returnToMenu}>
                 Return
               </div>
             </div>
           </>
-        )}
-
-        {!endTimer ? null : (
-          <div id="gun-range-modal-score">
-            {/* <div>{endTimer}</div> */}
-            <div className="modal-score modal-score-1">
-              <TargetScore shots_z1={redShots_t1} shots_z4={blueShots_t1} />
-            </div>
-            <div className="modal-score modal-score-2">
-              <TargetScore shots_z1={redShots_t2} shots_z4={blueShots_t2} />
-            </div>
-            <div className="modal-score modal-score-3">
-              <TargetScore shots_z1={redShots_t3} shots_z4={blueShots_t3} />
-            </div>
-            <div className="gun-range-final-score">
-              <div>Miss: {missShots}</div>
-              <div>Score: {score}</div>
-            </div>
-          </div>
         )}
 
         {/* INFOCHAR  */}
@@ -651,6 +628,7 @@ function GunRange() {
       <audio ref={audioRef_reload_3} src={audio_reload_3} />
       <audio ref={audioRef_reload_4} src={audio_reload_4} />
       <audio ref={audioRef_gun_empty} src={audio_gun_empty} />
+      <audio ref={audioRef_soldier_001_death} src={audio_soldier_001_death} />
     </div>
   );
 }

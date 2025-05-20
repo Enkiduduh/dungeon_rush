@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import BattleScene from "./components/BattleScene/BattleScene";
 import Page_menu from "../src/pages/Menu/Menu";
 import Page_combat from "../src/pages/Combat/Combat";
@@ -25,6 +25,7 @@ function App() {
           <Route path="/combat" element={<Page_combat />} />
           <Route path="/options" element={<Page_options />} />
           <Route path="/selector" element={<Page_selector />} />
+          <Route path="/*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     </>

@@ -1,13 +1,13 @@
-.targets-container {
-  width: 95vw;
-  height: 70vh;
+.bf-targets-container {
+  width: 1500px;
+  height: 750px;
   border: 1px solid white;
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
   cursor: crosshair;
   background-position: center;
   background-repeat: no-repeat;
-  background-size:90vw 90vh;
+  background-size:100% 100%;
   user-select: none;
   -webkit-user-drag: none;
   overflow: hidden;

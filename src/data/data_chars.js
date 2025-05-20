@@ -100,7 +100,7 @@ export const char_4 = {
 
 export const char_5 = {
   name: "Satyx",
-  life: 200,
+  life: 500,
   atk: 8,
   mag: 2,
   def: 2,

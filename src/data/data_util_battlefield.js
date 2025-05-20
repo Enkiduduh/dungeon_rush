@@ -68,10 +68,14 @@ export function setImpactOnTargetBf(
 }
 
 
-export function displayDeath(targetHTML, targetLifeHTML, newBackgroundImage, divShoot) {
+export function displayDeath(targetHTML, targetLifeHTML, newBackgroundImage, divShoot, audio_death) {
   if (targetLifeHTML.style.width == "0%") {
     targetHTML.style.backgroundImage = `url(${newBackgroundImage})`;
-    targetHTML.style.animation = `soldierDeath 0.8s steps(4) forwards`;
+    targetHTML.style.animation = `soldierDeath 0.6s steps(3) forwards`;
     divShoot.classList.remove("impact");
+    if (audio_death) {
+      audio_death.currentTime = 0;
+      audio_death.play();
+    }
   }
 };

@@ -11,15 +11,13 @@ function BattlefieldOne({
   soldierLife_blue,
   soldierLife_green,
   soldierLife_white,
-
 }) {
   return (
     <div
-      className="targets-container"
+      className="bf-targets-container"
       onClick={clickToFire}
       style={{ backgroundImage: `url(${bg_targets})` }}
     >
-
       {/* <Soldier
         soldier_img={soldier_blue}
         soldier_life={soldierLife_blue}
@@ -45,16 +43,22 @@ function BattlefieldOne({
       <SoldierTest
         soldier_life={soldierLife_blue}
         soldier_color="beta"
+        left={650}
+        bottom={290}
       />
 
       <SoldierTest
         soldier_life={soldierLife_green}
         soldier_color="zeta"
+        left={950}
+        bottom={170}
       />
 
       <SoldierTest
         soldier_life={soldierLife_white}
         soldier_color="epyon"
+        left={420}
+        bottom={250}
       />
     </div>
   );

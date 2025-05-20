@@ -67,7 +67,7 @@ function BattleScene() {
 
   // Loop game
   const [resetTurn, setResetTurn] = useState(false);
-
+  
   // Récupérer les données du store
   const hero = useSelector((state) => state.parameters.hero);
   const enemy = useSelector((state) => state.parameters.enemy);

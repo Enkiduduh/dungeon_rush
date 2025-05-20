@@ -81,34 +81,15 @@
 
 //// TEST///
 
-// .soldier-img-test {
-//   position: absolute;
-//   pointer-events: none;
-//   width: 133px;
-//   height: 131px;
-//   left: 250px;
-//   top: 250px;
-//   transform-origin: center; /* Centre la transformation */
-//   animation-name: soldierBeta;
-//   animation-duration: 0.7s;
-//   animation-iteration-count: infinite;
-//   animation-timing-function: steps(4);
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   transform: scale(2.7);
-// }
-
 .soldier-beta {
-  position: absolute;
+  // position: absolute;
+  // bottom: 290px;
   pointer-events: none;
   width: 133px;
   height: 131px;
-  left: 650px;
-  top: 200px;
-  transform-origin: center; /* Centre la transformation */
+  // left: 650px;
   animation: soldierBeta 1s steps(7) infinite;
-  background-position: center;
+  background-position: 0 0;
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("/public/assets/aim_shooter_char/soldier_1.png");
@@ -116,15 +97,14 @@
 }
 
 .soldier-zeta {
-  position: absolute;
+  // position: absolute;
+  // left: 950px;
+  // bottom: 170px;
   pointer-events: none;
   width: 133px;
   height: 131px;
-  left: 950px;
-  top: 270px;
-  transform-origin: center; /* Centre la transformation */
   animation: soldierBeta 1s steps(7) infinite;
-  background-position: center;
+  background-position: 0 0;
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("/public/assets/aim_shooter_char/soldier_1.png");
@@ -132,15 +112,14 @@
 }
 
 .soldier-epyon {
-  position: absolute;
+  // position: absolute;
+  // left: 420px;
+  // bottom: 250px;
   pointer-events: none;
   width: 133px;
   height: 131px;
-  left: 380px;
-  top: 250px;
-  transform-origin: center; /* Centre la transformation */
   animation: soldierBeta 1s steps(7) infinite;
-  background-position: center;
+  background-position: 0 0;
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("/public/assets/aim_shooter_char/soldier_1.png");
@@ -156,70 +135,55 @@
   }
 }
 
-// @keyframes soldierScale {
+// @keyframes soldierMove1 {
 //   0% {
-//     transform: scale(2);
+//     transform: translateX(0px);
 //   }
 //   50% {
-//     transform: scale(2.3);
+//     transform: translateX(130px);
 //   }
 //   75% {
-//     transform: scale(2.7);
+//     transform: translateX(130px);
 //   }
 //   100% {
-//     transform: scale(3);
+//     transform: translateX(0px);
 //   }
 // }
 
-@keyframes soldierMove1 {
-  0% {
-    transform: translateX(0px);
-  }
-  50% {
-    transform: translateX(130px);
-  }
-  75% {
-    transform: translateX(130px);
-  }
-  100% {
-    transform: translateX(0px);
-  }
-}
-
-@keyframes soldierMove2 {
-  0% {
-    transform: translateX(0px);
-  }
-  50% {
-    transform: translateX(-130px);
-  }
-  75% {
-    transform: translateX(-130px);
-  }
-  100% {
-    transform: translateX(0px);
-  }
-}
-@keyframes soldierMove3 {
-  0% {
-    transform: translateX(0px);
-  }
-  50% {
-    transform: translateX(130px);
-  }
-  75% {
-    transform: translateX(130px);
-  }
-  100% {
-    transform: translateX(0px);
-  }
-}
+// @keyframes soldierMove2 {
+//   0% {
+//     transform: translateX(0px);
+//   }
+//   50% {
+//     transform: translateX(-130px);
+//   }
+//   75% {
+//     transform: translateX(-130px);
+//   }
+//   100% {
+//     transform: translateX(0px);
+//   }
+// }
+// @keyframes soldierMove3 {
+//   0% {
+//     transform: translateX(0px);
+//   }
+//   50% {
+//     transform: translateX(130px);
+//   }
+//   75% {
+//     transform: translateX(130px);
+//   }
+//   100% {
+//     transform: translateX(0px);
+//   }
+// }
 
 @keyframes soldierDeath {
   from {
     background-position: 0 0px;
   }
   to {
-    background-position: -528px 0px;
+    background-position: -396px 0px;
   }
 }
